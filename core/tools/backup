@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# The following cron lines are recommended:
+#
+# 00 04 * * *   /path/to/ccg/tools/backup daily Metw
+# 00 03 * * Mon /path/to/ccg/tools/backup weeky Metw
+# 00 02 1 * *   /path/to/ccg/tools/backup monthly Metw
+# 00 01 1 1 *   /path/to/ccg/tools/backup yearly Metw
+#
+# This script requires bash, bzip2 and tar.
+#
+CCG_PATH=`which $0`
+CCG_PATH=`dirname $CCG_PATH`
+CCG_PATH=`dirname $CCG_PATH`
+
+TYPE=$1
+GAME=$2
+if [ -z "$TYPE" -o -z "$GAME" ]; then
+    echo "usage: $0 {daily|weekly|monthly|yearly} <Game>"
+    exit
+fi
+
+SRC=$CCG_PATH/save/$GAME
+if [ ! -d $SRC ]; then
+    echo no such game save than $SRC
+    exit
+fi
+
+case $TYPE in
+    daily)
+	DAY=`date +'daily-%A'`
+	;;
+    weekly)
+	DAY=`date +'weekly-%W'`
+	;;
+    monthly)
+	DAY=`date +'monthly-%B'`
+	;;
+    yearly)
+	DAY=`date +'yearly-%Y'`
+	;;
+esac
+
+if [ -z "$DAY" ]; then
+    echo incorrect time specifier: $TYPE
+    exit
+fi
+
+DST=$CCG_PATH/save/backup/$GAME
+mkdir -p $DST
+
+cd $SRC/..
+tar cjf backup/$GAME/$DAY.tar.bz2 $GAME

@@ -1,0 +1,132 @@
+#
+#    Gccg - Generic collectible card game.
+#    Copyright (C) 2001-2012 Tommi Ronkainen
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program, in the file license.txt. If not, write
+# to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+##############################################################################
+#
+#  Generic server for several players
+#
+##############################################################################
+
+trigger "init" "" code
+{
+  game.data=game_data();
+  GAME=game.data{"game"};
+  GAMEDIR=game.data{"gamedir"};
+
+  deck_name=(,);
+
+  execute("common.include");
+
+  if(server != NULL)
+    meta.server=server;
+  else
+    meta.server="NO.DEFAULT.SERVER.FOR.THIS.GAME";
+
+  players_wanted=1;
+  deny.list=(,);
+  options.game=(,);
+
+  execute("server.functions");
+
+  SELF_KNOWN_PILES=(,);
+  execute(GAMEDIR+"-server.include");
+
+  if(rules==NULL)
+    rules=GAMEDIR+".rules";
+
+  execute(rules);
+ 
+  if(deck_rules==NULL)
+  {
+    println("ERROR: cannot find rules "+tostr(rules));
+    quit(1);
+  }
+}
+
+#
+# This is called after "init" "" and after initialization of commandline parameters.
+#
+trigger "init" "server" code
+{
+  InitServer(players_wanted);
+  Log("Initialized game structures for "+players_wanted+" players");
+}
+
+#
+# This is called after "init" "server".
+#
+trigger "init" "game" code
+{
+  randomize();
+  println("Initializing server at port "+port);
+  net_create_server(port);
+  InitGame();
+}
+
+#
+# Error trigger during comman handling.
+#
+trigger "error" "network" code
+{
+  Log("NETWORK ERROR: "+error.message);
+  vardump();
+  net_server_send_all("Message","{red}WARNING: Server encountered an error. The game may be now unstable.");
+  stacktrace();
+}
+
+#
+# This is the main loop of the game
+#
+trigger "main" "" code
+{
+  set_error_trigger("error","network");
+  e=net_server_get(30000);
+  if(e==NULL)
+    quit(1);
+  ReceiveData(e);
+
+  quit_received=0;
+  while(!quit_received)
+  {
+    e=net_get();
+
+    if(e!=NULL)
+    {
+      if(toval(e[1])==("Quit",NULL))
+      {
+        SendAll("Message","{red}Quit instruction recieved from the meta server.");
+        quit(1);
+      }
+
+    }
+
+    e=net_server_get(10000);
+    if(e==NULL)
+      net_server_send_all("Null",NULL);
+    else
+      ReceiveData(e);
+    net_send(meta.connection,("Null",Null));
+  }
+}
+
+trigger "exit" "" code
+{
+  if(flag.game_started)
+    CommandSavegame();
+}

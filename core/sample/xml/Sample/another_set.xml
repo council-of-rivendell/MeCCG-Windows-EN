@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE ccg-setinfo SYSTEM "../gccg-set.dtd">
+<ccg-setinfo name="Name of the Set" dir="setdir" abbrev="ABRV" game="Name of the Game">
+  <cards>
+
+    <card name="A Card Name" graphics="ACardName.jpg" text="">
+       <attr key="attr1" value="val1"/>
+       <attr key="attr2" value="val2"/>
+       <attr key="attr3" value="val3"/>
+    </card>
+
+  </cards>
+</ccg-setinfo>

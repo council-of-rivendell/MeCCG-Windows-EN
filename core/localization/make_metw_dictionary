@@ -1,0 +1,32 @@
+#!/bin/bash
+
+SPLIT='Values for (subclass|adjacent|skills|home_site|move_to)'
+GAME=metw.xml
+DIR=Metw
+
+if [ ! -x ./gccg ]; then
+  echo "You need bare bone script engine compiled from source 'make gccg'."
+  exit
+fi
+
+./gccg --load $GAME misc/hunt_dictionary.gccg
+
+echo Purifying...
+perl/babel.pl --write --purify --titlenot 'Values for rarity' dictionary.template
+
+echo Splitting...
+perl/babel.pl --out dictionary.commands --title 'Command \/' dictionary.template
+perl/babel.pl --write --titlenot 'Command \/' dictionary.template
+perl/babel.pl --out dictionary.splittable --title "$SPLIT" --split --numbers dictionary.template
+perl/babel.pl --write --titlenot "$SPLIT" --numbers dictionary.template
+
+echo Temporary fixes..
+perl/babel.pl --write --titlenot 'Command \/sort' dictionary.commands
+
+echo Merging stuff..
+perl/babel.pl --write --clean lib/dictionary.client
+perl/babel.pl --write --clean lib/$DIR/dictionary.client
+perl/babel.pl --write --append dictionary.commands --unify lib/dictionary.client
+rm -f dictionary.commands
+perl/babel.pl --write --append dictionary.splittable --append dictionary.template --unify --reduce lib/dictionary.client lib/$DIR/dictionary.client
+rm -f dictionary.splittable dictionary.template

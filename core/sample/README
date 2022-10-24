@@ -1,0 +1,4 @@
+This directory has a minimal set of files for a game. You can use them
+as initial copy for your own game projects. The directory structure
+reflects the normal Gccg-directories. A word 'Game' or 'game' is used
+in places where your game name abbreviation is supposed to go.

@@ -1,0 +1,13 @@
+#
+# DECK RULES
+# ==========
+#
+# This file is usually generated using perl/definition2rules
+# to convert meta rule definitions to gccg script.
+#
+deck_rules=(,);
+server_description="Standard rules";
+deck_rules{"Standard"}=(,);
+deck_rules{"Standard"}{"deck"}=(
+  ("RulePass",NULL),
+);

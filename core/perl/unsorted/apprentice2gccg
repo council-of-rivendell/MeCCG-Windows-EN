@@ -1,0 +1,54 @@
+#!/usr/bin/perl -I perl
+#
+# This program converts Magic Workstation deck to Gccg format.
+#
+
+use gccg;
+
+# Globals
+%deck=(); # Hash containing deck parts.
+$deckname="Unknown"; # Name of the deck.
+
+#
+# read_deck(filename) - Fill globals.
+#
+sub read_deck
+{
+	my $file=shift;
+	my $card="";
+	my $part="Deck";
+	
+	open(F,$file);
+	while(<F>)
+	{
+		s/^\s+//;
+		s/\s+$//;
+		next if m/^\s*\/\//;
+		next if m/^\s*$/;
+
+		if(m/^\s*(\d+)(\s+\[(.+)\])?\s+(.+)/)
+		{
+			$card=$4;
+			$card=~s/\s*\(\d+\)$//;
+			$card.=" ($3)" if(is_set($3));
+			add_deck($1,$part,$card);
+		}
+		elsif(m/^\s*SB:\s+(\d+)\s+\[(.+)\]\s+(.+)/)
+		{
+			$part="Sideboard";
+			add_deck($1,$part,$3);
+		}
+		elsif(m/^\s*Sideboard\s*$/)
+		{
+			$part="Sideboard";
+		}
+		else
+		{
+			die "$0: cannot parse '$_'";
+		}
+
+	}
+	close(F);
+}
+
+deck_converter("Mtg");

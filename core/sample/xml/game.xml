@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE ccg SYSTEM "gccg-game.dtd">
+
+<ccg name="Name of the Game" dir="Sample">
+
+  <cardset source="basecards.xml"/>
+  <cardset source="another_set.xml"/>
+
+  <option name="hand card size" value="50"/>
+  <option name="table card size" value="50"/>
+  <option name="deck card size" value="30"/>
+  <option name="book card size" value="40"/>
+
+  <option name="draw hints" value="type"/>
+
+  <option name="default border width" value="12"/>
+  <option name="default border color" value="243,214,26"/>
+  <option name="default back color" value="0,20,50"/>
+  <option name="default title" value="26,24,127,16"/>
+  <option name="default title font color" value="255,255,255"/>
+  <option name="default title font" value="2"/>
+  <option name="default title font size" value="20"/>
+
+  <option name="deck order" value="type"/>
+  <option name="deck color by" value="type"/>
+
+  <trigger event="play" attribute="type"/>
+
+</ccg>

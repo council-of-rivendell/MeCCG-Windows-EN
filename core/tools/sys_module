@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SYS=`uname -s|tr A-Z a-z`-`uname -m`
+SYS=`echo $SYS|sed -e 's/i[3456]86/i386/'`
+
+echo module_$SYS

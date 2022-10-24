@@ -1,0 +1,954 @@
+#
+# Attribute names
+#
+
+en: set
+de: Set
+
+en: adjacent
+de: benachbart
+
+en: agent
+de: Agent
+
+en: auto_attack
+de: A._Angriff
+
+en: body
+de: Konstitution
+
+en: class
+de: Kategorie
+
+en: corruption
+de: Korruption
+
+en: draw
+de: Karten
+
+en: draw_opp
+de: Geg.-Karten
+
+en: gi
+de: A._Einfluss
+
+en: haven
+de: Zufluchtsort
+
+en: home_site
+de: Heimatort
+
+en: influence
+de: Einfluss
+
+en: magic
+de: Zauber
+
+en: mind
+de: Geisteskraft
+
+en: move_to
+de: benachbart
+
+en: mp
+de: SP
+
+en: playable
+de: spielbar
+
+en: prowess
+de: Kampfgeschick
+
+en: race
+de: Volk
+
+en: rarity
+de: Rarität
+
+en: region
+de: Region
+
+en: region_type
+de: Regionsart
+
+en: site_path
+de: Reiseroute
+
+en: site_type
+de: Ortstyp
+
+en: skills
+de: Berufe
+
+en: sp
+de: Entwicklungspunkte
+
+en: special
+de: spezielles
+
+en: specific
+de: spezifisch
+
+en: strikes
+de: Hiebe
+
+en: subclass
+de: Klasse
+
+en: type
+de: Typ
+
+en: unique
+de: Einzigartig
+
+en: haven%d
+de: Zuflucht%d
+
+#
+# Values for adjacent
+#
+
+en: Any site in Udûn (%d)
+de: Alle Orte in Udûn (%d)
+
+en: Barad-dûr (%d)
+de: Barad-dûr (%d)
+
+en: Blue Mountain Dwarf-hold (%d)
+de: Zwergenfeste im Blauen Gebirge (%d)
+
+en: Carn Dûm (%d)
+de: Carn Dûm (%d)
+
+en: Dol Guldur (%d)
+de: Dol Guldur (%d)
+
+en: The Pûkel-deeps (%d)
+de: Die Pûkel-Tiefen (%d)
+
+en: The Under-gates (%d)
+de: Die Unterirdischen Tore (%d)
+
+en: Dunharrow (%d)
+de: Dunharg (%d)
+
+en: The Gem-deeps (%d)
+de: Die Gemmen-Tiefen (%d)
+
+en: Glittering Caves (%d)
+de: Glitzernden Grotten (%d)
+
+en: Moria (%d)
+de: Moria (%d)
+
+en: The Under-grottos (%d)
+de: Die Unterirdischen Grotten (%d)
+
+en: Mount Gram (%d)
+de: Gramberg (%d)
+
+en: The Iron-deeps (%d)
+de: Die Eisen-Tiefen (%d)
+
+en: Mount Gundabad (%d)
+de: Gundabad (%d)
+
+en: Any site in Ûdun (%d)
+de: Jeder Ort in Ûdun (%d)
+
+#
+# Values for auto_attack
+#
+
+en: Dragon - %d strike with %e prowess
+de: Drache - %d Hiebe mit Kampfgeschick %e
+
+en: Dragon - %d strikes with %e prowess
+de: Drache - %d Hiebe mit Kampfgeschick %e
+
+en: (%dst) Troll - %e strike with %f prowess; (%gnd) Wolves - %h strikes with %i prowess
+de: (%dst) Troll - %d Hiebe mit Kampfgeschick %e; (%gnd) Wölfe - %d Hiebe mit Kampfgeschick %e
+
+en: Animals - %d strikes with %e prowess (attacker chooses defending characters)
+de: Tiere - %d Hiebe mit Kampfgeschick %e (Angreifer wählt den Verteidiger)
+
+en: Dwarves - %d strikes with %e prowess
+de: Zwerge - %d Hiebe mit Kampfgeschick %e
+
+en: Men - %d strike with %e prowess
+de: Menschen - %d Hiebe mit Kampfgeschick %e
+
+en: Men - %d strikes with %e prowess
+de: Menschen - %d Hiebe mit Kampfgeschick %e
+
+en: Orcs - %d strike with %e prowess
+de: Orks - %d Hiebe mit Kampfgeschick %e
+
+en: Orcs - %d strikes with %e prowess
+de: Orks - %d Hiebe mit Kampfgeschick %e
+
+en: Orcs - %d strikes with %e prowess; Trolls - %f strikes with %g prowess
+de: Orks - %d Hiebe mit Kampfgeschick %e; Trolle - %d Hiebe mit Kampfgeschick %e
+
+en: Orcs - %d strikes with %e prowess, Trolls - %f strikes with %g prowess
+de: Orks - %d Hiebe mit Kampfgeschick %e; Trolle - %d Hiebe mit Kampfgeschick %e
+
+en: Orcs %d strikes with %e prowess
+de: Orks - %d Hiebe mit Kampfgeschick %e
+
+en: Pûkel-creature - %d strike with %e prowess
+de: Pûkel-Kreatur - %d Hiebe mit Kampfgeschick %e
+
+en: Pûkel-creatures - %d strikes with %e prowess
+de: Pûkel-Kreaturen - %d Hiebe mit Kampfgeschick %e
+
+en: Pûkel-man - %d strike with %e prowess
+de: Pûkelmann - %d Hiebe mit Kampfgeschick %e
+
+en: Pûkel-men - %d strikes with %e prowess
+de: Pûkelmänner - %d Hiebe mit Kampfgeschick %e
+
+en: Spiders - %d strikes with %e prowess
+de: Spinnen - %d Hiebe mit Kampfgeschick %e
+
+en: Troll - %d strike with %e prowess
+de: Troll - %d Hiebe mit Kampfgeschick %e
+
+en: Troll - %d strikes with %e prowess
+de: Trolle - %d Hiebe mit Kampfgeschick %e
+
+en: Undead - %d strike with %e prowess
+de: Untote - %d Hiebe mit Kampfgeschick %e
+
+en: Undead - %d strikes with %e prowess
+de: Untote - %d Hiebe mit Kampfgeschick %e
+
+en: Wolves - %d strikes with %e prowess
+de: Wölfe - %d Hiebe mit Kampfgeschick %e
+
+#
+# Values for class
+#
+
+en: Ally
+de: Verbündeter
+
+en: Animal Faction
+de: Heer der Tiere
+
+en: Creature
+de: Kreatur
+
+en: Creature/Permanent-event
+de: Kreatur/Permanentes Ereignis
+
+en: Creature/Short-event
+de: Kreatur/Kurzesfristiges Ereignis
+
+en: Diplomat Ally
+de: Diplomat, Verbündeter
+
+en: Dragon Faction
+de: Heer der Drachen
+
+en: Dwarf Faction
+de: Heer der Zwerge
+
+en: Dúnadan Faction
+de: Heer der Dúnadan
+
+en: Eagle Faction
+de: Heer der Adler
+
+en: Elf Faction
+de: Heer der Elben
+
+en: Ent Faction
+de: Heer der Ents
+
+en: Gold Ring Item
+de: Goldener Ring
+
+en: Greater Item
+de: Legendärer Gegenstand
+
+en: Hobbit Faction
+de: Heer der Hobbits
+
+en: Long-event
+de: Langfristiges Ereignis
+
+en: Major Item
+de: Bedeutender Gegenstand
+
+en: Man Faction
+de: Heer der Menschen
+
+en: Minor Item
+de: Geringerer Gegenstand
+
+en: Orc Faction
+de: Heer der Orks
+
+en: Permanent-event
+de: Permanentes Ereignis
+
+en: Permanent-event/Short-event
+de: Permanentes Ereignis/Kurzefristiges Ereignis
+
+en: Sage Ally
+de: Weiser Verbündeter
+
+en: Scout Ally
+de: Kundschafter Verbündeter
+
+en: Short-event
+de: Kurzfristiges Ereignis
+
+en: Special Faction
+de: Spezielles Heer
+
+en: Special Item
+de: Besonderer Gegenstand
+
+en: Troll Faction
+de: Heer der Trolle
+
+en: Warrior Ally
+de: Krieger Verbündeter
+
+en: Wolf Faction
+de: Heer der Wölfe
+
+en: Wose Faction
+de: Heer der Wása
+
+en: Scout/Diplomat Ally
+de: Kundschafter/Diplomat Verbündeter
+
+#
+# Values for haven1
+#
+
+en: Grey Havens - {f}{c}{c}{c}{c}{w}
+de: Die Grauen Anfurten - {f}{c}{c}{c}{c}{w}
+
+en: Lórien - {w}{b}{w}{w}
+de: Lórien - {w}{b}{w}{w}
+
+en: Rivendell - {w}{w}{b}{w}
+de: Bruchtal - {w}{w}{b}{w}
+
+en: Rivendell - {w}{w}{f}
+de: Bruchtal - {w}{w}{f}
+
+#
+# Values for haven2
+#
+
+en: Edhellond - {w}{b}{f}{f}{b}{w}
+de: Edhellond - {w}{b}{f}{f}{b}{w}
+
+en: Edhellond - {w}{c}{c}{c}{c}{f}
+de: Edhellond - {w}{c}{c}{c}{c}{f}
+
+en: Grey Havens - {f}{w}{w}
+de: Die Grauen Anfurten - {f}{w}{w}
+
+en: Lórien - {w}{b}{f}{f}{b}{w}
+de: Lórien - {w}{b}{f}{f}{b}{w}
+
+#
+# Values for home_site
+#
+
+en: Barad-dûr
+de: Barad-dûr
+
+en: Beorn's House
+de: Beorns Haus
+
+en: Blue Mountain Dwarf-hold
+de: Zwergenfest im Blauen Gebirge
+
+en: Cameth Brin
+de: Cameth Brin
+
+en: Dale
+de: Thal
+
+en: Dol Amroth
+de: Dol Amroth
+
+en: Drúadan Forest
+de: Drúadan Wald
+
+en: Dunnish Clan-hold
+de: Dunländische Clanfeste
+
+en: Easterling Camp
+de: Lager der Ostlinge
+
+en: Framsburg
+de: Framsburg
+
+en: Henneth Annûn
+de: Henneth Annûn
+
+en: Iron Hill Dwarf-hold
+de: Zwergenfeste in den Eisenbergen
+
+en: Isengard
+de: Isengart
+
+en: Lake-town
+de: Seestadt
+
+en: Lond Galen
+de: Lond Galen
+
+en: Lossadan Camp
+de: Lager der Lossadan
+
+en: Minas Tirith
+de: Minas Tirith
+
+en: Moria
+de: Moria
+
+en: None
+de: Keine
+
+en: Pelargir
+de: Pelargir
+
+en: Rhosgobel
+de: Rhosgobel
+
+en: Shrel-Kain
+de: Shrel-Kain
+
+en: Southron Oasis
+de: Oase der Südlinge
+
+en: Woodmen-town
+de: Stadt der Waldmenschen
+
+en: Wose Passage-hold
+de: Wegfeste der Wasa
+
+en: Mount Gundabad
+de: Gundabadberg
+
+en: Minas Morgul
+de: Minas Morgul
+
+en: Mt. Doom
+de: Schicksalsberg
+
+en: Dol Guldur
+de: Dol Guldur
+
+en: Any Dark-hold
+de: Jedem Dunklen Reich
+
+en: Any Free-hold
+de: Jedem Freichen Reich
+
+en: Any Haven
+de: Jeden Zufluchtsort
+
+en: Any Ruins and Lairs
+de: Jede(r) Ruine/Hort
+
+en: Any site in Gorgoroth
+de: Jeder Ort in Gorgoroth
+
+en: Any site in Imlad Morgul
+de: Jeder Ort in Imlad Morgul
+
+en: Any site in Khand
+de: Jeder Ort in Khand
+
+en: Any site in Nurn
+de: Jeder Ort in Nurn
+
+en: Any site in Udûn
+de: Jeder Ort in Udûn
+
+en: Any site in Udûn or Imlad Morgul
+de: Jeder Ort in Udûn und Imlad Morgul
+
+en: Bag End
+de: Beutelsend
+
+en: Bree
+de: Bree
+
+en: Cirith Ungol
+de: Cirith Ungol
+
+en: Edoras
+de: Edoras
+
+en: Sarn Goriwing
+de: Sarn Goriwing
+
+en: The Under-gates
+de: Die Unterirdischen Tore
+
+en: The White Towers
+de: Die Weißen Türme
+
+en: Thranduil's Halls
+de: Thranduils Hallen
+
+en: Urlurtsu Nurn
+de: Urlurtsu Nurn
+
+en: Vale of Erech
+de: Tal von Erech
+
+en: Variag Camp
+de: Lager der Variags
+
+en: Carn Dûm
+de: Carn Dûm
+
+en: Mount Gram
+de: Gramberg
+
+en: Stone-circle
+de: Steinkreis
+
+en: Dunharrow
+de: Dunharg
+
+en: Shelob's Lair
+de: Kankras Lauer
+
+#
+# Values for magic
+#
+
+en: Shadow-magic
+de: Schattenmagie
+
+en: Sorcery
+de: Zauber
+
+en: Spell
+de: Spruch
+
+#
+# Values for move_to
+#
+
+en: Andrast Coast
+de: Küste von Andrast
+
+en: Andrast
+de: Andrast
+
+en: Mouths of the Anduin
+de: Mündungen des Anduin
+
+en: Anfalas
+de: Anfalas
+
+en: Belfalas
+de: Belfalas
+
+en: Eriadoran Coast
+de: Küste von Eriador
+
+en: Old Pûkel-land
+de: Altes Pûkelland
+
+en: Cardolan
+de: Cardolan
+
+en: Elven Shores
+de: Elbenküste
+
+en: Enedhwaith
+de: Enedhwaith
+
+en: Lamedon
+de: Lamedon
+
+en: Old Pûkel Gap
+de: Alte Pûkel-Wildnis
+
+en: Gap of Isen
+de: Pforte von Rohan
+
+en: Anduin Vales
+de: Täler des Anduin
+
+en: Angmar
+de: Angmar
+
+en: Brown Lands
+de: die Braunen Lande
+
+en: Dagorlad
+de: Dagorlad
+
+en: Heart of Mirkwood
+de: Herz des Düsterwaldes
+
+en: Southern Rhovanion
+de: Südliches Rhovanion
+
+en: Western Mirkwood
+de: Westlicher Düsterwald
+
+en: Fangorn
+de: Fangorn
+
+en: Redhorn Gate
+de: Rothornpaß
+
+en: Rohan
+de: Rohan
+
+en: Southern Mirkwood
+de: Südlicher Düsterwald
+
+en: Northern Rhovanion
+de: Nördliches Rhovanion
+
+en: Grey Mountain Narrows
+de: Ausläufer des Grauen Gebirges
+
+en: Woodland Realm
+de: Waldreich
+
+en: Withered Heath
+de: Dürre Heide
+
+en: Rhudaur
+de: Rhudaur
+
+en: Lebennin
+de: Lebennin
+
+en: Arthedain
+de: Arthedain
+
+en: High Pass
+de: Der Hohe Pass
+
+en: Hollin
+de: Hulsten
+
+en: Númeriador
+de: Númeriador
+
+en: Forochel
+de: Forochel
+
+en: Lindon
+de: Lindon
+
+en: The Shire
+de: Das Auenland
+
+en: Anórien
+de: Anórien
+
+en: Harondor
+de: Harondor
+
+en: Imlad Morgul
+de: Imlad Morgul
+
+en: Dunland
+de: Dunland
+
+en: Gundabad
+de: Gundabad
+
+en: Horse Plains
+de: Pferdesteppe
+
+en: Ithilien
+de: Ithilien
+
+en: Dorwinion
+de: Dorwinion
+
+en: Nurn
+de: Nurn
+
+en: Iron Hills
+de: Eisengebirge
+
+en: Khand
+de: Khand
+
+en: Udûn
+de: Udûn
+
+en: Bay of Belfalas
+de: Bucht von Belfalas
+
+en: Gorgoroth
+de: Gorgoroth
+
+#
+# Values for playable
+#
+
+en: Information
+de: Information
+
+en: Information, Items (minor)
+de: Information, Gegenstände (geringere)
+
+en: Information, Items (minor, gold ring)
+de: Information, Gegenstände (geringere, Goldene Ringe)
+
+en: Information, Items (minor, major)
+de: Information, Gegenstände (geringere, bedeutende)
+
+en: Information, Items (minor, major, gold ring)
+de: Information, Gegenstände (geringere, bedeutende, Goldene Ringe)
+
+en: Information, Items (minor, major, greater)
+de: Information, Gegenstände (geringere, bedeutende, legendäre)
+
+en: Information, Items (minor, major, greater, gold ring)
+de: Information, Gegenstände (geringere, bedeutende, legendäre, Goldene Ringe)
+
+en: Items (gold ring)
+de: Gegenstände (Goldene Ringe)
+
+en: Items (minor)
+de: Gegenstände (geringere)
+
+en: Items (minor, gold ring)
+de: Gegenstände (geringere, Goldene Ringe)
+
+en: Items (minor, major)
+de: Gegenstände (geringere, bedeutende)
+
+en: Items (minor, major*) *-weapon, armor, shield, or helmet only
+de: Gegenstände (geringere, bedeutende*) * nur Waffen, Rüstungen, Schilde oder Helme
+
+en: Items (minor, major, gold ring)
+de: Gegenstände (geringere, bedeutende, Goldene Ringe)
+
+en: Items (minor, major, greater)
+de: Gegenstände (geringere, bedeutende, legendäre)
+
+en: Items (minor, major, greater*) *-Palantíri only
+de: Gegenstände (geringere, bedeutende, legendäre*) *nur Palantíri
+
+en: Items (minor, major, greater*) *-Scroll of Isildur only
+de: Gegenstände (geringere, bedeutende, legendäre*) *nur Isildurs Schriften???
+
+en: Items (minor, major, greater, gold ring)
+de: Gegenstände (geringere, bedeutende, legendäre, Goldene Ringe)
+
+en: Information, Items (minor, major, greater*, gold ring) *-hero item only
+de: Informationen, Gegenstände (geringere, bedeutende, legendäre*, Goldene Ringe) *nur Helden-Gegenstände
+
+#
+# Values for race
+#
+
+en: Balrog
+de: Balrog
+
+en: Dwarf
+de: Zwerg
+
+en: Dúnadan
+de: Dúnadan
+
+en: Elf
+de: Elb
+
+en: Fallen-wizard
+de: Gefallener_Zauberer
+
+en: Hobbit
+de: Hobbit
+
+en: Man
+de: Mensch
+
+en: Orc
+de: Ork
+
+en: Ringwraith
+de: Ringgeist
+
+en: Troll
+de: Troll
+
+en: Wizard
+de: Zauberer
+
+#
+# Values for skills
+#
+
+en: Scout
+de: Kundschafter
+
+en: Warrior
+de: Krieger
+
+en: Ranger
+de: Waldläufer
+
+en: Sage
+de: Weiser
+
+en: Diplomat
+de: Diplomat
+
+#
+# Values for special
+#
+
+en: Any Undead creature may be played at this site.
+de: Jeder Untote kann an diesem Ort gespielt werden.
+
+en: If the Wizard card Radagast is in play, the automatic-attacks are removed.
+de: Wenn Radagast im Spiel ist, wird die Automatische Attacke ignoriert.
+
+en: Items may be played at this site even if it is tapped.
+de: Gegenstände können an diesem Ort auch gespielt werden, wenn dieser getappt ist.
+
+en: Items may be played here even if the site is tapped.
+de: Gegenstände können an diesem Ort auch gespielt werden, wenn dieser getappt ist.
+
+en: This site never taps.
+de: Dieser Ort wird nie getappt.
+
+en: You may tap a sage and a scout during the site phase to untap this site.
+de: Wenn ein Weiser und Waldläufer in dieser Runde getappt werden, kann der Ort enttappt werden.
+
+#
+# Values for specific
+#
+
+en: Alatar
+de: Alatar
+
+en: Gandalf
+de: Gandalf
+
+en: Pallando
+de: Pallando
+
+en: Radagast
+de: Radagast
+
+en: Saruman
+de: Saruman
+
+#
+# Values for subclass
+#
+
+en: Animals
+de: Tiere
+
+en: Awakened Plant
+de: Erwachte Pflanzen
+
+en: Dragon
+de: Drachen
+
+en: Drake
+de: Drache
+
+en: Dwarves
+de: Zwerge
+
+en: Dúnedain
+de: Dúnedain
+
+en: Elves
+de: Elben
+
+en: Giants
+de: Riesen
+
+en: Maia
+de: Maia
+
+en: Men
+de: Menschen
+
+en: Nazgûl
+de: Nazgûl
+
+en: Orcs
+de: Orks
+
+en: Pûkel-creature
+de: Pûkel-Kreatur
+
+en: Slayer
+de: Totschläger
+
+en: Spiders
+de: Spinnen
+
+en: Trolls
+de: Trolle
+
+en: Undead
+de: Untote
+
+en: Wolves
+de: Wölfe
+
+en: Bears
+de: Bären
+
+#
+# Values for type
+#
+
+en: Balrog Character
+de: Balrog Charakter
+
+en: Balrog Site
+de: Balrog Ort
+
+en: Fallen-wizard Character
+de: Fallen-wizard Charakter
+
+en: Fallen-wizard Site
+de: Fallen-wizard Ort
+
+en: Hazard
+de: Gefahrenkarte
+
+en: Hero Character
+de: Helden Charakter
+
+en: Hero Resource
+de: Helden Unterstützung
+
+en: Hero Site
+de: Helden Ort
+
+en: Minion Character
+de: Schergen Charakter
+
+en: Minion Resource
+de: Schergen Unterstützung
+
+en: Minion Site
+de: Schergen Ort
+
+en: Region
+de: Region

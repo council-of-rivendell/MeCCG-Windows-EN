@@ -1,0 +1,24 @@
+#!/bin/bash
+
+SPLIT='Values for (color)'
+GAME=mtg.xml
+DIR=Mtg
+
+if [ ! -x ./gccg ]; then
+  echo "You need bare bone script engine compiled from source 'make gccg'."
+  exit
+fi
+
+./gccg --load $GAME misc/hunt_dictionary.gccg
+
+echo Purifying...
+perl/babel.pl --write --purify --titlenot 'Values for rarity' dictionary.template
+
+echo Splitting...
+perl/babel.pl --write --titlenot 'Command \/' dictionary.template
+perl/babel.pl --out dictionary.splittable --title "$SPLIT" --split --numbers dictionary.template
+perl/babel.pl --write --titlenot "$SPLIT" --numbers dictionary.template
+
+echo Merging stuff..
+perl/babel.pl --write --clean --append dictionary.splittable --append dictionary.template --unify --reduce lib/dictionary.client lib/$DIR/dictionary.client
+rm -f dictionary.template dictionary.splittable

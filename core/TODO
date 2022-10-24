@@ -1,0 +1,106 @@
+GENERIC
+-------
+
+v0.9.7
+
+[X] gccg_package b does not include <include files=" "/> items. check find expression on gccg_package L:99 (wrong find path, it works with "..". btw -follow is deprecated)
+[X] BUG: dived by zero error crashes
+[ ] BUG: In multiplayer games player standing on right side of table may have items auto-placed outside of right margin, even without a (("OffscreenEnabled","yes"),),
+[ ] Include monospace font (font is provided but not included )
+[X] Added mofo's small repo to installed.xml
+[X] fixed function that places avatars on tables (now tables image height can be changed)
+[ ] Check if gccg_package diff works 
+[X] Move ChangeLog to core.
+[X] Research on audio/visual notification when talked to while not in focus
+[ ] Find a way to normalize all sounds (try using replaygain tags).
+[ ] Some command to directly change 'username' file in windows.
+[ ] Player time counting.
+[X]   Time counting protocol for table to assign time running to a given player.
+[ ]   Hook timing commands to certain phases.
+[ ]   Time display and update for player.
+[X]   Time query command showing time spent by each player and percentages.
+[ ]   Saving/loading time and turn to/from save file.
+[ ] 'make installer' to update windows install package.
+[ ] /fetch command (see Mtg-specific command supplied).
+[ ] Limit amount of --bet in the table server.
+[ ] Cleanup old function documentation generator and move to new build/sites location.
+[ ]   Separate reference manual pages.
+[ ]   Check documentation generation and fix where needed.
+[ ]   Update Makefile.
+[ ] /text to add arbitrary text to card.
+[ ] Make some font size as base size and scale inline images according
+    to the current font size vs base size ratio.
+[X] Improve shuffle effect speed.
+[ ] Transparency color scale 0-100: SDL_ALPHA_TRANSPARENT (0)-SDL_ALPHA_OPAQUE (255)
+[X]   Box drawing.
+[ ]   Text rendering.
+[X]   set_textcolor(), set_fgcolor(), set_bgcolor().
+[ ]   Examine is it possible to change color-key to proper invisibility support for png.
+[ ] Finalize log playback mode for client.
+[ ] Sound for 1+1 (game specific).
+[ ] 'Removed from game' deck. Ctrl+Del from that will remove permanently.
+[ ]   Try deck based model, where the deck is off-screen by default.
+[ ]   Looking at your pile and using it.
+[ ]   Option: shared 'removed from game' deck.
+[ ]   See if Lotr dead pile can be integrated just by moving deck to visible area.
+[X] /set nosound yes.
+[ ] Find a way to leave attributes unsorted for ctrl+h output
+[ ] Implement live update of F6 screen for player.
+    Maybe also ability to comment.
+    Must not replicate messages on tournament mode table.
+[ ] Try to make cleanup and move all game specific scripts to the scripts/Game.
+[ ] Pick card.number in client through invisible objects.
+[ ] UTF8 support in XML and rendering.
+[ ] Entered-flag for /who listing. Update players for status changes.
+[ ] Add phone number (similar to email) setting. Maybe some other optional contact methods as well.
+[X] Check that lc() and uc() doesn't touch {SYM}. Verify with /select .. has.
+[X] Inform opponent about card number what he is moving when setting aside.
+[X] Fix AvatarRecalcTable() so it could handle avatar placement on table image of different height
+[ ] Check sets and card counts announced by server and give warning if not matching.
+[ ] Some function to check if system is not functional in client. Use
+    it on places like import, export, etc..
+[X] Support for XML-files in extra repositories.
+[ ] Support for deck files in extra repositories.
+
+v0.9.8
+[ ] Try 'scons' based building.
+[ ] Redesign generic deck statistics API.
+
+v1.0
+
+Linux
+-----
+
+[ ] Create new linux-i386-libs package.
+[ ] Update web page.
+
+OSX
+---
+
+[ ] Create new darwin-i386-libs package.
+[ ] Update web how to install binary version.
+
+Windows
+-------
+
+FUTURE IDEAS
+------------
+
+[X] Tab completion for commands too
+[ ] New distribution system: cleanup svn, move it to source forge (switch to p2p).
+[ ]   Make generic file resolver in C++ code able to find from normal place and svn-dir.
+[ ]   Use file resolver for every file.
+[ ]   Clean all (C) material completely moving it to other branches.
+[ ]   Create minimal game system for all games with one single card (but lobby works).
+[ ]   Plan revision system having core and two packages for each addon (code, graphics).
+[ ]   Establish build system building complete client for all games, 1/platform.
+[ ]   Distribute extras in p2p network with clearly versioned names.
+[ ]   Move main trunk to source forge.
+[ ] Use shift to show deck contents from import list.
+[ ] Meta lobby to connect in "generic" mode before entering games.
+[ ]   Communication between meta servers and meta lobby to announce players.
+[ ]   Connect to the available server and game.
+[ ] Customizable (i.e. with user-set line spacing) in-game grid to snap/stack items.
+[ ] Maybe make second chat active only when clicked (show some colored border when active).
+[ ] In game menu to set graphic options (i.e. --geometry and --full)
+[ ] In game Token creator (i.e. in mtg with Name, Textbox, Power, Toughness...)

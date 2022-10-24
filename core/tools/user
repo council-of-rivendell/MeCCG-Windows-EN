@@ -1,0 +1,22 @@
+#!/bin/sh
+
+case $USER@`hostname` in
+
+	wigy@*)
+		SFUID=tojuro
+		;;
+
+	*)
+		echo "User $USER not configured."
+		exit
+esac
+
+case $1 in
+
+	uid)
+		echo $SFUID
+	;;
+
+	*)
+		echo "usage: $0 [uid]"
+esac

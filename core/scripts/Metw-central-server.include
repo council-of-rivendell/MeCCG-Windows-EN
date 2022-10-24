@@ -1,0 +1,199 @@
+#
+# Variables:
+#
+# promo.booster - remaining First Born "promo" cards to give as prizes
+# distribution{set}{product} - rarity distribution of the product
+# fixed[number] - list of fixed sets
+
+if(!port)
+  port=29130;
+
+INITIAL_MONEY=50.0;
+GAME_BONUS=50.0;
+BET_BONUS_MULTIPLIER=1;
+LOSER_PERCENTAGE=0.20;
+SILENT_SEALED_TRADE=1;
+
+if(!binary_load("products"))
+{
+  products=(,);
+  products{"The Wizards booster"}=(65536,3.00,("TW","booster"),65536);
+  products{"The Wizards starter"}=(65536,9.50,("TW","starter"),65536);
+  products{"The Dragons booster"}=(65536,3.00,("TD","booster"),65536);
+  products{"Dark Minions booster"}=(65536,3.00,("DM","booster"),65536);
+  products{"The Lidless Eye booster"}=(65536,3.00,("LE","booster"),65536);
+  products{"The Lidless Eye starter"}=(65536,9.50,("LE","starter"),65536);
+  products{"Against the Shadow booster"}=(65536,3.00,("AS","booster"),65536);
+  products{"The White Hand booster"}=(65536,3.00,("WH","booster"),65536);
+  products{"The Balrog booster"}=(65536,2.75,("BA","booster"),65536);
+  binary_save("products");
+}
+
+fixed=array(12);
+
+fixed[0]=FixedSet("TW",("The Wind Throne", "Rivendell", "Rivendell", "Grey Havens", "Lórien", "Edhellond", "Gates of Morning", "Doors of Night"));
+
+fixed[1]=FixedSet("TW",("Pallando", "Saruman", "Annalena", "Aragorn II", "Boromir II", "Elladan", "Kíli", "Men of Anórien", "Rangers of the North", "Bandit Lair", "Bree", "Isengard", "The Lonely Mountain", "Minas Tirith", "Mount Gram", "Weathertop")) + fixed[0];
+
+fixed[2]=FixedSet("TW",("Alatar", "Radagast", "Adrazar", "Celeborn", "Elrohir", "Robin Smallburrow", "Théoden", "Riders of Rohan", "Tower Guard of Minas Tirith", "Bag End", "Bandit Lair", "Edoras", "Minas Tirith", "Moria", "Mount Gram", "Rhosgobel")) + fixed[0];
+
+fixed[3]=FixedSet("TW",("Gandalf", "Radagast", "Bard Bowman", "Faramir", "Glorfindel II", "Kíli", "Peath", "Dunlendings", "Rangers of Ithilien", "Dunnish Clan-hold", "Goblin-gate", "Henneth Annûn", "Moria", "Rhosgobel", "Ruined Signal Tower", "Weathertop")) + fixed[0];
+
+fixed[4]=FixedSet("TW",("Alatar", "Saruman", "Annalena", "Bard Bowman", "Beorn", "Beregond", "Gimli", "Beornings", "Iron Hill Dwarves", "Beorn's House", "Goblin-gate", "Iron Hill Dwarf-hold", "Isengard", "Moria", "Ruined Signal Tower", "Weathertop")) + fixed[0];
+
+fixed[5]=FixedSet("TW",("Gandalf", "Pallando", "Boromir II", "Erkenbrand", "Gildor Inglorion", "Robin Smallburrow", "Thranduil", "Ents of Fangorn", "Wood-elves", "Bag End", "Bandit Lair", "Barrow-downs", "The Lonely Mountain", "Thranduil's Halls", "Weathertop", "Wellinghall")) + fixed[0];
+
+fixed[6]=FixedSet("LE",("Orc Tracker","Orc Veteran","The Least of Gold Rings","Minas Morgul","Dol Guldur","Carn Dûm","Geann a-Lisch","Barad-dûr","Ettenmoors","Sudden Call"));
+
+fixed[7]=FixedSet("LE",("Dwar the Ringwraith","The Witch-king","Orc Captain","Odoacer","Grishnákh","Woodmen","Goblins of Goblin-gate","Magic Ring of Guile","Woodmen-town","Goblin-gate","Thranduil's Halls","Dale","Caves of Ûlund","Barrow-downs"))+fixed[6];
+
+fixed[8]=FixedSet("LE",("Hoarmûrath the Ringwraith","The Witch-king","Gorbag","Nevido Smôd","Muzgash","Easterlings","Orcs of Gundabad","Magic Ring of Enigma","Easterling Camp","Mount Gundabad","Minas Tirith","Vale of Erech","The Lonely Mountain","The Wind Throne"))+fixed[6];
+
+fixed[9]=FixedSet("LE",("Khamûl the Ringwraith","Akhôrahil the Ringwraith","Orc Chieftain","Asternak","Jerrek","Variags of Khand","Grey Mountain Goblins","Magic Ring of Savagery","Variag Camp","Gondmaeglom","Minas Tirith","Vale of Erech","The Lonely Mountain","Haudh-in-Gwanûr"))+fixed[6];
+
+fixed[10]=FixedSet("LE",("Ren the Ringwraith","Adûnaphel the Ringwraith","Shagrat","Layos","Luitprand","Men of Dorwinion","Orcs of Mirkwood","Magic Ring of Fury","Shrel-Kain","Sarn Goriwing","Minas Tirith","Vale of Erech","Moria","Buhr Widu"))+fixed[6];
+
+fixed[11]=FixedSet("LE",("Ûvatha the Ringwraith","Indûr the Ringwraith","Troll-chief","Pon Opar","Ostisen","Southrons","Orcs of Moria","Magic Ring of Lies","Southron Oasis","Moria","Thranduil's Halls","Dale","Caves of Ûlund","Zarak Dûm"))+fixed[6];
+
+def GeneratePromo
+{
+   if(length(promo.booster) <= 0)
+   {
+      promo.booster=seq(set.data{"PR"}[1],set.data{"PR"}[2]);
+      promo.booster=promo.booster+seq(set.data{"PRde"}[1],set.data{"PRde"}[2]);
+      # promo.booster=promo.booster+flatten(Produce("FB","booster",1));
+      # promo.booster=promo.booster+flatten(Produce("DF","booster",1));
+      promo.booster=shuffle(promo.booster);
+   }
+
+   return(first(promo.booster));
+   promo.booster=tail(promo.booster);
+}
+
+# EndGameHook(player name who declared,result,result options,player numbers,player names,bet) - This
+#   hook is called at the beginning of the game result
+#   prosessing. Note: this hook is not called for undecided results.
+#
+def EndGameHook
+{
+  if(length(ARG[3])>1)
+  {
+    push(c);
+    for(p)(ARG[4])
+    {
+      if(users{p}[4][1][0]==0)
+      {
+        push(r);
+
+        c=GeneratePromo();
+
+        AddCard(p,c);
+        SendAll("Message","{blue}"+p+" receives{gold} #"+c+"# {blue}as a reward for the game.");
+        if(Con(p)>-1)
+          Send(Con(p),("SetCardbook",((c,users{p}[2]{c}),)));
+
+        r=pop();
+      }
+    }
+    c=pop();
+  }
+}
+
+# Sitenumbers for sealed.
+
+site_numbers=(464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,532,756,757,758,759,760,761,762,763,764,794,795,796,797,798,799,800,801,802,803,804,805,806,1293,1294,1295,1296,1297,1298,1299,1300,1301,1302,1303,1304,1305,1306,1307,1308,1309,1310,1311,1312,1313,1314,1315,1316,1317,1318,1319,1320,1321,1322,1323,1324,1325,1326,1327,1328,1329,1330,1331,1332,1333,1334,1335,1336,1337,1338,1339,1340,1341,1342,1343,1344,1345,1346,1347,1348,1349,1350,1351,1352,1353,1354,1355,1356,1357,1358,1359,1360,1361,1498,1499,1500,1501,1502,1503,1504,1505,1506,1507,1508,1509,1510,1511,1512,1513,1514,1515,1516,1517,1518,1519,1520,1521,1522,1523,1524,1525,1526,1527,1528,1529,1530,1531,1586,1587,1588,1589,1736,1737,1738,1739,1740,1741,1742,1743,1744,1745,1746,1747,1748,1749,1750,1751,1752,1753,1754,1755,1756,1757,);
+
+# GiveCardSealedAllowed(card)
+#
+# Verify that we are not givin a site.
+def GiveCardSealedAllowed
+{
+  if(find(ARG,site_numbers)==NULL)
+    return(1);
+  else
+    return(0);
+}
+
+# SealedStartHook(sealed player name,mode name,money,options) - This hook is called after
+#   initialization of sealed mode is complete. Current user is a
+#   player entering in the sealed mode. Note: This hook can be called more often than end hook.
+#
+def SealedStartHook
+{
+  check_card(ARG[0],first(site_numbers));
+  if(users{ARG[0]}[2]{first(site_numbers)}[0]==0)
+  {
+
+    Reply("Adding sites...");
+    for(c)(site_numbers)
+      AddCards(ARG[0],c,1);
+    Refresh(site_numbers);
+  }
+}
+
+#
+# SealedStartCount() - Return number of cards that are automatically given to new sealed users.
+#
+def SealedStartCount
+{
+  return(length(site_numbers));
+}
+
+# SealedEndHook() - This hook is called before ending sealed
+#   mode. Current user is sealed mode player.
+#
+def SealedEndHook
+{
+  check_card(User(),first(site_numbers));
+  if(users{User()}[2]{first(site_numbers)}[0] > 0)
+  {
+    Reply("Removing extra sites...");
+    for(c)(site_numbers)
+      DelCards(User(),c,1);
+    Refresh(site_numbers);
+  }
+}
+
+#
+# InitDistributions() - Initialize product distribution data.
+#
+def InitDistributions
+{
+  distribution=(,);
+  distribution{"TW"}=(,);
+  distribution{"TW"}{"booster"}=((6,"CB"),(3,"U"),(1,"R"),(5,"CA"));
+  distribution{"TW"}{"starter"}=((40,"CA"),(3,"R"),(9,"U"));
+  distribution{"TD"}=(,);
+  distribution{"TD"}{"booster"}=((11,"C"),(1,"R"),(3,"U"));
+  distribution{"DM"}=(,);
+  distribution{"DM"}{"booster"}=((10,"C"),(1,"R"),(4,"U"));
+  distribution{"LE"}=(,);
+  distribution{"LE"}{"booster"}=((10,"CB"),(1,"R"),(4,"U"));
+  distribution{"LE"}{"starter"}=((37,"CS"),(3,"R"),(12,"U"));
+  distribution{"AS"}=(,);
+  distribution{"AS"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+  distribution{"WH"}=(,);
+  distribution{"WH"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+  distribution{"BA"}=(,);
+  distribution{"BA"}{"booster"}=((6,"C"),);
+#  distribution{"FB"}=(,);
+#  distribution{"FB"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+#  distribution{"DF"}=(,);
+#  distribution{"DF"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+}
+
+#
+# ProduceTW_Starter() - Produce The Wizards starter.
+#
+def ProduceTW_Starter
+{
+  return(fixed[random(1,2,3,4,5)]+RandomCardSet("TW",distribution{"TW"}{"starter"}));
+}
+
+#
+# ProduceLE_Starter() - Produce The Lidless Eye starter.
+#
+def ProduceLE_Starter
+{
+  return(fixed[random(7,8,9,10,11)]+RandomCardSet("LE",distribution{"LE"}{"starter"}));
+}

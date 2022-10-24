@@ -1,0 +1,61 @@
+#!/bin/sh
+
+set -e
+
+if [ "$*" = "" ] ; then
+	echo "$0 [--version] <game>"
+	exit
+fi
+
+if [ "$1" = "--version" ]; then
+	shift
+	show_version=1
+fi
+
+name=`perl/game_info.pl $1 name`
+
+if [ "$name" = "" ]; then
+	echo "Game $1 does not exists"
+	exit
+fi
+
+dir=`perl/game_info.pl $1 game-dir`
+
+ver=`grep TORRENT_VERSION scripts/$dir-common.include | sed -e 's/TORRENT_VERSION=\([0-9]\+\);/\1/'`
+
+if [ "$ver" = "" ]; then
+	echo "Game $1 does not have TORRENT_VERSION set in scripts/$dir-common.include"
+	exit
+fi
+
+if [ "$show_version" = 1 ]; then
+	echo $ver
+	exit
+fi
+
+file=Gccg-$name-$ver
+mkdir -p ../build/torrents
+echo Building torrent version $ver of $name as $file.zip
+
+rm -rf build
+mkdir -p build/$file
+cd build/$file
+
+echo Entering ./build
+for g in core client fonts fonts-windows server linux-i386 windows32 $1; do
+	for f in ../../../build/modules/gccg-$g-*.tgz; do
+		echo Unpacking $f
+		tar xzf $f
+	done
+done
+
+cd ..
+echo Building $file.zip
+zip -r -9 $file.zip $file > /dev/null
+
+cd ..
+dst=../build/torrents/$file.zip
+echo Moving to $dst
+mv build/$file.zip $dst
+
+rm -rf build

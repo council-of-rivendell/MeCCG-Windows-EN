@@ -1,0 +1,129 @@
+#
+#  Middle-earth server
+#  -------------------
+#
+#  Variables:
+#
+#  score_adjust{object number} - modifications to the card score
+#
+#  Functions:
+#
+# SetUpPlayer(p) - create necessary strucrures for player 'p'
+#
+
+screen.width=1024;
+screen.height=768;
+port=29500;
+meta.port=29130;
+
+#
+# HOOKS
+# =====
+
+#
+# InitServerHook(nmb.of players) - Called during server initialization.
+#
+def InitServerHook
+{
+  GAME_PILES{'discard pile'}=("reveal_1","protected");
+  GAME_PILES{'pool'}=("protected",);
+  GAME_PILES{'sites'}=("protected","self_known");
+  GAME_PILES{'sideboard'}=(,);
+  GAME_PILES{'sideboard vs. fw'}=(,);
+  score_adjust=(,);
+}
+
+#
+# SpecialHook(command,object number,adjust) - Adjust score.
+#
+def SpecialHook
+{
+  if(!has_entry(ARG[1],score_adjust))
+    score_adjust{ARG[1]}=0;
+  score_adjust{ARG[1]}=score_adjust{ARG[1]}+ARG[2];
+}
+
+#
+# SendFullGameStatusHook(player) - Called when full game status is sent to the player/watcher.
+#
+def SendFullGameStatusHook
+{
+  for(a)(score_adjust)
+  {
+    if(a[1] && has_entry(a[0],table))
+      Send(ARG,("Special",("AdjustScore",a[0],a[1])));
+  }
+}
+
+#
+# SavegameHook() - Return game specific stuff to save.
+#
+def SavegameHook
+{
+  push(s);
+  s=(,);
+  for(o)(score_adjust)
+  {
+    if(has_entry(o[0],table) && o[1]!=0)
+      s=s+(o,);
+  }
+  score_adjust=s;
+  s=pop();
+  return(score_adjust);
+}
+
+#
+# LoadgameHook(special) - Called after the game is restored but before
+#   objects are sent to players. Argument 
+#   is the same as returned by SavegameHook().
+#
+def LoadgameHook
+{
+  score_adjust=ARG;
+}
+
+#
+# GAME SPECIFIC FUNCTIONS
+# =======================
+
+#
+# SetUpPlayer(p) - Create necessary strucrures for player 'p'.
+#
+def SetUpPlayer
+{
+  if(players_wanted>2)
+  {
+    CreateDeck(ARG,"sideboard vs. fw",-2000,-90);
+    CreateDeck(ARG,"sideboard",40,50);
+    CreateDeck(ARG,"sites",40,160);
+    CreateDeck(ARG,"deck",40,270);
+    CreateDeck(ARG,"discard pile",140,270);
+    CreateDeck(ARG,"pool",140,50);
+  }
+  else
+  {
+    CreateDeck(ARG,"sideboard vs. fw",-2000,-90);
+    CreateDeck(ARG,"sideboard",40,-90);
+    CreateDeck(ARG,"sites",40,50);
+    CreateDeck(ARG,"deck",40,160);
+    CreateDeck(ARG,"discard pile",40,270);
+    CreateDeck(ARG,"pool",140,50);
+  }
+}
+
+#
+# InitialScore(p) - Return a structure representing initial score for a player 'p'.
+#
+def InitialScore
+{
+  push(s);
+  s=(,);
+  s{"C"}=0;
+  s{"I"}=0;
+  s{"F"}=0;
+  s{"A"}=0;
+  s{"K"}=0;
+  s{"M"}=0;
+  return(s);
+  s=pop();
+}

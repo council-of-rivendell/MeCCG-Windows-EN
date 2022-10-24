@@ -1,0 +1,23 @@
+#!/usr/bin/perl -I perl
+#
+# A server launching script for .conf files.
+#
+
+use File::Basename;
+use server;
+
+my $game="";
+
+if($#ARGV!=0)
+{
+    print "usage: ./ServerLaunch <game.conf>\n";
+    print "       See conf-directory for server configuration examples.\n";
+    exit;
+}
+
+my $conf=$ARGV[0];
+
+$game=read_conf($conf);
+print "Running game: $game\n";
+system("./ServerKill $game");
+launch_servers();

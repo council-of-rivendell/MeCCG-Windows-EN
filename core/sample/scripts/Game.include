@@ -1,0 +1,95 @@
+#
+#
+# VARIABLES
+# =========
+#
+
+# Number of cards in hand.
+HANDSIZE=7;
+# Size of columns of the decklist in pixels.
+DECKBOX_SIZE=(20,220,110);
+# minor version number for filter alogrithm
+BOOK_FILTER_VERSION_MINOR=".0";
+# default book sorting criteria.
+BOOK_DEFAULT_SORT=("[age]","N[card_number]");
+
+if(!port)
+  port=28100;
+if(server.name=="NO.DEFAULT.SERVER.FOR.THIS.GAME")
+  server.name="gccg.servebeer.com";
+
+product.image=(,);
+
+# MENUS
+# =====
+
+FILTER_OPTIONS=(,
+);
+
+# FUNCTIONS
+# =========
+
+#
+# NewDeck() - Game specific creation of empty deck structure.
+#
+def NewDeck
+{
+  return((("deck",(,)),));
+}
+
+#
+# InitializeGame() - Game specific initialization of game variables.
+#
+def InitializeGame
+{
+}
+
+#
+# StartGame() - What to do when game begins.
+#
+def StartGame
+{
+  net_send(server,("UploadDeck",decks{deck.name}));
+  net_send(server,("ShuffleDeck",deck));
+}
+
+#
+# HOOKS
+# =====
+
+#
+# REDEFINED FUNCTIONS
+# ===================
+
+#
+# ScoreToText(score structure) - Convert a score structure to string.
+# 
+def ScoreToText
+{
+  return("");
+}
+
+# MOUSE
+# =====
+
+
+# SPECIAL KEYS
+# ============
+
+# PLAYING CARDS
+# =============
+
+
+#
+# LOCATION TABLES
+# ===============
+
+#
+# InitializeLocationTables() - Fill tables for location algorithm (See Mtg.include for details).
+#
+def InitializeLocationTables
+{
+  rules.category=(,);
+
+  rules.coordinate=(,);
+}

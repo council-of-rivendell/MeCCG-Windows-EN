@@ -1,0 +1,20 @@
+#!/usr/bin/perl -I ./perl
+
+use server;
+
+if($#ARGV!=0)
+{
+	print "usage: ServerKill <game>\n";
+	exit;
+}
+$game=$ARGV[0];
+
+print "Shutting down table script processes.\n";
+$ps=join(" ",scripts($game,'table'));
+kill_ps($ps);
+wait_ps($ps);
+
+print "Shutting down game server processes.\n";
+$ps=join(" ",game_servers($game));
+kill_ps($ps);
+wait_ps($ps);

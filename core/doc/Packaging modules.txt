@@ -1,0 +1,22 @@
+Gccg modules are installed via packages which in turn can be created 
+with the perl script gccg_package with existing content and directives. 
+
+xml/packages.xml contains the directives that are used to build the 
+packages, label them with a version and structure them. 
+
+The command "gccg_package b" builds all module packages specified in the 
+packages.xml and writes them into build/modules together with 
+available.xml that indicates to a downloading client what the repository 
+contains with which version. 
+
+The modules in build/modules are supposed to be provided in a repository 
+directory on a server for a client to fetch. The client needs the URL of 
+the repository added in /xml/installed.xml The command 
+"perl gccg_package source add <URL>" does that or it can also be added by 
+hand in the installed.xml directly. 
+
+Fetching modules with a client is performed with
+perl gccg_package install core client fonts [windows32] [module names]
+
+Note that the client checks versions and skips those that are outdated or
+already installed locally.

@@ -1,0 +1,3805 @@
+#
+#    Gccg - Generic collectible card game.
+#    Copyright (C) 2001-2013 Tommi Ronkainen
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program, in the file license.txt. If not, write
+# to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+##############################################################################
+#
+#                    Function definitions for central server
+#
+##############################################################################
+#
+#
+# Constants:
+#
+# ALLOW_DRAFTS - whether to allow draft tables to connect
+# ALLOWED_DECK_NAMES - list of acceptable IDs when registering a deck
+# BET_BONUS_MULTIPLIER - extra bet
+# DRAFT_DEFAULT_PRODUCTS - number of products per player used in a typical draft
+# DRAFT_MAX_PRODUCTS - maximum number of products allowed for a draft
+# DRAFT_MIN_PLAYERS - minimum players required to start a draft
+# DRAFT_MAX_PLAYERS - maximum players allowed in a draft
+# GAME - title of the game
+# GAMEDIR - name of the directory of the game
+# GAME_BONUS - base prize for each game
+# INITIAL_MONEY - starting budget for player
+# LOSER_PERCENTAGE - share of the total prize for loser
+# MAX_DECK_SIZE - maximum size allowed for a registered deck
+# REQUIRE_GAME_VERSION - version number required for client to play
+# REQUIRE_SERVER_VERSION - version number required for servers
+# REQUIRE_VERSION - version number required for client to connect
+# RTFM - help text
+# SET_BONUS_MULTIPLIER - how much each card earns when registering
+# PLAYSET_BONUS_MULTIPLIER - how much each distinct earns when registering a playset
+# PLAYSET_COUNT - number of each card required for a full playset
+# SILENT_SEALED_TRADE - if set, allow giving cards secretly in table in sealed mode
+#
+# Variables:
+#
+# cards{set}{rarity} - weighted list of card numbers of the given set and rarity
+# command.acl{command} - list of users allowed to use command
+#   0 number of parameters required
+#   1 list of users ("player" is any unprivileged user)
+# con - connection which caused event
+# draft.tables{connection} - list of tables for drafting
+#   0 number of players required
+#   1 list of products used
+#   2 amount of money required to participate
+#   3 table status (0=free slot, 1=parameters have been set, 2=draft is running, 3=successfully completed)
+#   4 time when table was claimed (if status has been 1 for more than an hour, table may be reclaimed as free slot)
+#   5 player who claimed this table
+#   6 list of players
+#     0 player name
+#     1 list of drafted cards
+#   7 number of rounds of product that have been opened
+#   8 list of cards in current round of opened product
+# error.echo - if not NULL, send copies of errors to this connection number
+# faq - collection of latest faq entries as a list of strings
+# function{name} - function callback table containing valid commands
+# game.data - structure holding generic game information (see. game_data())
+# players{connection} - list of connected players 
+#   0 user name
+#   1 host
+#   2 current table or -1
+#   3 is playing?
+# port - server port
+# prices{card number}{seller name} - price for each card
+# products{product name} - list of products (initialized by game specific code)
+#   0 amount available
+#   1 price
+#   2 order code
+#   3 last print run size
+# rarities - list of rarities
+# set.data{set abbrev} - set information for each card set (see. set_data())
+# tables{connection} - list of game tables
+#   0 server name
+#   1 port
+#   2 (list of sitters)
+#   3 is game going?
+#   4 bet
+#   5 players wanted
+#   6 (list of current players)
+#   7 (list of current player names)
+#   8 cookie
+#   9 list of rules
+#   10 description
+#   11 (list of players that started the game)
+#   12 (list of players names that started the game)
+#   13 flags
+#      &1: tournament mode
+#      &2: draft
+# users{name} - list of registered players
+#   0 password
+#   1 money
+#   2 collection{card}
+#     0 number of cards owned
+#     1 number of cards for sale/or want (if <0)
+#     2 price
+#   3 player info table
+#     0 user variables user{name}[3][0]{variable}=value
+#        realname - players name
+#        email - players email address
+#        plan - whois message
+#        version - client version (set during registration)
+#        system - client system (set during registration)
+#        serial - serial number (set during registration)
+#        trade_limit - number of copies of each card, beyond which extras will show in other players' "have" requests even if they're not for sale
+#     1 money won
+#     2 list of registered card sets
+#     3 game results total users{name}[3][3]{nmb.players}{result type}=count
+#     4 (last login time,last event time,connection from)
+#     5 player administrative info
+#     6 list of registered playsets
+#     7 money in escrow for drafting
+#     8-9 reserved
+#   4 backupdata
+#     0 - registered tournament decks 
+#           users{name}[4][0]{id}=deck content as a list of pairs (numb.of cards,card number)
+#           users{name}[4][0]{id-original}=deck content in client-side format
+#           --if id = "download", then deck content is available for download by other players
+#     1 - last proxy check result (nmb.of proxies,registered flag,orginal form flag)
+#     2 - registration date for tournament decks 
+#           users{name}[4][0]{id}=date and time of registration
+#     3-9 reserved
+#   5 product tickets{product code} - number of the free product tickets
+#   6-9 reserved
+#
+# Functions:
+#
+# AddCard(player name,card number) - Add a card to player's collection.
+# AddCards(player name,card number,count) - Add cards to player's collection.
+# AvailableForSale(user name,card number) - return 1 if  player can sell one more card (i.e. not registered)
+# AvailableForTrade(user name,card number) - return 1 if player can give the card away (i.e. not registered)
+# Buy(amount,product name) - Client buys product.
+# BuyCard(card number) - Client buys a card.
+# CardsOfSetWithRarity(card numbers,rarity) - Return weighted set of cards with the given rarity
+# CheckSealedCharacter(mode name) - Check existence of sealed character and create if necessary.
+# Command(string) - Handle special commands.
+# Con(user name) - return connection number of the player or -1 if not connected
+# ConnectAddress(connection) - Get the server address to connect.
+# DeckCheck(username,list) - Check list of (nmb. of cards,card number) if user has them.
+# DelCard(player name,card number) - Delete a card from player's collection.
+# DelCards(player name,card number,count) - Delete cards from player's collection.
+# DisconnectPlayer() - called when player 'con' disconnects
+# DisconnectServer() - called when game server disconnects
+# EndGame(player name who declared,result,options) - Game ended by game server.
+# EnsurePriceUpdate(old,new) - Check if new (seller list,price) pair differs from old and send update if they do.
+# FixedSet(set,list of card names) - return fixed set of card numbers.
+# Give("username amount") - Give money
+# GiveCard(user name,card number) - Give card
+# GiveMoney(user name,amount) - Give or remove money
+# Initialize() - Initialize all tables.
+# InitTables(set abbrev) - initialize card tables for set
+# JoinTable(table number) - Player joins table
+# LeaveTable() - leave the table where player is sitting if any
+# Log() - write arguments to log
+# Mode([name]) - current special mode ("sealed",etc.) of the current or specified player or "" if not any
+# Null() - null command for tcp/ip keepalive
+# PrizeForDraw(nmb. of players, bet) - Calcluate prize for draw.
+# PrizeForWin(nmb. of players, bet) - Calcluate prize for winner.
+# Produce(type,set,quantity) - return n "boosters" or "starters" of set
+# RandomCardSet(set abbrev,distribution) - return random sample of cards with given distribution
+# RefreshChatRoom() - called when client asks for chat room update after the game
+# RegisterDeck(registration id,deck structure) - Store deck info for tournament purposes.
+# RegisterGameResult(nmb. of players,player names,player name who declared,result type) - update player stats
+# RegisterPlayer(user,version,number of known cards,game name,password) - Store player info.
+# RegisterServer(port number,players,bet,cookie,list of rules,description,version,is_tournament) - Add server to server cluster.
+# Reply(m) - Send message 'm' to current player.
+# Say(s) - Player says 's'
+# Sealed(mode name,command,arg,option dictionary) - Handle sealed commands:
+# SealedOff(mode name,NULL,options) - Return from sealed session.
+# SealedOn(mode name,NULL,options) - Switch to sealed session.
+# SealedStart(mode name,money,options) - Start sealed deck session.
+# Send(connection, command) - send a command to client if still online
+# SendAll(command) - Send command to all.
+# SendAllNP(command) - Send command to all players who are not playing.
+# SendOther(p,command) - Send command to all (non-playing) players except player 'p'.
+# Set(variable,value) - set user variable for current user
+# SetForsale(card number,amount) - set number of cards for sale.
+# SetOfCard(card number) - return set abbreviation of the card or NULL if none.
+# SetPrice(cards number,price) - set selling price for a card
+# StartGame(table number) - Initiate a game
+# ToggleJoinGame() - Player joins or leaves game in current table
+# TorrentVersion(version) - Compare client torrent version to the latest.
+# TransferMoney(player name, change) - Add or substract money from the player.
+# UpdateCard(card number) - Update current players card data for one card.
+# User() - username of the player causing an event
+# UserWithoutMode([user]) - username minus mode string of the current player or the player specified
+# WeStartedGame() - called when game server announces successful game start.
+
+#  VARIABLE DEFINITIONS
+#  ====================
+
+INITIAL_MONEY=0.0;
+GAME_BONUS=20.0;
+BET_BONUS_MULTIPLIER=1.0;
+LOSER_PERCENTAGE=0.20;
+DRAW_PERCENTAGE=1.00;
+
+ALLOWED_DECK_NAMES=("default","alternative","download");
+MAX_DECK_SIZE=300;
+
+SET_BONUS_MULTIPLIER=0.5;
+PLAYSET_COUNT=4;
+PLAYSET_BONUS_MULTIPLIER=SET_BONUS_MULTIPLIER*PLAYSET_COUNT;
+
+ALLOW_DRAFTS=1;
+DRAFT_MIN_PLAYERS=2;
+DRAFT_MAX_PLAYERS=4;
+DRAFT_DEFAULT_PRODUCTS=3;
+DRAFT_MAX_PRODUCTS=10;
+
+REQUIRE_VERSION="0.8.9";
+REQUIRE_GAME_VERSION="0.9.3";
+REQUIRE_SERVER_VERSION="0.8.70";
+TIME_ZONE="GMT";
+ANONYMOUS_IP="gccg.sourceforge.net";
+RTFM="http://gccg.sourceforge.net/pages/faq.php";
+
+SILENT_SEALED_TRADE=0;
+
+# time when /save was most recently issued
+lastsave=0;
+
+#
+# Note: help documentation must be added to client.functions.
+#
+command.acl=(,);
+command.acl{"/addproduct"}=(4,("God","Salesman"));
+command.acl{"/ban"}=(-1,("God","Guard"));
+command.acl{"/bans"}=(0,("God","Salesman","Guard","Judge","player"));
+command.acl{"/canceldraft"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/checkfactory"}=(0,("God",));
+command.acl{"/delproduct"}=(2,("God","Salesman"));
+command.acl{"/debug"}=(-1,("God",));
+command.acl{"/downloaddeck"}=(1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/have"}=(1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/info"}=(-1,("God","Judge"));
+command.acl{"/giveticket"}=(-1,("God","Salesman","Judge"));
+command.acl{"/kick"}=(1,("God","Guard"));
+command.acl{"/kicktable"}=(1,("God","Guard"));
+command.acl{"/faq"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/faqclear"}=(0,("God",));
+command.acl{"/grant"}=(2,("God","Salesman","Guard","Judge","player"));
+command.acl{"/payall"}=(1,("God",));
+command.acl{"/products"}=(0,("God","Salesman","Guard","Judge","player"));
+command.acl{"/reboot"}=(0,("God",));
+command.acl{"/register"}=(1,("player",));
+command.acl{"/registerplayset"}=(1,("player",));
+command.acl{"/reload"}=(0,("God",));
+command.acl{"/removeuser"}=(1,("God",));
+command.acl{"/reproduce"}=(0,("God","Salesman"));
+command.acl{"/restrict"}=(-1,("God","Guard"));
+command.acl{"/ro"}=(0,("player",));
+command.acl{"/ro2"}=(0,("player",));
+command.acl{"/rtfm"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/save"}=(0,("God","Salesman","Guard","Judge","player"));
+command.acl{"/startdraft"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/test"}=(-1,("God",));
+command.acl{"/torrent"}=(0,("God","Salesman","Guard","Judge","player"));
+command.acl{"/unban"}=(1,("God",));
+command.acl{"/unrestrict"}=(1,("God",));
+command.acl{"/users"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/w"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/want"}=(1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/whisper"}=(-1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/whois"}=(1,("God","Salesman","Guard","Judge","player"));
+command.acl{"/yell"}=(-1,("God","Salesman","Guard","Judge","player"));
+
+function=(,);
+function{"Action"}="Action";
+function{"Buy"}="Buy";
+function{"BuyCard"}="BuyCard";
+function{"Command"}="Command";
+function{"DeckCheck"}="DeckCheck";
+function{"DraftChoices"}="DraftChoices";
+function{"EndGame"}="EndGame";
+function{"Give"}="Give";
+function{"GiveCard"}="GiveCard";
+function{"GiveCards"}="GiveCards";
+function{"JoinTable"}="JoinTable";
+function{"LeaveTableToChat"}="LeaveTableToChat";
+function{"Null"}="Null";
+function{"Password"}="Password";
+function{"RefreshChatRoom"}="RefreshChatRoom";
+function{"RegisterDeck"}="RegisterDeck";
+function{"ReRegisterPlayer"}="ReRegisterPlayer";
+function{"Refresh"}="Refresh";
+function{"RegisterPlayer"}="RegisterPlayer";
+function{"RegisterServer"}="RegisterServer";
+function{"Roll"}="Roll";
+function{"Say"}="Say";
+function{"Sealed"}="Sealed";
+function{"Set"}="Set";
+function{"SetForsale"}="SetForsale";
+function{"SetPrice"}="SetPrice";
+function{"ToggleJoinGame"}="ToggleJoinGame";
+function{"TorrentVersion"}="TorrentVersion";
+function{"WeStartedGame"}="WeStartedGame";
+
+#  COMMUNICATIONS
+#  ==============
+
+#
+# SaveAll() - Save all server variables.
+#
+def SaveAll
+{
+  Log("Saving data");
+  binary_save("users");
+  binary_save("prices");
+  binary_save("products");
+  binary_save("ban");
+  binary_save("tableban");
+  binary_save("restrict");
+}
+
+# 
+# Log() - Write arguments to log.
+# 
+def Log
+{
+    if(left(ARG,8)=="{yellow}")
+      println(date()+" "+time()+"   "+substr(ARG,8));
+    else if(left(ARG,6)=="{gold}")
+      println(date()+" "+time()+"   "+substr(ARG,6));
+    else if(left(ARG,7)=="{green}")
+      println(date()+" "+time()+" "+substr(ARG,7));
+    else if(left(ARG,7)=="{brown}")
+      println(date()+" "+time()+" "+substr(ARG,7));
+    else if(left(ARG,6)=="{blue}")
+      println(date()+" "+time()+" "+substr(ARG,6));
+    else if(left(ARG,5)=="{red}")
+      println(date()+" "+time()+" "+substr(ARG,5));
+    else
+      println(date()+" "+time()+" "+ARG);
+}
+
+#
+# Send(connection, command) - Send a command to client if still online.
+#
+def Send
+{
+  if(net_server_isopen(ARG[0]))
+     net_server_send(ARG);
+}
+
+#
+# SendOther(p,command) - Send command to all (non-playing) players except player 'p'.
+#
+def SendOther
+{
+  push(b);
+  forall("b=#; if(ARG[0]!=b[0] && !b[1][3]) Send(b[0],ARG[1])",players);
+  b=pop();
+}
+
+#
+# SendAll(command) - Send command to all players who are not playing.
+#
+def SendAll
+{
+  forall("Send(#,ARG)",keys("players"));
+  if(ARG[0]=="Message")
+    Log(ARG[1]);
+}
+
+#
+# SendAllNP(command) - Send command to all players who are not playing.
+#
+def SendAllNP
+{
+  push(b);
+  forall("b=#; if(!b[1][3]) Send(b[0],ARG)",players);
+  if(ARG[0]=="Message")
+    Log(ARG[1]);
+  b=pop();
+}
+
+#
+# Reply(m) - Send message 'm' to current player.
+#
+def Reply
+{
+  Send(con,("Message",ARG));
+}
+
+#
+# DisconnectPlayer() - Called when player disconnects.
+#
+def DisconnectPlayer
+{
+  Log("Player "+con+" ("+User()+") disconnected");
+  if(players{con}[2] != -1)
+  {
+    if(count(con,tables{players{con}[2]}[6]))
+      ToggleJoinGame(1);
+  }
+  LeaveTable();
+  SendOther(con,("Message",User()+" leaves."));
+  SendAll("DelRoomPlayer",con);
+  del_entry(con,"players");
+}
+
+#
+# DisconnectServer() - Called when game server disconnects.
+#
+def DisconnectServer
+{
+  Log("Server "+con+" ("+tables{con}[0]+") disconnected");
+  forall('if(has_entry(#,players)) players{#}[2]=-1;',tables{con}[2]);
+  forall('if(has_entry(#,players)) players{#}[3]=0;',tables{con}[6]);
+  SendAllNP("DelRoomTable",con);
+  SendAllNP("Message","Table "+con+" is not available anymore.");
+  if(has_entry(con,draft.tables))
+  {
+    if(draft.tables{con}[3]==2)
+    {
+      for(temp)(keys(draft.tables{con}[6]))
+      {
+        TransferMoney(temp,users{temp}[3][7]);
+        users{temp}[3][7] = 0;
+      }
+    }
+    else if(draft.tables{con}[3]==3)
+      DispenseDraftCards(con);
+    del_entry(con,"draft.tables");
+  }
+  del_entry(con,"tables");
+}
+
+#
+# ReceiveData(e,d) - Called when network event (e,d) was received.
+#
+def ReceiveData
+{
+  if(options.debug)
+    Log("Received: "+tostr(ARG));
+  event=ARG[0];
+  errors=0;
+  set_error_trigger("error","network");
+  data=toval(ARG[1]);
+  set_error_trigger("","");
+
+  if(errors==0)
+  {
+    if(event=="open")
+    {
+      Log("Connected from "+net_client_ip(data)+", connection number is "+data+".");
+    }
+    elseif(event=="close")
+    {
+      con=data;
+      Log("Connection number "+data+" closed.");
+      if(has_entry(data,tables))
+        DisconnectServer(con);
+      elseif(has_entry(data,players))
+        DisconnectPlayer(con);
+    }
+    else
+    {
+      if(typeof(data)!="list")
+        Log("ERROR: invalid data "+tostr(data)+" from "+net_client_name(event)+".");
+      else if(!net_server_isopen(event))
+        Log("ERROR: Connection "+con+" already closed. Discarding "+tostr(data));
+      else if(!has_entry(event,tables) && !has_entry(event,players) && data[0]!="RegisterServer" && data[0]!="RegisterPlayer")
+        Log("ERROR: Not registered "+tostr(data));
+      else
+      {
+        set_error_trigger("error","command");
+        con=event;
+        command=data[0];
+        parameter=data[1];
+        if(function{command}==NULL)
+          Log("UNKNOWN ACTION REQUEST: "+command+"("+tostr(parameter)+") from "+net_client_name(con));
+        else
+        {
+          if(has_entry(con,players))
+          {
+            if(command != "Null")
+              users{User()}[3][4][1]=date()+" "+time();
+          }
+          call(function{command},parameter);
+        }
+        set_error_trigger("","");
+      }
+    }
+  }
+}
+
+#
+# IsServer() - Return 1 if current message is received from server.
+#
+def IsServer
+{
+  return(has_entry(con,tables));
+}
+
+#
+# PROTOCOL COMMANDS
+# =================
+
+#
+# Null() - Null command for TCP/IP keepalive.
+#
+def Null
+{
+  Send(con,("Null",NULL));
+}
+
+#
+# RegisterServer(port number,players,bet,cookie,list of rules,description,version,is_tournament) - Add server to server cluster.
+#
+def RegisterServer
+{
+  push(r);
+  push(d);
+  push(v);
+  push(t);
+  push(n);
+
+  if(length(ARG) >= 5)
+    r=ARG[4];
+  else
+    r=("N/A",);
+  if(length(ARG) >= 7)
+    v=ARG[6];
+  else
+    v="0.0";
+  if(length(ARG) >= 8)
+    t=ARG[7];
+  else
+    t=0;
+  if(t==NULL)
+    t=0;
+  if(length(ARG) >= 6)
+  {
+    d=ARG[5];
+    if(d=="Draft Table")
+    {
+      t=t+2;
+      ARG[1]=0;
+    }
+  }
+  else
+    d="No description";
+
+  if(VersionCompare(v,REQUIRE_SERVER_VERSION))
+  {
+    Log("ERROR: Server "+net_client_name(con)+" is too old v"+v+". Version v"+REQUIRE_SERVER_VERSION+" required.");
+    Send(con,("Log","Server version v"+v+" is too old. Version v"+REQUIRE_SERVER_VERSION+" required."));
+    net_server_close(con);
+  }
+  elseif(IsTableBanned(net_client_name(con),net_client_ip(con)))
+  {
+    Log("ERROR: Banned server "+net_client_name(con)+" connected.");
+    Send(con,("Log","Tables are not allowed from your IP."));
+    net_server_close(con);
+  }
+  elseif(toreal(format("%.2f",ARG[2])) < 0.0)
+  {
+    Log("ERROR: Server "+net_client_name(con)+" offered invalid bet "+tostr(ARG[2])+".");
+    Send(con,("Log","Invalid bet."));
+    net_server_close(con);
+  }
+  elseif(t&2 && !ALLOW_DRAFTS)
+  {
+    Log("ERROR: Server "+net_client_name(con)+" attempted to register as a draft table, but drafts are not allowed here.");
+    Send(con,("Log","This server does not accept draft tables."));
+    net_server_close(con);
+  }
+  else
+  {
+#   kill duplicate tables that may linger from same IP and port
+    for(n)(keys(tables))
+    {
+      if (tables{n}[0] == net_client_name(con) && tables{n}[1] == ARG[0])
+      {
+        push(con);
+        con = n;
+        DisconnectServer();
+        net_server_close(con);
+        con=pop();
+      }        
+    }
+    if(t&1)
+      Log("Tournament server "+net_client_name(con)+" registered as server "+con+".");
+    else
+      Log("Server "+net_client_name(con)+" registered as server "+con+".");
+    tables{con}=(net_client_name(con),ARG[0],(,),0,toreal(format("%.2f",ARG[2])),ARG[1],(,),(,),ARG[3],r,d,(,),(,),t);
+    SendAllNP("AddRoomTable",(con,tables{con}));
+    if(t&2)
+    {
+      SendAllNP("Message","Draft table "+con+" is now available at server "+net_client_name(con)+".");
+      draft.tables{con}=(0,(,),0,0,0,"",(,),0,(,));
+    }
+    else if(t)
+      SendAllNP("Message","Tournament table "+con+" is now available at server "+net_client_name(con)+".");
+    else
+      SendAllNP("Message","Table "+con+" is now available at server "+net_client_name(con)+".");
+  }
+
+  n=pop();
+  t=pop();
+  v=pop();
+  d=pop();
+  r=pop();
+}
+
+#
+# DeckCheck(username,card list,original deck) - Check a card list having
+#   entries of form (nmb. of cards,card number) if user has
+#   them. Return a quadruple (username, nmb.of proxies,registered
+#   flag,orginal form flag,date,variant name).
+#
+def DeckCheck
+{
+  push(r);
+  push(d);
+  push(v);
+
+  r=(ARG[0],user_has_cards(ARG[0],ARG[1]),0,0);
+
+  if(ARG[1]==users{ARG[0]}[4][0]{"alternative"})
+  {
+    r[2]=2;
+    v="alternative";
+  }
+  if(ARG[2]==users{ARG[0]}[4][0]{"alternative-original"})
+  {
+    r[3]=2;
+    v="alternative";
+  }
+
+  if(ARG[1]==users{ARG[0]}[4][0]{"default"})
+  {
+    r[2]=1;
+    v="default";
+  }
+  if(ARG[2]==users{ARG[0]}[4][0]{"default-original"})
+  {
+    r[3]=1;
+    v="default";
+  }
+
+  if(users{ARG[0]}[4][2]!="unused")
+    d=users{ARG[0]}[4][2]{v};
+  else
+    d="unknown date";
+
+  users{ARG[0]}[4][1]=tail(r);
+
+  r=r+(d,v);
+  net_server_send(con,("Proxies",r));
+
+  v=pop();
+  d=pop();
+  r=pop();
+}
+
+#
+# ReRegisterPlayer(new user,version,number of known cards,game name,password,system,serial) - Relogin.
+#
+def ReRegisterPlayer
+{
+  if(length(ARG) < 7)
+    Reply("{red}Invalid re-registration data. Maybe your client is not up-to-date?");
+  else if(ARG[0]==User())
+    Reply("{red}You are already that person.");
+  else
+  {
+    DisconnectPlayer();
+    return(RegisterPlayer(ARG));
+  }
+}
+
+#
+# CommandTorrent() - Send the latest torrent to the current client.
+#
+def CommandTorrent
+{
+  if(TORRENT_VERSION)
+  {
+    push(f);
+    push(t);
+    f="Gccg-"+GAMEDIR+"-"+tostr(TORRENT_VERSION)+".torrent";
+    t=read_file_raw("./save/"+f);
+    if(t!=NULL)
+    {
+      Reply("{magenta}Sending new torrent file "+f+"...");
+      Send(con,("Torrent",(TORRENT_VERSION,f,hexencode(t))));
+    }
+    else
+      Reply("{red}Couldn't find the latest torrent version from the server.");
+    t=pop();
+    f=pop();
+  }
+  else
+    Reply("{red}This game has no torrent version.");
+}
+
+#
+# TorrentVersion(version) - Compare client torrent version to the latest.
+#
+def TorrentVersion
+{
+  if(TORRENT_VERSION)
+  {
+    if(toint(ARG[0]) < TORRENT_VERSION)
+    {
+      Reply("{magenta}Your torrent version is "+tostr(toint(ARG[0])));
+      Reply("{sz24}{magenta}New bittorrent version "+tostr(TORRENT_VERSION)+" of the "+game.data{"game"}+" is available!");
+      Reply("{magenta}You can download it using command {yellow}/torrent");
+    }
+  }
+}
+
+#
+# Sealed(mode name,command,arg,option dictionary) - Handle sealed commands:
+#   ("start",<amount>)
+#   ("end",NULL)
+#   ("on",NULL)
+#   ("off",NULL).
+#
+def Sealed
+{
+  if(length(ARG)==4)
+  {
+    if(length(split(ARG[0],"")-split("_abcdefghijklmnopqrstuvwxyz","")))
+      Reply("{red}Invalid mode "+tostr(ARG[0])+".");
+    else if(count(ARG[1],("start","end","on","off"))==0)
+      Reply("{red}Invalid "+ARG[0]+" command "+tostr(ARG[1])+".");
+    else if(typeof(ARG[3])!="list")
+      Reply("{red}Invalid "+ARG[0]+" options.");
+    else
+      call("Sealed"+ucfirst(ARG[1]),(ARG[0],ARG[2],ARG[3]));
+  }
+}
+
+#
+# CheckSealedCharacter(mode name) - Check existence of sealed character and create if necessary.
+# Return number of cards owned by sealed character.
+#
+def CheckSealedCharacter
+{
+  push(u);
+  u=User()+"-"+ARG;
+  if(!is_user(u))
+  {
+    users{u}=NewUser();
+    users{u}[0]=users{User()}[0];
+    users{u}[1]=0.0;
+    users{u}[3][0]{"realname"}=users{User()}[3][0]{"realname"}+" ("+ARG+")";
+    users{u}[3][0]{"avatar"}=users{User()}[3][0]{"avatar"};
+    return(0);
+  }
+  else if(isfunction("SealedStartCount"))
+  {
+    u=(count_cards(u))[0];
+    if(!u)
+      return(0);
+    else
+      return(u-SealedStartCount());
+  }
+  else
+    return((count_cards(u))[0]);
+  u=pop();
+}
+
+#
+# SealedStart(mode name,money,options) - Start sealed deck session.
+#
+def SealedStart
+{
+  push(o);
+  push(m);
+  push(c);
+  m=toreal(ARG[1]);
+  o=ARG[2];
+  if(Mode()!="")
+    Reply("{red}Cannot start "+ARG[0]+" in "+Mode()+" mode.");
+  else if(m <= 0.0)
+    Reply("{red}Non-positive amount of money.");
+  else if(users{User()}[1] < m)
+    Reply("{red}You don't have enough money.");
+  else
+  {
+    TransferMoney(User(),-m);
+    owned = CheckSealedCharacter(ARG[0]);
+    c=".";
+    if(owned)
+      c=" and "+owned+" cards.";
+    SendAllNP("Message","{blue}"+User()+" enters to "+ARG[0]+" mode with $"+format("%.2f",m)+c);
+    
+    if(isfunction("SealedStartHook"))
+      SealedStartHook(User()+"-"+ARG[0],ARG[0],ARG[1],ARG[2]);
+    if(ReRegisterPlayer(User()+"-"+ARG[0],users{User()}[3][0]{"version"},12345,game.data{"game"},users{User()}[0],users{User()}[3][0]{"system"},users{User()}[3][0]{"serial"}))
+    {
+       TransferMoney(User(),m);
+       if(owned)
+       {
+         Reply("{red}{sz16}You still have "+owned+" cards from a previous "+ARG[0]+" session!");
+         Reply("{red}{sz16}If you want to start a new session, type {yellow}/"+ARG[0]+" end{red} first.");
+       }
+    }
+    else
+       Log("ERROR: Reregistration failed.");
+    
+  }
+  c=pop();
+  m=pop();
+  o=pop();
+}
+
+#
+# SealedOn(mode name,NULL,options) - Switch to sealed session.
+#
+def SealedOn
+{
+  if(Mode()!="")
+    Reply("{red}Cannot enter to "+ARG[0]+" mode in "+Mode()+" mode.");
+  else
+  {
+    CheckSealedCharacter(ARG[0]);
+    ReRegisterPlayer(User()+"-"+ARG[0],users{User()}[3][0]{"version"},12345,game.data{"game"},users{User()}[0],users{User()}[3][0]{"system"},users{User()}[3][0]{"serial"});
+  }
+}
+
+#
+# SealedOff(mode name,NULL,options) - Return from sealed session.
+#
+def SealedOff
+{
+  if(Mode()=="")
+    Reply("{red}You have already left that mode.");
+  else
+  {
+    ReRegisterPlayer(UserWithoutMode(),users{User()}[3][0]{"version"},12345,game.data{"game"},users{User()}[0],users{User()}[3][0]{"system"},users{User()}[3][0]{"serial"});
+  }
+}
+
+#
+# SealedEnd() - Transfer cards and money, then end sealed session.
+#
+def SealedEnd
+{
+  push(o);
+  o=ARG[2];
+  if(Mode()=="")
+    Reply("{red}You are not in special mode.");
+  else
+  {
+    push(s);
+    push(d);
+    push(t);
+    push(m);
+    s=User();
+    d=UserWithoutMode();
+    t=0;
+    if(isfunction("SealedEndHook"))
+      SealedEndHook();
+    SendAllNP("Message","{blue}Transferring all cards and money from "+s+" to "+d+".");
+    for(c)(users{s}[2])
+    {
+      t=t+c[1][0];
+      DelCards(s,c[0],c[1][0]);
+      AddCards(d,c[0],c[1][0]);
+    }
+    m=users{s}[1];
+    TransferMoney(d,m);
+    users{s}[1]=0.0;
+    ReRegisterPlayer(d,users{s}[3][0]{"version"},12345,game.data{"game"},users{s}[0],users{s}[3][0]{"system"},users{s}[3][0]{"serial"});
+    Reply("{blue}Received $"+format("%.2f",m)+" and "+t+" cards.");
+    m=pop();
+    t=pop();
+    d=pop();
+    s=pop();
+  }
+  o=pop();
+}
+
+#
+# RegisterPlayer(user,version,number of known cards,game name,password,system,serial) - Store player info.
+#
+def RegisterPlayer
+{
+  push(ok);
+
+  if(length(ARG) < 7)
+  {
+     Reply("{red}Invalid registration data. Maybe your client is not up-to-date?");
+     net_server_close(con);
+  }
+  else if(!ValidUsername(ARG[0]))
+  {
+     Reply("{red}Bad username '"+ARG[0]+"'.");
+     net_server_close(con);
+  }
+  else if(!ValidMode(Mode(ARG[0])))
+  {
+     Reply("{red}Bad mode '"+Mode(ARG[0])+"'.");
+     net_server_close(con);
+  }
+  else if(has_entry(con,players))
+     Reply("{red}You are already registered.");
+  else if(VersionCompare(ARG[1],REQUIRE_VERSION))
+  {
+     Reply("{red}Your client is too old. Version "+REQUIRE_VERSION+" required.");
+     Reply("{red}You should update before reconnecting: ./gccg_package u");
+     net_server_close(con);
+  }
+  else if(Mode(ARG[0])!="" && !is_user(UserWithoutMode(ARG[0])))
+  {
+    Reply("{red}You cannot register "+Mode(ARG[0])+" mode character without normal player.");
+    net_server_close(con);
+  }
+  else if(count(ARG[0],ban))
+  {
+    SendAll("Message","Banned user "+ARG[0]+" tried to connect.");
+    Reply("{red}{sz30}You are banned. Go away!");
+    net_server_close(con);
+  }
+  else if(!is_user(ARG[0]) && IsRestricted(net_client_name(con),net_client_ip(con)))
+  {
+    SendAll("Message","New player "+ARG[0]+" tried to register from restricted domain "+net_client_name(con)+".");
+    Reply("{red}{sz20}You cannot register new player from your domain!");
+    Reply("{red}{sz16}Too many cheaters from your domain.");
+    Reply("{red}{sz16}You can send an application for an account by email.");
+    net_server_close(con);
+  }
+  else if(!is_user(ARG[0]) && binary_load("nologin"))
+  {
+    Reply("{red}{sz20}Sorry, but this server does not allow new accounts.");
+    Reply("{red}{hr}");
+    for(s)(split(nologin,"\n"))
+      Reply("{red}"+s);
+    Reply("{red}{hr}");
+
+    net_server_close(con);
+  }
+  else
+  {
+    if(!is_user(ARG[0]))
+    {
+      users{ARG[0]}=NewUser(ARG[4]);
+      Reply("{green}New player "+ARG[0]+" registered.");
+      Log("New player "+ARG[0]+" registered.");
+    }
+    
+    if(users{ARG[0]}[0] != ARG[4])
+    {
+      Reply("{red}Incorrect password!");
+      Reply("{red}Maybe someone has already registered player named {yellow}"+ARG[0]+"{red}.");
+      Reply("{red}Try {yellow}/nick [NAME]{red} to pick another name, then right click and reconnect.");
+      Log("ERROR: incorrect password for "+ARG[0]+" from "+net_client_name(con));
+      net_server_close(con);
+    }
+    else
+    {
+      ok=1;
+      if(Con(ARG[0]) >= 0)
+      {
+        Reply("{red}You are already connected from "+net_client_name(Con(ARG[0]))+".");
+        if(count(ARG[0],("God","Salesman","Guard","Judge")))
+        {
+          ok=0;
+          Log("ERROR: "+ARG[0]+" already connected.");
+          net_server_close(con);
+        }
+        else
+        {
+          Reply("{red}Kicking old account...");
+          push(n);
+          n=net_client_name(con);
+          push(con);
+          con=Con(ARG[0]);
+          Send(con,("Message","{yellow}You connected from "+n+". Closing this connection."));
+          DisconnectPlayer();
+          net_server_close(con);
+          con=pop();
+          n=pop();
+        }
+      }
+
+      if(ok)
+      {
+        push(h);
+        push(t);
+
+        Log("Player "+con+" registered from "+net_client_name(con)+" as "+ARG[0]);
+
+        if(ARG[0]=="Guard" || ARG[0]=="God" || ARG[0]=="Judge")
+          h=ANONYMOUS_IP;
+        else
+          h=net_client_name(con);
+
+        users{ARG[0]}[3][4]=(date()+" "+time(),date()+" "+time(),h);
+
+        Reply("Welcome "+ARG[0]+"!");
+
+        if(is_user("God"))
+        {
+          if(users{"God"}[3][0]{"plan"}!=NULL)
+          {
+            Reply("{gold}{hr}");
+            Reply("{gold}{sz20}"+users{"God"}[3][0]{"plan"});
+            Reply("{gold}{hr}");
+          }
+        }
+        if(is_user("Judge"))
+        {
+          if(users{"Judge"}[3][0]{"plan"}!=NULL)
+          {
+            Reply("{orange}{sz16}"+users{"Judge"}[3][0]{"plan"});
+          }
+        }
+
+        if(users{ARG[0]}[3][0]{"realname"}=="Unknown")
+        {
+          Reply("{red}{sz20}Your real name is not yet set!");
+          Reply("Please set it using command {yellow}/set realname {orange}Your Name");
+        }
+        if(users{ARG[0]}[3][0]{"email"}=="none" && Mode(ARG[0])=="")
+        {
+          Reply("{red}{sz15}Your email is not yet set!");
+          Reply("{red}Without email address you cannot recover your password, if you reinstall Gccg or lose the password for some other reason.");
+          Reply("Please set it using command {yellow}/set email {orange}Your email");
+        }
+
+        SendOther(con,("Message",ARG[0]+" arrives from "+h+"."));
+        Reply("You see "+length(players)+" player(s) here.");
+
+        t=TicketsList(ARG[0]);
+        if(t!="")
+          Reply("You have free tickets for "+t);
+
+        Send(con,("SetMoney",users{ARG[0]}[1]));
+  
+        if(length(tables))
+        {
+          Reply("There are currently "+length(tables)+" table(s) available. Please click a table and have a seat!");
+        }
+        else
+          Reply("Unfortunately there are no tables available right now.");
+  
+        players{con}=(ARG[0],h,-1,0);
+
+        Send(con,("SetMe",con));
+        Send(con,("SetMyName",User()));
+        Send(con,("SetProducts",products));
+        SendAll("AddRoomPlayer",(con,players{con},users{ARG[0]}[3][0]{"avatar"}));
+        if(VersionCompare(ARG[1],"0.8.90"))
+        {
+          Send(con,("SetCardbook",users{User()}[2]));
+          Reply("You must use {yellow}/refresh{white} command to see updated price info.");
+        }
+
+        Send(con,("SetMode","chat"));
+
+        if(Mode(ARG[0])=="sealed")
+          Send(con,("SetCardbook",select("#[1][0]>0",get_card_data(User(),AllCards()))));
+
+        users{ARG[0]}[3][0]{"version"}=ARG[1];
+        users{ARG[0]}[3][0]{"serial"}=ARG[6];
+        users{ARG[0]}[3][0]{"system"}=ARG[5];
+
+        t=pop();
+        h=pop();
+      }
+    }
+  }
+
+  return(ok);
+
+  ok=pop();
+}
+
+#
+# RegisterDeck(registration id,pres1,pres2) - Store a deck
+#   info for tournament purposes. The deck presentation pres1 is a list
+#   of pairs (nmb.of cards, card number). The second presentation
+#   deck2 is in original client-side deck format.
+#
+def RegisterDeck
+{
+  if(typeof(ARG)=="list")
+  {
+    if(length(ARG)==3)
+    {
+      if(typeof(ARG[0])=="string")
+      {
+        push(c);
+        push(l);
+
+        if(users{User()}[4][0]=="unused")
+          users{User()}[4][0]=(,);
+
+        c=0;
+        l=length(flatten(values(ARG[2])));
+        
+        if(l > MAX_DECK_SIZE)
+        {
+          Reply("{cyan}This deck is too large to register.");
+          Log(User()+" tried to register a deck with "+l+" cards, limit is "+MAX_DECK_SIZE);
+          c=-1;
+        }
+        else if(!isdict(ARG[1]) || !isdict(ARG[2]))
+        {
+          Reply("{cyan}This is not a valid deck.");
+          Log(User()+" tried to register a malformed deck");
+          c=-1;
+        }
+#        else if(right(ARG[0],9)=="-original")
+        else if(find(ARG[0],ALLOWED_DECK_NAMES)==NULL)
+        {
+          Reply("{cyan}You can't use that as a deck identifier.");
+          c=-1;
+        }
+        else
+        {
+          if(!has_entry(ARG[0],users{User()}[4][0]))
+            users{User()}[4][0]{ARG[0]}=NULL;
+          if(users{User()}[4][0]{ARG[0]}!=ARG[1])
+            c=1;
+            
+          if(!has_entry(ARG[0]+"-original",users{User()}[4][0]))
+            users{User()}[4][0]{ARG[0]+"-original"}=NULL;  
+          if(users{User()}[4][0]{ARG[0]+"-original"}!=ARG[2])
+            c=1;
+        }
+        
+        if(c==1)
+        {
+          users{User()}[4][0]{ARG[0]}=ARG[1];
+          users{User()}[4][0]{ARG[0]+"-original"}=ARG[2];
+
+          if(users{User()}[4][2]=="unused")
+            users{User()}[4][2]=(,);
+          users{User()}[4][2]{ARG[0]}=date()+" "+time();
+          
+          if(ARG[0]=="download")
+          {
+            if(length(ARG[1]) > 0)
+              SendAll("Message","{cyan}"+User()+" has uploaded a deck for review. You can save a copy with {yellow}/downloaddeck "+User()+"{reset} .");
+            else
+              SendAll("Message","{cyan}"+User()+" has taken down their downloadable deck.");
+          }
+          else
+            SendAll("Message","{blue}"+User()+" registered their "+ARG[0]+" deck.");
+        }
+        else if(c==0)
+        {
+          Reply("{cyan}Your deck has not changed since the last registration.");
+          Log(User()+" tried to register "+ARG[0]+" deck, but it was unchanged");
+        }
+        
+        l=pop();
+        c=pop();
+      }
+    }
+  }
+}
+
+#
+# Say(s) - Player says 's'.
+#
+def Say
+{
+  if(typeof(ARG)=="string" && ARG != "")
+  {
+    for(m)(split(ARG,"\n"))
+      SendAllNP("Message","{yellow}"+User()+": "+m);
+  }
+}
+
+#
+# Action(s) - Player takes an action 's'.
+#
+def Action
+{
+  if(typeof(ARG)=="string" && ARG != "")
+  {
+    for(m)(split(ARG,"\n"))
+      SendAllNP("Message","{brown}*"+User()+" "+m+"*");
+  }
+}
+
+#
+# JoinTable(table number) - Player joins a table.
+#
+def JoinTable
+{
+  if(has_entry(ARG,tables))
+  {
+    if(players{con}[2]!=ARG && players{con}[3]==0)
+    {
+      LeaveTable();
+      tables{ARG}[2]=tables{ARG}[2]+(con,);
+      players{con}[2]=ARG;
+      SendAllNP("JoinTable",(con,ARG));
+    }
+  }
+}
+
+#
+# ConnectAddress(connection) - Get the server address to connect.
+#
+def ConnectAddress
+{
+  push(i);
+  i=net_client_ip(ARG);
+  return(i);
+  if(substr(i,0,4)=="127." || substr(i,0,3)=="10." || substr(i,0,8)=="192.168." || (i>="172.16." && i<"172.32."))
+  {
+    if(server.ip!=NULL)
+      return(server.ip);
+  }
+  i=pop();
+}
+
+#
+# ToggleJoinGame(force leave if 1) - Player joins or leaves game in the current table.
+#
+def ToggleJoinGame
+{
+  if(players{con}[2] != -1)
+  {
+#
+# Player not yet playing
+#
+    if(players{con}[3] == 0)
+    {
+      if(User()=="Salesman")
+        Reply("{red}Salesman cannot play.");
+      else if(count(con,tables{players{con}[2]}[6]))
+      {
+#
+# Leave game not yet started
+#
+        tables{players{con}[2]}[6]=tables{players{con}[2]}[6]-(con,);
+        tables{players{con}[2]}[7]=tables{players{con}[2]}[7]-(players{con}[0],);
+        SendAllNP("SetJoinGame",(con,players{con}[2],0));
+      }
+      else
+      {
+        push(e);
+        e=1;
+#
+# Join game.
+#
+#       Draft table
+        if(tables{players{con}[2]}[13] & 2)
+        {
+          push(d);
+          d=draft.tables{players{con}[2]};
+          e=0;
+          if(d[3]==0)
+            Reply("{red}This table is not ready to join yet. To set up a draft, use {yellow}/startdraft N SET[,SET2,SET3]{red}, where N is the number of players and the SETs are the abbreviations for the sets you want to use.");
+          else if(d[3]==1 && Mode()=="")
+            Reply("{red}You have to be in sealed or draft mode in order to sit at a draft table.");
+          else if(d[3]==2 && !count(UserWithoutMode(),("God","Guard","Judge")))
+            Reply("{red}The draft is already in progress.");
+          else
+            e=1;
+          d=pop();
+        }
+        if(!e)
+          1;
+#       Player has quit this game
+        else if(tables{players{con}[2]}[3] && length(tables{players{con}[2]}[6]) < tables{players{con}[2]}[5])
+          Reply("{red}Sorry, some of the players have already left and this game is finished soon.");
+#       Watcher
+        else if(length(tables{players{con}[2]}[6]) >= tables{players{con}[2]}[5])
+        {
+          if(tables{players{con}[2]}[3])
+            net_server_send(con,("ConnectServer",(ConnectAddress(players{con}[2]),tables{players{con}[2]}[1],tables{players{con}[2]}[8])));
+          else
+            Reply("{red}Game full, wait a second and you can watch the game.");
+        }
+        else if(users{User()}[1] < tables{players{con}[2]}[4] && tables{players{con}[2]}[4]!=0.0)
+          Reply("{red}You don't have enough money to join this game.");
+        else if(VersionCompare(users{User()}[3][0]{"version"},REQUIRE_GAME_VERSION))
+          Reply("{red}You have too old client to play or watch (v"+REQUIRE_GAME_VERSION+" required).");
+        else
+        {
+#       Player successfully joins the game
+          tables{players{con}[2]}[6]=tables{players{con}[2]}[6]+(con,);
+          tables{players{con}[2]}[7]=tables{players{con}[2]}[7]+(players{con}[0],);
+          SendAllNP("SetJoinGame",(con,players{con}[2],1));
+	      if(length(tables{players{con}[2]}[6]) >= tables{players{con}[2]}[5])
+            StartGame(players{con}[2]);
+        }
+        e=pop();
+      }
+    }
+    else
+#
+# Player is already playing and quits.
+#
+    {
+      if(ARG)
+      {
+        tables{players{con}[2]}[6]=tables{players{con}[2]}[6]-(con,);
+        tables{players{con}[2]}[7]=tables{players{con}[2]}[7]-(players{con}[0],);
+        SendAllNP("SetJoinGame",(con,players{con}[2],0));
+      }
+    }
+  }
+  else
+    Reply("{red}Please, sit down first!");
+}
+
+#
+# Buy(amount,product name) - Client buys a product.
+#
+def Buy
+{
+  if(!has_entry(ARG[1],products))
+    Reply("{red}Product not available.");
+  else if(typeof(ARG[0])!="integer" || toint(ARG[0]) <= 0)
+    Reply("{red}Invalid number of products.");
+  else
+  {
+    if(users{User()}[1] < (ARG[0] - TicketsOf(User(),ARG[1]))*products{ARG[1]}[1])
+      Reply("{red}Not enough money.");
+    else
+    {
+      if(products{ARG[1]}[0] <= 0)
+        Reply("{red}Cards sold out.");
+      else if(products{ARG[1]}[0] - ARG[0] < 0)
+        Reply("{red}Only "+products{ARG[1]}[0]+" available.");
+      else
+      {
+        if(ARG[0]==1)
+        {
+          if(Mode()!="")
+            SendAllNP("Message",User()+" buys "+ARG[1]);
+          Log(User()+" buys "+ARG[1]);
+        }
+        else
+        {
+          if(Mode()!="")
+            SendAllNP("Message",User()+" buys "+ARG[0]+" "+ARG[1]+"s");
+          Log(User()+" buys "+ARG[0]+" "+ARG[1]+"s");
+        }
+        c=flatten(Produce(products{ARG[1]}[2]+(ARG[0],)));
+        net_server_send(con,("Buy",c));
+        add_to_collection(User(),c);
+
+        m=ARG[0] - AddTickets(User(),ARG[1],-ARG[0]);
+        m=m*products{ARG[1]}[1];
+
+        TransferMoney(User(),-m);
+
+        products{ARG[1]}[0]=products{ARG[1]}[0]-ARG[0];
+      }
+    }
+  }
+}
+
+#
+# WeStartedGame() - called when game server announces successful game start.
+#
+def WeStartedGame
+{
+  if(IsServer())
+  {
+    tables{con}[3]=1;
+    if(has_entry(con,draft.tables))
+    {
+      push(p);
+      push(err);
+      draft.tables{con}[3]=2;
+      err=0;
+      for(p)(tables{con}[6])
+      {
+        draft.tables{con}[6]{players{p}[0]}=(,);
+        if(users{players{p}[0]}[1] < tables{con}[4])
+        {
+#         the mechanics of bet tables should prevent this anyway, but whatever
+          err=1;
+          Log("ERROR: "+players{p}[0]+" somehow managed to enter draft table "+con+" with insufficient money");
+        }
+        else
+        {
+          TransferMoney(players{p}[0], -tables{con}[4]);
+          if(!users{players{p}[0]}[3][7])
+            users{players{p}[0]}[3][7] = 0;
+          
+          users{players{p}[0]}[3][7] = users{players{p}[0]}[3][7] + tables{con}[4];
+        }
+      } 
+      
+      SendAllNP("Message","Draft started at table "+con+": "+join(forall("players{#}[0]",tables{con}[6]),", "));
+      if(err)
+        net_server_send(con,("Irregularity",1));
+      else
+        OpenDraftProduct(con);
+      
+      err=pop();
+      p=pop();
+    }
+    else
+      SendAllNP("Message","Game started at table "+con+": "+join(forall("players{#}[0]",tables{con}[6])," vs. "));
+  }
+}
+
+#
+# OpenDraftProduct(table number) - Open products for each player and give contents to the table.
+#
+def OpenDraftProduct
+{
+  push(p);
+  push(b);
+  push(l);
+  p=draft.tables{ARG}[7];
+  b=draft.tables{ARG}[1][p];
+  l=Produce(products{b}[2]+(draft.tables{ARG}[0],));
+  Log(l);
+  draft.tables{ARG}[8]=sort(flatten(l));
+  net_server_send(ARG,("DistributeProduct",(b,l)));
+  l=pop();
+  b=pop();
+  p=pop();
+}
+
+#
+# DraftChoices(lists of cards grouped by player) - Record drafted cards, and move on to the next product if necessary.
+#
+def DraftChoices
+{
+  if(has_entry(con,draft.tables))
+  {
+    push(e);
+    push(c);
+    push(p);
+    push(r);
+    c=NULL;
+    e=0;
+    r=(,);
+    for(p)(ARG)
+    {
+      p[1]=flatten(p[1]);
+      if(c==NULL)
+        c=length(p[1]);
+      if(c!=length(p[1]) && !e)
+      {
+        Log("DRAFT ERROR: Table "+con+" sent in "+c+" cards for "+ARG[0][0]+" and "
+            +length(p[1])+" cards for "+p[0]);
+        e=3;
+      }
+      else
+      {
+        draft.tables{con}[6]{p[0]} = draft.tables{con}[6]{p[0]} + p[1];
+        r=r+p[1];
+      }
+    }
+    if(sort(r) != draft.tables{con}[8] && !e)
+    {
+      Log("DRAFT ERROR: Cards sent in from table "+con+" do not match opened cards");
+      Log("  Opened: "+tostr(draft.tables{con}[8]));
+      Log("Received: "+tostr(sort(r)));
+      e=2;
+    }
+      
+    if(e)
+      net_server_send(con,("Irregularity",e));
+    else
+    {
+      draft.tables{con}[7]=draft.tables{con}[7]+1;
+      if(draft.tables{con}[7] >= length(draft.tables{con}[1]))
+      {
+        draft.tables{con}[3]=3;
+        net_server_send(con,("FinishDraft",NULL));
+      }
+      else
+        OpenDraftProduct(con);
+    }
+    r=pop();
+    p=pop();
+    c=pop();
+    e=pop();
+  }
+}
+
+#
+# DispenseDraftCards(table) - Draft is complete. Hand out cards to participants.
+#
+def DispenseDraftCards
+{
+  if(has_entry(ARG,draft.tables))
+  {
+    if(draft.tables{ARG}[3]==3)
+    {
+      push(p);
+      for(p)(draft.tables{ARG}[6])
+      {
+        GiveCards(flatten(p));
+        users{p[0]}[3][7] = users{p[0]}[3][7] - draft.tables{ARG}[2];
+      }
+      p=pop();
+    }
+    draft.tables{ARG}[3]=4;
+  }
+}
+
+#
+# AddGameResult(nmb.players,player,result) - Add one game result to the given player.
+#
+def AddGameResult
+{
+  if(!has_entry(ARG[0],users{ARG[1]}[3][3]))
+    users{ARG[1]}[3][3]{ARG[0]}=(,);
+  if(!has_entry(ARG[2],users{ARG[1]}[3][3]{ARG[0]}))
+    users{ARG[1]}[3][3]{ARG[0]}{ARG[2]}=0;
+  users{ARG[1]}[3][3]{ARG[0]}{ARG[2]}=users{ARG[1]}[3][3]{ARG[0]}{ARG[2]} + 1;
+}
+
+#
+# RegisterGameResult(nmb. of players,player names,player name who declared,result type) - Update player stats.
+#
+def RegisterGameResult
+{
+  push(p);
+  push(i);
+  i=0;
+  p=ARG[1];
+  while(i < length(p))
+  {
+    if(p[i]==ARG[2])
+      AddGameResult(ARG[0],p[i],ARG[3]);
+    else
+    {
+      if(ARG[3]=="win")
+        AddGameResult(ARG[0],p[i],"lose");
+      else if(ARG[3]=="draw")
+        AddGameResult(ARG[0],p[i],"draw");
+      else if(ARG[3]=="lose")
+        AddGameResult(ARG[0],p[i],"win");
+      else
+        Log("WARNING: unknown game result: "+ARG[3]);
+    }
+
+    i=i+1;
+  }
+  i=pop();
+  p=pop();
+}
+
+#
+# PrizeForWin(nmb. of players, bet) - Calcluate prize for winner.
+#
+def PrizeForWin
+{
+  push(p);
+
+  if(ARG[0]>1)
+  {
+#   p=ARG[1]*ARG[0] + ARG[1]*BET_BONUS_MULTIPLIER*(ARG[0]-1) + GAME_BONUS*(ARG[0]-1);
+#   p=p*(1.0 - LOSER_PERCENTAGE);
+    p=GAME_BONUS*(ARG[0]-1);
+    p=p*(1.0 - LOSER_PERCENTAGE) + ARG[0]*ARG[1];
+  }
+  else
+    p=ARG[1];
+
+  return(round(p,2));
+  p=pop();
+}
+
+#
+# PrizeForWinLoss(nmb. of players, bet) - Calcluate prize for winner.
+#
+def PrizeForWinLoss
+{
+  push(p);
+
+  if(ARG[0]>1)
+  {
+#   p=ARG[1]*ARG[0] + ARG[1]*BET_BONUS_MULTIPLIER*(ARG[0]-1) + GAME_BONUS*(ARG[0]-1);
+#   p=p*(1.0 - LOSER_PERCENTAGE);
+    p=GAME_BONUS*(ARG[0]-1);
+    p=p*(1.0 - LOSER_PERCENTAGE) + ARG[1] + ARG[1]/(ARG[0]-1);
+  }
+  else
+    p=ARG[1];
+
+  return(round(p,2));
+  p=pop();
+}
+
+#
+# PrizeForLoss(nmb. of players, bet) - Calcluate prize for loser.
+#
+def PrizeForLoss
+{
+  push(p);
+
+  if(ARG[0]>1)
+  {
+    p=ARG[1]*ARG[0] + ARG[1]*BET_BONUS_MULTIPLIER*(ARG[0]-1) + GAME_BONUS*(ARG[0]-1);
+    p=p*LOSER_PERCENTAGE;
+  }
+  else
+    p=ARG[1];
+
+  return(round(p,2));
+  p=pop();
+}
+
+#
+# PrizeForDraw(nmb. of players, bet) - Calcluate prize for draw.
+#
+def PrizeForDraw
+{
+  push(p);
+
+  if(ARG[0]>1)
+  {
+    p=ARG[1]*BET_BONUS_MULTIPLIER*(ARG[0]-1) + GAME_BONUS*(ARG[0]-1);
+    p=p*0.5;
+    p=p*DRAW_PERCENTAGE;
+    p=p+ARG[1]*ARG[0];
+  }
+  else
+    p=ARG[1];
+
+  return(round(p,2));
+  p=pop();
+}
+
+#
+# EndGame(player name who declared,result,result options) - Game ended
+#   by game server. If the result is undecided, then argument is NULL.
+#
+def EndGame
+{
+  push(p);
+  push(n);
+  p=tables{con}[11];
+  n=tables{con}[12];
+  if(isfunction("EndGameHook") && ARG!=NULL)
+    call("EndGameHook",ARG+(p,n,tables{con}[4]));
+
+  forall('if(has_entry(#,players)) players{#}[3]=0',p);
+  forall('if(has_entry(#,players)) players{#}[2]=-1',tables{con}[2]);
+  if(has_entry(con,draft.tables))
+  {
+    if(draft.tables{con}[3]==2)
+    {
+#     Draft aborted before completion due to problems. Give everyone their money back, but no cards.
+      for(temp)(keys(draft.tables{con}[6]))
+      {
+        users{temp}[1] = users{temp}[1] + users{temp}[3][7];
+        users{temp}[3][7] = 0;
+      }
+    }
+    else if(draft.tables{con}[3]==3)
+      DispenseDraftCards(con);
+    SendAllNP("Message","Draft finished at table "+con+".");
+  }
+  else if(ARG==NULL)
+    SendAllNP("Message","Game '"+join(n," vs. ")+"' ended at table "+con+"{blue} undecided.");
+  else
+  {
+    SendAllNP("Message","Game '"+join(n," vs. ")+"' ended at table "+con+" - {blue}"+ARG[0]+": "+ARG[1]+" "+ARG[2]);
+    RegisterGameResult(tables{con}[5],n,ARG[0],ARG[1]);
+    if(ARG[1]=="win" || ARG[1]=="draw" || ARG[1]=="lose")
+    {
+      push(m);
+      for(z)(n)
+      {
+        if(ARG[1]=="win")
+        {
+          if(z==ARG[0])
+            m=PrizeForWin(tables{con}[5],tables{con}[4]);
+          else
+            m=PrizeForLoss(tables{con}[5],tables{con}[4]);
+        }
+        else if(ARG[1]=="lose")
+        {
+          if(z==ARG[0])
+            m=PrizeForLoss(tables{con}[5],tables{con}[4]);
+          else
+            m=PrizeForWinLoss(tables{con}[5],tables{con}[4]);
+        }
+        else if(ARG[1]=="draw")
+          m=PrizeForDraw(tables{con}[5],tables{con}[4]);
+
+        m=m-tables{con}[4];
+        TransferMoney(z,m);
+
+        users{z}[3][1]=users{z}[3][1] + m;
+        SendAllNP("Message","Income for "+z+": $"+format("%.2f",m));
+      }
+      m=pop();
+    }
+  }
+  forall('if(has_entry(#,players)) Send(#,("SetMode","chat"));',tables{con}[2]);
+  tables{con}[3]=0;
+  tables{con}[6]=(,);
+  tables{con}[7]=(,);
+  tables{con}[11]=(,);
+  tables{con}[12]=(,);
+  n=pop();
+  p=pop();
+}
+
+#
+# Give("username amount") - Give money.
+#
+def Give
+{
+  push(arg);
+  arg=split(ARG," ");
+  if(length(arg) != 2)
+    Reply("{red}Wrong number of arguments.");
+  else
+  {
+    push(m);
+    m=toreal(format("%.2f",toreal(arg[1])));
+
+    if(!is_user(arg[0]))
+      Reply("{red}Unknown user '"+arg[0]+"'.");
+    elseif(User()!="God" && User()!="Guard" && User()!="Judge" && m>100.0)
+      Reply("{red}Only administrators can give more than $100.00.");
+    elseif(Con(arg[0]) < 0  && User()!="Guard" && User()!="God")
+      Reply("{red}"+arg[0]+" is not here.");
+    elseif(arg[0]==User() && arg[0]!="God")
+      Reply("{red}Idiot.");
+    else
+    {
+      if(m <= 0 && User()!="Guard" && User()!="God")
+        Reply("{red}Invalid amount of money.");
+      elseif(m > users{User()}[1] && User()!="God" && User()!="Judge")
+        Reply("{red}You don't have enough money.");
+      else
+      {
+        if(User()!="God" && User()!="Judge")
+          TransferMoney(User(),-m);
+        TransferMoney(arg[0],m);
+        SendAllNP("Message",User()+" gives $"+format("%.2f",m)+" to "+arg[0]+".");
+      }
+    }
+    m=pop();
+  }
+  arg=pop();
+}
+
+#
+# BuyCard(card number,[price]) - Client buys a card.
+#
+def BuyCard
+{
+  push(p);
+  push(s);
+  push(c);
+  push(x);
+  if(typeof(ARG)=="list")
+  {
+    c=toint(ARG[0]);
+    x=toreal(ARG[1]);
+  }
+  else
+  {
+    c=toint(ARG);
+    x=-1.0;
+  }
+  p=min_price(c);
+  if(p==NULL)
+    Reply("{red}Not for sale.");
+  elseif(length(p[0])<=0)
+    Reply("{red}Not for sale.");
+  elseif(users{User()}[1] < p[1] && p[1]>0.0)
+    Reply("{red}You don't have enough money.");
+  elseif(Mode()!="")
+    Reply("{red}Buying not allowed in "+Mode()+" mode.");
+  elseif(x>=0.0 && abs(x-p[1])>0.001)
+  {
+    Reply("{red}Not available any more for $"+format("%.2f",x)+".");
+    EnsurePriceUpdate(c,NULL,min_price(c));
+  }
+  else
+  {
+    s=random(p[0]);
+    if ( !isfunction("safe_check_card"))
+    {
+      check_card(s,c);
+    }
+    if ( isfunction("safe_check_card") && safe_check_card(s,c) == 0 )
+    {
+        Reply("{red}Internal server error.");
+    }
+    else if(!AvailableForSale(s,c,1) || users{s}[2]{c}[1] < 1)
+    {
+      Reply("{red}Not available for sale anymore by "+s+".");
+      remove_obsolete_prices(c,);
+      EnsurePriceUpdate(c,NULL,min_price(c));
+    }
+    else if(s==User())
+      Reply("{red}An attempt to buy from yourself ignored.");
+    else
+    {
+      TransferMoney(User(),-p[1]);
+      TransferMoney(s,p[1]);
+      DelCard(s,c);
+      AddCard(User(),c);
+      Send(con,("SetCardbook",((c,users{User()}[2]{c}),)));
+      if(Con(s) >= 0)
+        Send(Con(s),("SetCardbook",((c,users{s}[2]{c}),)));
+      if(p[1]>=1.0)
+        SendAllNP("Message",User()+" buys #"+c+"# from "+s+" for $"+format("%.2f",p[1])+".");
+      else
+      {
+        Log(User()+" buys #"+c+"# from "+s+" for $"+format("%.2f",p[1])+".");
+        Reply("You bought #"+c+"# from "+s+" for $"+format("%.2f",p[1])+".");
+      }
+    }
+  }
+  x=pop();
+  c=pop();
+  s=pop();
+  p=pop();
+}
+
+#
+# CheckGiveMode(card) - Verify the mode and if the card is legal to give.
+#
+def CheckGiveMode
+{
+  if(Mode()=="")
+    return(1);
+  else
+  {
+    if(isfunction("GiveCardSealedAllowed"))
+      return(GiveCardSealedAllowed(ARG));
+    else
+      return(0);
+  }
+}
+
+#
+# GiveCards(user name,card number[, card number 2, ...]) - Give multiple cards at once.
+#
+def GiveCards
+{
+  if(length(ARG) < 2)
+    Reply("{red}No cards selected.");
+  else if(length(ARG) > 201)
+    Reply("{red}Please don't attempt to give more than 200 cards at once.");
+  else if(!CheckGiveMode(ARG[1]))
+    Reply("{red}Can't give that card in "+Mode()+" mode.");
+  else if(!is_user(ARG[0]))
+    Reply("{red}No such user.");
+  else if(ARG[0]==User())
+      Reply("{red}Idiot.");
+  else
+  {
+    push(cs);
+    push(c);
+    push(m);
+    push(n);
+    push(u);
+    
+    cs=unique(sort(tail(ARG)));
+    cs=forall("(count(#,tail(ARG)),#)",cs);
+    transfer=(,);
+    c=0;
+    u=User();
+    if(has_entry(con,draft.tables))
+    {
+      if(draft.tables{con}[3]==3)
+        u="Judge";
+    }
+    if (u!="God" && u!="Judge")
+    {
+      for(m)(cs)
+      {
+        check_card(u,m[1]);
+#         (copies owned,             copies not tradable)
+        n=(users{u}[2]{m[1]}[0],count(SetOfCard(m[1]),users{ARG[0]}[3][2]));
+        if(n[0] < m[0] + n[1])
+        {
+#         user is representing too many cards; trim the request to what they can actually send
+          if(n[1] < n[0])
+            transfer=transfer+((n[0] - n[1], m[1]),);
+        }
+        else
+          transfer=transfer+(m,);
+      }
+    }
+    
+    else
+      transfer=cs;
+      
+    cs=u+" gives you: ";
+    n = ((,),(,));
+    for(m)(transfer)
+    {
+      if(u!="God" && u!="Judge")
+      {
+        DelCards(u,m[1],m[0]);
+        n[0]=n[0]+((m[1],users{User()}[2]{m[1]}),);
+      }
+      AddCards(ARG[0],m[1],m[0]);
+      if(Con(ARG[0]) >= 0)
+        n[1]=n[1]+((m[1],users{ARG[0]}[2]{m[1]}),);
+      
+      if(m[0] > 1)
+        cs = cs + tostr(m[0]) + "x ";
+      cs = cs + name(m[1]) + ", ";
+      c = c + m[0];
+    }
+    
+    if(c>0)
+    {
+      if(Con(ARG[0]) >= 0)
+      {
+        Send(Con(ARG[0]),("Message",substr(cs,0,length(cs)-2)+"."));
+        Send(Con(ARG[0]),("SetCardbook",n[1]));
+      }
+      Send(con,("SetCardbook",n[0]));
+      SendOther(Con(ARG[0]),("Message",u+" gives "+c+" cards to "+ARG[0]+"."));
+      Log(u+" gives "+c+" cards to "+ARG[0]+".");
+    }
+    u=pop();
+    n=pop();
+    m=pop();
+    c=pop();
+    cs=pop();
+  }
+}
+
+#
+# GiveCard(user name,card number) - Give a card.
+#
+def GiveCard
+{
+  if(length(ARG) != 2 && length(ARG) != 3)
+    Reply("{red}Wrong number of arguments.");
+  elseif(!CheckGiveMode(ARG[1]))
+    Reply("{red}Can't give that card in "+Mode()+" mode.");
+  elseif(!is_user(ARG[0]))
+    Reply("{red}No such user.");
+  else
+  {
+    if(ARG[0]==User())
+      Reply("{red}Idiot.");
+    else
+    {
+      push(m);
+      push(u);
+      m=toval(ARG[1]);
+      u=User();
+      check_card(u,m);
+      if(users{u}[2]{m}[0] < 1 && u!="God" && u!="Judge")
+        Reply("{red}You don't have that card.");
+      else if(!AvailableForTrade(u,m) && u!="God" && u!="Judge")
+        Reply("{red}The card is registered. You cannot give it away.");
+      else
+      {
+        if(u!="God" && u!="Judge")
+        {
+          DelCard(u,m);
+          Send(con,("SetCardbook",((m,users{u}[2]{m}),)));
+        }
+        AddCard(ARG[0],m);
+        if(Con(ARG[0]) >= 0)
+          Send(Con(ARG[0]),("SetCardbook",((m,users{ARG[0]}[2]{m}),)));
+
+        push(msg);
+        msg=1;
+        if(SILENT_SEALED_TRADE)
+        {
+          if(con>=0 && Con(ARG[0])>=0)
+          {
+            if(Mode()=="sealed" && Mode(ARG[0])=="sealed"
+               && players{con}[2] != -1
+               && players{con}[2] == players{Con(ARG[0])}[2]
+               && players{con}[3]
+               && players{Con(ARG[0])}[3]
+               )
+                 msg=0;
+          }
+        }
+
+        if(msg)
+          SendAllNP("Message",u+" gives #"+tostr(m)+"# to "+ARG[0]+".");
+        else
+        {
+          Log(u+" gives #"+tostr(m)+"# to "+ARG[0]+".");
+          Send(con,("Message",u+" gives #"+tostr(m)+"# to "+ARG[0]+"."));
+          if(Con(ARG[0])!=-1)
+            Send(Con(ARG[0]),("Message",u+" gives #"+tostr(m)+"# to "+ARG[0]+"."));
+        }
+        msg=pop();
+      }
+      u=pop();
+      m=pop();
+    }
+  }
+}
+
+#
+# Set(variable,value) - Set an user variable for the current user.
+#
+def Set
+{
+  push(s);
+  if(length(ARG)==2)
+  {
+    s = 0;
+    if(isfunction("SetHook"))
+      s = SetHook(ARG);
+    if(s == 0 && (((typeof(ARG[1])=="string" || ARG[1]==NULL) && count(ARG[0],("realname","email","plan","avatar"))) || ((typeof(ARG[1])=="integer" || ARG[1]==NULL) && count(ARG[0],("trade_limit",)))))
+    {
+      users{User()}[3][0]{ARG[0]}=ARG[1];
+      Log("Setting "+ARG[0]+" to "+tostr(ARG[1])+" for "+User());
+      if(ARG[0]=="avatar")
+        SendAllNP("AddRoomPlayer",(con,players{con},users{User()}[3][0]{"avatar"}));
+    }
+  }
+  s=pop();
+}
+
+#
+# SetPrice(card number,price) - Set selling price for a card.
+#
+def SetPrice
+{
+  push(r);
+  push(p);
+  r=toint(ARG[0]);
+  p=toreal(ARG[1]);
+  if(r < 1)
+    Reply("{red}Invalid card.");
+
+# "p + 1 <= p" is only true for values of infinity or Not-a-Number
+#   which can interfere with client actions and lead to money exploits
+  else if(p < 0.01 || p + 1 <= p)
+    Reply("{red}Invalid price.");
+  else
+  {
+    p=min_price(r);
+    r=set_price(User(),toint(ARG[0]),toreal(ARG[1]));
+    if(r==NULL)
+      Reply("{red}Setting price failed.");
+    else
+    {
+      CheckPrice(User(),toint(ARG[0]));
+      EnsurePriceUpdate(toint(ARG[0]),p,min_price(ARG[0]));
+    }
+  }
+  p=pop();
+  r=pop();
+}
+
+#
+# Refresh(list of cards) - Send an update for cards.
+#
+def Refresh
+{
+  push(d);
+  d=get_card_data(User(),ARG);
+  if(d!=NULL)
+    Send(con,("SetCardbook",d));
+  d=pop();
+}
+
+#
+# UpdateCard(card number) - Update current players card data for one card.
+#
+def UpdateCard
+{
+  Send(con,("SetCardbook",((ARG,users{User()}[2]{ARG}),)));
+}
+
+#
+# SetForsale(card number,amount) - set number of cards for sale.
+#
+def SetForsale
+{
+  push(r);
+  push(p);
+  push(y);
+  
+  r=toint(ARG[0]);
+  if(r < 1)
+    Reply("{red}Invalid card.");
+  else if(Mode()!="")
+    Reply("{red}Cannot sell cards in "+Mode()+" mode.");
+  else if(!AvailableForSale(User(),r,toint(ARG[1])))
+  {
+    Reply("{red}You cannot sell registered cards.");
+    UpdateCard(r);
+  }
+  else
+  {
+    p=min_price(ARG[0]);
+    r=set_forsale(User(),toint(ARG[0]),toint(ARG[1]));
+    if(r==NULL)
+    {
+      Reply("{red}Setting cards for sale failed.");
+      UpdateCard(toint(ARG[0]));
+    }
+    else if(r==2)
+    {
+# again with the inf/NaN check
+      y=users{User()}[2]{ARG[0]}[2];
+      if(y<0.01 || y+1 <= y)
+         y=0.01;
+
+      set_price(User(),toint(ARG[0]),y);
+      CheckPrice(User(),toint(ARG[0]));
+      EnsurePriceUpdate(ARG[0],p,min_price(ARG[0]));
+    }
+  }
+  
+  y=pop();
+  p=pop();
+  r=pop();
+}
+
+#
+# Roll(d) - Roll dice 'd' which is a string i.e. "2d6".
+#
+def Roll
+{
+  push(n);
+  push(m);
+  if(ARG=="2d6")
+  {
+    n=random(6)+1;
+    m=random(6)+1;
+    SendAllNP("Message",User()+" rolls "+"{dice"+tostr(n)+"} {dice"+tostr(m)+"}");
+  }
+  else if(ARG=="1d6")
+  {
+    n=random(6)+1;
+    SendAllNP("Message",User()+" rolls "+"{dice"+tostr(n)+"}");
+  }
+  elseif(ARG=="coin")
+  {
+    n=random(2);
+    if(n==0)
+      SendAllNP("Message",User()+" tosses a coin: heads (win)");
+    else
+      SendAllNP("Message",User()+" tosses a coin: tails (lose)");
+  }
+  m=pop();
+  n=pop();
+}
+
+#
+# Password(old,new) - Change a password for a player.
+#
+def Password
+{
+  if(length(ARG)==2)
+  {
+    push(u);
+    u=UserWithoutMode();
+    if(users{u}[0]!=ARG[0])
+    {
+      Reply("{red}Invalid old password.");
+    }
+    else 
+    {
+      users{u}[0]=ARG[1];
+      if(is_user(u+"-sealed"))
+      {
+        users{u+"-sealed"}[0]=ARG[1];
+      }
+      if(is_user(u+"-draft"))
+      {
+        users{u+"-draft"}[0]=ARG[1];
+      }
+      Reply("Password changed on server.");
+    }
+    u=pop();
+  }
+}
+
+#
+# USER AND CARD MANIPULATION
+# ==========================
+
+#
+# AllCards() - A list of all card numbers in all sets.
+#
+def AllCards
+{
+  push(c);
+  push(l);
+  l=(,);
+  for(c)(set.data)
+    l=l+seq(c[1][1],c[1][2]);
+  return(l);
+  l=pop();
+  c=pop();
+}
+
+#
+# NewUser(password) - Create new user.
+#
+def NewUser
+{
+  return(ARG,INITIAL_MONEY,(,),
+      ( (("email","none"),("realname","Unknown")), 
+      0.0, (,), (,), ("unknown","unknown"),NULL,NULL,NULL,NULL,NULL),
+      ((,),"unused","unused","unused","unused","unused","unused","unused","unused","unused"),
+      (,),"unused","unused","unused","unused");
+}
+
+#
+# CheckPrice(player name,card number) - Check if card is not for sale
+#   any more and remove price entry if not.
+#
+def CheckPrice
+{
+  if(users{ARG[0]}[2]{ARG[1]}[1]<=0)
+  {
+    if(has_entry(ARG[1],prices))
+      prices{ARG[1]}=del_entry(ARG[0],prices{ARG[1]});
+  }
+}
+
+#
+# DelCard(player name,card number) - Delete a card from player's collection.
+#
+def DelCard
+{
+  users{ARG[0]}[2]{ARG[1]}[0]=max(0,users{ARG[0]}[2]{ARG[1]}[0]-1);
+  if(users{ARG[0]}[2]{ARG[1]}[1] > 0)
+  {
+    push(p);
+    p=min_price(ARG[1]);
+    users{ARG[0]}[2]{ARG[1]}[1]=users{ARG[0]}[2]{ARG[1]}[1]-1;
+    CheckPrice(ARG);
+    EnsurePriceUpdate(ARG[1],p,min_price(ARG[1]));
+    p=pop();
+  }
+}
+
+#
+# DelCards(player name,card number,count) - Delete cards from player's collection.
+#
+def DelCards
+{
+  users{ARG[0]}[2]{ARG[1]}[0]=max(0,users{ARG[0]}[2]{ARG[1]}[0]-ARG[2]);
+  if(users{ARG[0]}[2]{ARG[1]}[1] > 0)
+  {
+    push(p);
+    p=min_price(ARG[1]);
+    users{ARG[0]}[2]{ARG[1]}[1]=max(0,users{ARG[0]}[2]{ARG[1]}[1]-ARG[2]);
+    CheckPrice(ARG);
+    EnsurePriceUpdate(ARG[1],p,min_price(ARG[1]));
+    p=pop();
+  }
+}
+
+#
+# AddCard(player name,card number) - Add a card to player's collection.
+#
+def AddCard
+{
+  push(e);
+  check_card(ARG[0],ARG[1]);
+  e=users{ARG[0]}[2]{ARG[1]};
+  e[0]=e[0]+1;
+  if(e[1] < 0)
+    e[1]=e[1]+1;
+  users{ARG[0]}[2]{ARG[1]}=e;
+  e=pop();
+}
+
+#
+# AddCards(player name,card number,count) - Add cards to player's collection.
+#
+def AddCards
+{
+  push(e);
+  check_card(ARG[0],ARG[1]);
+  e=users{ARG[0]}[2]{ARG[1]};
+  e[0]=e[0]+ARG[2];
+  if(e[1] < 0)
+    e[1]=min(0,e[1]+ARG[2]);
+  users{ARG[0]}[2]{ARG[1]}=e;
+  e=pop();
+}
+
+#
+# TransferMoney(player name, change) - Add or subtract money from the player.
+#
+def TransferMoney
+{
+  users{ARG[0]}[1]=users{ARG[0]}[1]+ARG[1];
+  if(Con(ARG[0]) >= 0)
+    Send(Con(ARG[0]),("SetMoney",users{ARG[0]}[1]));
+}
+
+#
+# LeaveTable() - Leave the table where player is sitting if any.
+#
+def LeaveTable
+{
+  if(players{con}[2] != -1)
+  {
+    if(count(con,tables{players{con}[2]}[6]))
+      ToggleJoinGame();
+    tables{players{con}[2]}[2]=tables{players{con}[2]}[2]-(con,);
+    SendAllNP("LeaveTable",(con,players{con}[2]));
+    players{con}[2]=-1;
+  }
+}
+
+#
+# LeaveTableToChat() - Leave the table where player is sitting straight to the chat room
+#
+def LeaveTableToChat
+{
+  if(players{con}[2] != -1)
+  {
+    if(count(con,tables{players{con}[2]}[6]))
+      ToggleJoinGame();
+    tables{players{con}[2]}[2]=tables{players{con}[2]}[2]-(con,);
+    SendAllNP("LeaveTableToChat",(con,players{con}[2]));
+    players{con}[2]=-1;
+  }
+}
+
+#
+# StartGame(table number) - Initiate a game.
+#
+def StartGame
+{
+  tables{ARG}[11]=tables{ARG}[6];
+  tables{ARG}[12]=tables{ARG}[7];
+  forall('players{#}[3]=1',tables{ARG}[6]);
+  forall('net_server_send(#,("ConnectServer",(ConnectAddress(ARG),tables{ARG}[1],tables{ARG}[8])))',tables{ARG}[6]);
+  net_server_send(ARG,("StartGame",NULL));
+}
+
+#
+# RefreshChatRoom() - Called when client asks for chat room update after the game.
+#
+def RefreshChatRoom
+{
+  for(p)(players)
+  {
+    Send(con,("AddRoomPlayer",p+(users{p[1][0]}[3][0]{"avatar"},)));
+  }
+  forall('Send(con,("AddRoomTable",#))',tables);
+}
+
+#
+# User([con]) - Username of the player causing an event or user name
+#   of the player with the connection con.
+#
+def User
+{
+  if(ARG==NULL)
+    ARG=con;
+  if(has_entry(ARG,players))
+    return(players{ARG}[0]);
+  else if(has_entry(ARG,tables))
+    return("Table "+ARG);
+}
+
+#
+# UserWithoutMode([user]) - Username minus mode string of the current player or the player specified.
+#
+def UserWithoutMode
+{
+  push(u);
+  if(typeof(ARG)=="string")
+    u=split(ARG,"-");
+  else
+    u=split(User(),"-");
+  return(u[0]);
+  u=pop();
+}
+
+#
+# Mode([name]) - current special mode ("sealed",etc.) of the current or specified player or "" if not in any mode.
+#
+def Mode
+{
+  push(n);
+  if(typeof(ARG)=="string")
+    n=split(ARG,"-");
+  else
+    n=split(User(),"-");
+
+  if(length(n)==2)
+    return(n[1]);
+  else
+    return("");
+  n=pop();
+}
+
+#
+# IsRestricted(domain,ip) - Return 1 if access from the given domain/ip is restricted.
+#
+def IsRestricted
+{
+  return(0);
+  for(r)(restrict)
+  {
+    if(joker_match(r,ARG[0]) || joker_match(r,ARG[1]))
+      return(1);
+  }
+}
+
+#
+# IsTableBanned(domain,ip) - Return 1 if access from the given domain/ip is restricted.
+#
+def IsTableBanned
+{
+  return(0);
+  if(length(tableban)>0)
+  {
+    for(r)(tableban)
+    {
+      if(joker_match(r,ARG[0]) || joker_match(r,ARG[1]))
+        return(1);
+    }
+  }
+}
+
+#
+# Con(user name) - Return connection number of the player or -1 if not connected.
+#
+def Con
+{
+  push(i);
+  i=0;
+  return(-1);
+  while(i < length(players))
+  {
+    if(players[i][1][0]==ARG)
+    {
+       return(players[i][0]);
+       i=length(players);
+    }
+    i=i+1;
+  }
+  i=pop();
+}
+
+#
+# GiveMoney(user name,amount) - Give or remove money.
+#
+def GiveMoney
+{
+  users{ARG[0]}[1]=users{ARG[0]}[1]+ARG[1];
+  if(Con(ARG[0]) >= 0)
+    Send(Con(ARG[0]),("SetMoney",users{ARG[0]}[1]));
+}
+
+#
+# EnsurePriceUpdate(card number,old,new) - Check if new (seller
+#   list,price) pair differs from old and send update if they do.
+#
+def EnsurePriceUpdate
+{
+  if(ARG[1]!=ARG[2])
+  {
+    push(s);
+    if(ARG[2]==NULL)
+      SendAll("SetPrice",((ARG[0],("",0.0)),));
+    else
+    {
+      if(length(ARG[2][0]) > 1)
+        s=length(ARG[2][0])+" sellers";
+      else
+        s=ARG[2][0][0];
+      SendAll("SetPrice",((ARG[0],(s,ARG[2][1])),));
+    }
+    s=pop();
+  }
+}
+
+#
+# SetOfCard(card number) - return set abbreviation of the card or NULL if none.
+#
+def SetOfCard
+{
+  for(s)(set.data)
+    if(ARG >= s[1][1] && ARG <= s[1][2])
+      return(s[0]);
+}
+
+#
+# AvailableForTrade(user name,card number) - Return 1 if a player can
+#   give the card away (i.e. not registered).
+#
+def AvailableForTrade
+{
+  check_card(ARG);
+
+  if(!PLAYSET_COUNT)
+    return(users{ARG[0]}[2]{ARG[1]}[0] > count(SetOfCard(ARG[1]),users{ARG[0]}[3][2]));
+
+  if(users{ARG[0]}[3][6] == NULL)
+     users{ARG[0]}[3][6] = (,);
+
+  return(users{ARG[0]}[2]{ARG[1]}[0] > count(SetOfCard(ARG[1]),users{ARG[0]}[3][2]) + ((PLAYSET_COUNT-1)*count(SetOfCard(ARG[1]),users{ARG[0]}[3][6])));
+}
+
+#
+# AvailableForSale(user name,card number,amount) - Return 1 if a player
+#   can sell cards (i.e. not registered).
+#
+def AvailableForSale
+{
+  check_card(ARG[0],ARG[1]);
+
+  if(!PLAYSET_COUNT)
+     return(ARG[2] <= users{ARG[0]}[2]{ARG[1]}[0] - count(SetOfCard(ARG[1]),users{ARG[0]}[3][2]));
+
+  if(users{ARG[0]}[3][6] == NULL)
+     users{ARG[0]}[3][6] = (,);
+
+  return(ARG[2] <= users{ARG[0]}[2]{ARG[1]}[0] - count(SetOfCard(ARG[1]),users{ARG[0]}[3][2]) - (PLAYSET_COUNT-1)*count(SetOfCard(ARG[1]),users{ARG[0]}[3][6]));
+}
+
+#
+# Tickets(user name) - Dictionary of all tickets the user have.
+#
+def Tickets
+{
+  if(is_user(ARG))
+  {
+    if(!isdict(users{ARG}[5]))
+      return((,));
+    else
+      return(users{ARG}[5]);
+  }
+}
+#
+# TicketsOf(user name,product) - Return number of tickets user have for product.
+#
+def TicketsOf
+{
+  return(0);
+  push(t);
+  t=Tickets(ARG[0]);
+  if(t!=NULL)
+  {
+    if(has_entry(ARG[1],t))
+      return(t{ARG[1]});
+  }
+  t=pop();
+}
+
+#
+# TicketsList(user name) - Return a list of tickets user have as text or "" if none.
+#
+def TicketsList
+{
+  push(t);
+  t=Tickets(ARG);
+  if(length(t)>0)
+    return(join(forall("tostr((#)[1])+' x '+(#)[0]",t),", "));
+  else
+    return("");
+  t=pop();
+}
+
+#
+# AddTickets(user name,product name,count) - Add or del product tickets.
+#   If count is negative, return number of tickets deleted.
+#
+def AddTickets
+{
+  if(is_user(ARG[0]))
+  {
+    return(0);
+
+    if(!isdict(users{ARG[0]}[5]))
+      users{ARG[0]}[5]=(,);
+
+    if(!has_entry(ARG[1],products))
+      Reply("{red}No such product as "+tostr(ARG[1])+".");
+    else
+    {
+        push(o);
+
+        if(!has_entry(ARG[1],users{ARG[0]}[5]))
+          users{ARG[0]}[5]{ARG[1]}=0;
+
+        o=users{ARG[0]}[5]{ARG[1]};
+        users{ARG[0]}[5]{ARG[1]}=users{ARG[0]}[5]{ARG[1]}+ARG[2];
+
+        if(users{ARG[0]}[5]{ARG[1]}<=0)
+          users{ARG[0]}[5]{ARG[1]}=0;
+
+        if(ARG[2]<0)
+          return(o - users{ARG[0]}[5]{ARG[1]});
+
+        if(users{ARG[0]}[5]{ARG[1]}<=0)
+          users{ARG[0]}[5]=del_entry(ARG[1],users{ARG[0]}[5]);
+
+        o=pop();
+    }
+  }
+}
+
+#
+# RemoveObsoletePrices() - Helper function to be called once after
+#   transition from older server to the caching server. Using God
+#    account, this can be done by issuing /debug RemoveObsoletePrices().
+#
+def RemoveObsoletePrices
+{
+  for(s)(set.data)
+  {
+    Reply("Removing obsolete prices from "+s[1][0]+"...");
+    Reply("Found "+remove_obsolete_prices(seq(s[1][1],s[1][2]))+" entries.");
+  }
+  return("done");
+}
+
+#
+# CancelDraft(table number) - Cancel a pending draft, after the operation has already been verified as legal.
+#
+def CancelDraft
+{
+  draft.tables{ARG}=(0,(,),0,0,0,"",(,),0,(,));
+  for(p)(tables{ARG}[2])
+    players{p}[2]=-1;
+  tables{ARG}[2]=(,);
+  tables{ARG}[4]=0;
+  tables{ARG}[5]=0;
+  tables{ARG}[10]="Draft Table";
+  SendAllNP("DelRoomTable",ARG);
+  SendAllNP("AddRoomTable",(ARG,tables{ARG}));
+  SendAllNP("Message","The draft at table "+ARG+" has been cancelled.");
+}
+
+#
+# SystemInfo(user) - Return system info string for the user or '' if not set.
+#
+def SystemInfo
+{
+  return("");
+  if(is_user(ARG))
+  {
+    if(users{ARG}[3][5]!=NULL)
+      return(users{ARG}[3][5]);
+  }
+}
+
+#
+# CardsOfSetWithRarity(card numbers,rarity) - Return weighted set of cards with given rarity.
+#
+def CardsOfSetWithRarity
+{
+  return(having_rarity(ARG[1],ARG[0]));
+}
+
+#
+# RandomCardSet(set abbrev,distribution) - Return random sample of cards with given distribution.
+#
+def RandomCardSet
+{
+  push(d);
+  push(r);
+  push(t);
+  push(pack);
+  pack=(,);
+  for(d)(ARG[1])
+  {
+    dist=(,);
+    for(r)(split(d[1],"+"))
+    {
+      reps=1;
+      if(find("*",r))
+      {
+        t=split(r,"*");
+        if(reps=toint(t[0]))
+          r=t[1];
+        else if(reps=toint(t[1]))
+          r=t[0];
+        else
+        {
+          Log("Invalid distribution token: "+r);
+          r="";
+        }
+      }
+      if(find("/",r))
+      {
+        t=split(r,"/");
+        dist=dist+(cards{t[0]}{t[1]}*reps);
+      }
+      else
+        dist=dist+(cards{ARG[0]}{r}*reps);
+    }
+    pack=pack+left(shuffle(flatten(dist)),d[0]);
+  }
+  return(pack);
+  pack=pop();
+  t=pop();
+  r=pop();
+  d=pop();
+}
+
+
+#
+# CompleteCardSet(set abbrev,distribution) - Return weighted full copy of distribution.
+#
+def CompleteCardSet
+{
+  return(cards{ARG[0]}{ARG[1]});
+}
+
+#
+# InitTables(set abbrev) - Initialize card distribution tables for a set.
+#
+def InitTables
+{
+  push(s);
+  if(cards==NULL)
+    cards=(,);
+  s=set_data(ARG);
+  s=seq(s[1],s[2]);
+  cards{ARG}=(,);
+  for(r)(rarities)
+    cards{ARG}{r}=CardsOfSetWithRarity(s,r);
+  s=pop();
+}
+
+#
+# Produce(set,type,quantity) - Return n "boosters" or "starters" of set.
+#
+def Produce
+{
+  if(isfunction("Produce"+ucfirst(ARG[1])))
+     return(repeat(ARG[2],"call('Produce'+ucfirst(ARG[1]),ARG[0])"));
+  else if(isfunction("Produce"+ARG[0]+"_"+ucfirst(ARG[1])))
+     return(repeat(ARG[2],"call('Produce'+ARG[0]+'_'+ucfirst(ARG[1]),NULL)"));
+  else if(has_entry(ARG[0],distribution))
+  {
+    if(has_entry(ARG[1],distribution{ARG[0]}))
+      return(repeat(ARG[2],"RandomCardSet(ARG[0],distribution{ARG[0]}{ARG[1]},ARG[2])"));
+    else
+      Log("Invalid product asked: "+ARG[0]+" "+ARG[1]);
+  }
+  else
+    Log("Invalid product asked: "+ARG[0]+" "+ARG[1]);
+}
+
+#
+# FixedSet(set,list of card names) - return fixed set of card numbers.
+#
+def FixedSet
+{
+  push(c);
+  c=images(ARG[1]);
+  if(count((,),c))
+  {
+    Log("ERROR: FixedSet: Invalid card names in fixed set: "+tostr(ARG[1]));
+    push(i);
+    for(i)(length(ARG[1]))
+    {
+       if(c[i]==(,))
+         Log("FAILED:     "+ARG[1][i]);
+    }
+    i=pop();
+    c=(,);
+  }
+  else
+  {
+    c=select("set_of(#)==ARG[0]",flatten(c));
+    if(length(ARG[1]) != length(c))
+    {
+      Log("ERROR: Fixed set size does not match for: "+join(sort(ARG[1]),", "));
+      Log("ERROR: Result was                       : "+join(sort(name(c)),", "));
+    }
+  }
+
+  return(c);
+  c=pop();
+}
+
+#
+# Initialize() - Initialize all card distribution tables.
+#
+def Initialize
+{
+  Log("Initializing tables... ");
+
+  InitDistributions();
+  forall("InitTables(#)",sets());
+
+  for(s)(keys("cards"))
+  {
+    Log("Set "+s+": "+join(select("#!=''",forall("if(length(cards{s}{#})) length(cards{s}{#})+'x'+#; else ''",keys(cards{s})))," "));
+  }
+}
+
+#  /COMMANDS
+#  =========
+
+#
+# Command(string) - Handle special commands.
+#
+def Command
+{
+  push(c);
+  push(u);
+  if(typeof(ARG)=="string")
+  {
+    c=split(ARG," ");
+    if(length(c))
+    {
+      u=User();
+      if(u!="God" && u!="Salesman" && u!="Guard" && u!="Judge")
+        u="player";
+
+      if(!has_entry(c[0],command.acl))
+        Reply("{red}Invalid command "+toval(tostr(ARG))+".");
+      elseif(command.acl{c[0]}[0] >= 0 && length(c)-1 != command.acl{c[0]}[0])
+        Reply("{red}Invalid number of arguments for command "+c[0]+".");
+      elseif(!count(u,command.acl{c[0]}[1]))
+        Reply("{red}You are not allowed to use command "+c[0]+".");
+      else
+        call("Command"+ucfirst(substr(c[0],1,9999)),tail(c));
+    }
+  }
+  u=pop();
+  c=pop();
+}
+
+#
+# CommandReload() - Implementation of the command /reload.
+#
+def CommandReload
+{
+  push(error.echo);
+  CommandSave();
+  SendAll("Message","God patches server...");
+  Log("Reloading function definitions");
+  error.echo=con;
+  execute("common.include");
+  execute("central-server.functions");
+  execute(GAMEDIR+"-central-server.include");
+  SendAll("Message","Success");
+  error.echo=pop();
+}
+
+#
+# CommandSave() - Implementation of the command /save.
+#
+def CommandSave
+{
+  if(lastsave + 60 > current_time())
+    Reply("{orange}Data has already been saved recently.");
+  else
+  {
+    SendAll("Message","{green}Saving...");
+    SaveAll();
+    SendAll("Message","Server data saved.");
+    lastsave=current_time();
+  }
+}
+
+#
+# CommandUsers() - Implementation of the command /users.
+#
+def CommandUsers
+{
+  push(u);
+  push(s);
+  u=keys("users");
+  s="";
+  if(length(ARG))
+  {
+    s=join(ARG," ");
+    u=select("joker_match(s,#)",u);
+  }
+  if(length(u)==0)
+    Reply("{orange}No users matching {yellow}"+s);
+  else if(length(u)<200)
+    Reply("{orange}Users:{white} "+join(u,", ")+".");
+  else
+    Reply("{orange}Users:{white} "+length(u)+" matching.");
+ 
+  s=pop();
+  u=pop();
+}
+
+#
+# CommandRemoveuser() - Implementation of the command /removeuser.
+#
+def CommandRemoveuser
+{
+  if(!is_user(ARG[0]))
+    Reply("{red}No such user as "+ARG[0]+".");
+  else
+  {
+    if(Con(ARG[0])>=0)
+    {
+      push(con);
+      Send(Con(ARG[0]),("Message","{red}Your account has been deleted. Good bye!"));
+      con=Con(ARG[0]);
+      DisconnectPlayer();
+      net_server_close(con);
+      con=pop();
+    }
+    del_prices(ARG[0]);
+    del_entry(ARG[0],"users");
+    SendAll("Message","{green}User account "+ARG[0]+" removed.");
+  }
+}
+
+#
+# CommandReboot() - Implementation of the command /reboot.
+#
+def CommandReboot
+{
+  SendAll("Message","{red}{hr}");
+  SendAll("Message","{red}"+User()+" reboots server. Bye bye!");
+  SendAll("Message","{red}{hr}");
+  Reply("Closing client connections.");
+  SendOther(con,("Quit",NULL));
+  forall('net_server_send(#,("Quit",NULL))',keys("tables"));
+  sleep(5);
+  Reply("Done.");
+  Send(con,("Quit",NULL));
+  sleep(5);
+  quit(0);
+}
+
+#
+# CommandCheckfactory() - Implementation of the command /checkfactory.
+#
+def CommandCheckfactory
+{    
+  Reply("This is a central server. Factory functions are built in.");
+}
+
+#
+# CommandReproduce() - Implementation of the command /reproduce.
+#
+def CommandReproduce
+{
+  forall('if(products{#}[0]==0){SendAll("Message","New limited shipment of "+#+"s arrived."); products{#}[3]=products{#}[3]/2; products{#}[0]=products{#}[3]; products{#}[1]=toval(format("%.2f",products{#}[1]*1.1));}',keys("products"));
+  SendAll("SetProducts",products);
+}
+
+#
+# CommandProducts() - Implementation of the command /products.
+#
+def CommandProducts
+{
+  push(b);
+  Reply("{orange}Products:{white} "+join(forall('b=#; products{b}[0]+" x "+products{b}[2][0]+"/"+#+" ($"+format("%.2f",products{b}[1])+")"',keys("products")),"  "));
+  b=pop();
+}
+
+#
+# CommandGiveticket() - Implementation of the command /giveticket.
+#
+def CommandGiveticket
+{
+  if(length(ARG)<4)
+    Reply("{red}Too few arguments.");
+  else
+  {
+    push(u);
+    push(c);
+    push(p);
+
+    u=ARG[0];
+    c=toint(ARG[1]);
+    p=ARG[2];
+
+    if(!is_user(u))
+      Reply("{red}Invalid user "+tostr(u));
+    else if(!has_entry(p,set.data))
+      Reply("{red}Invalid set abbreviation "+tostr(p));
+    else if(c!=0)
+    {
+      p=set.data{p}[0]+" "+ARG[3];
+      if(!has_entry(p,products))
+        Reply("{red}No such product as "+tostr(p)+".");
+      else
+      {
+        AddTickets(u,p,c);
+        SendAllNP("Message",User()+" gives "+tostr(c)+" free "+p+" tickets to "+u+".");
+      }
+    }
+
+    p=pop();
+    c=pop();
+    u=pop();
+  }
+}
+
+#
+# CommandWant() - Implementation of the command /want.
+#
+def CommandWant
+{
+  if(!is_user(ARG[0]))
+   Reply("{red}Unknown user "+ARG[0]+".");
+  else
+    net_server_send(con,("WantList",(ARG[0],want_list(User(),ARG[0]))));
+}
+
+#
+# CommandHave() - Implementation of the command /have.
+#
+def CommandHave
+{
+  if(!is_user(ARG[0]))
+    Reply("{red}Unknown user "+ARG[0]+".");
+  else
+    net_server_send(con,("HaveList",(ARG[0],have_list(User(),ARG[0]))));
+}
+
+#
+# CommandWhois() - Implementation of the command /whois.
+#
+def CommandWhois
+{
+  if(!is_user(ARG[0]))
+	Reply("{red}Unknown user "+ARG[0]);
+  else
+  {
+    push(m);
+    push(n);
+    push(g);
+    push(c);
+    push(i);
+    push(j);
+    push(t);
+    push(p);
+    c=count_cards(ARG[0]);
+    m="{orange}"+ARG[0];
+    if(Con(ARG[0]) != -1)
+      m=m+" (ONLINE at "+users{ARG[0]}[3][4][2]+")";
+    else
+    {
+      if(length(users{ARG[0]}[3][4])>2)
+        m=m+" (last login from "+users{ARG[0]}[3][4][2]+")";
+    }
+
+    m=m+" client v"+users{ARG[0]}[3][0]{"version"};
+    if(has_entry("system",users{ARG[0]}[3][0]))
+      m=m+" / "+users{ARG[0]}[3][0]{"system"};
+    Reply(m);
+    Reply("  Real Name: "+users{ARG[0]}[3][0]{"realname"});
+    if(typeof(users{ARG[0]}[3][0]{"email"})=="string")
+      Reply("  Email: "+users{ARG[0]}[3][0]{"email"});
+    if(SystemInfo(ARG[0])!="")
+      Reply("  Info: "+SystemInfo(ARG[0]));
+    if(typeof(users{ARG[0]}[3][4])=="list")
+      Reply("  Last login: "+users{ARG[0]}[3][4][0]+", idle since "+users{ARG[0]}[3][4][1]+" ("+TIME_ZONE+")");
+    Reply("  Wealth: $"+format("%.2f",users{ARG[0]}[1])+", owns "+c[0]+" cards, "+c[1]+" for sale, "+c[2]+" wanted");
+    t=TicketsList(ARG[0]);
+    if(t!="")
+       Reply("  Product tickets: "+t);
+    Reply("  Earnings: $"+format("%.2f",users{ARG[0]}[3][1]));
+    m="  Games: ";
+    c=keys(users{ARG[0]}[3][3]);
+    i=0;
+    while(i < length(c))
+    {
+      t=0;
+      p=0.0;
+      g=keys(users{ARG[0]}[3][3]{c[i]});
+      j=0;
+      m=m+c[i]+" player";
+      if(c[i] > 1) m=m+"s";
+      m=m+": ";
+      while(j < length(g))
+      {
+        n=users{ARG[0]}[3][3]{c[i]}{g[j]};
+        m=m+n+" "+g[j]+" ";
+        t=t+n;
+        if(g[j]=="win") p=p+1.0*n;
+        else if(g[j]=="draw") p=p+0.5*n;
+        j=j+1;
+      }
+      m=m+t+" games ("+format("%2.1f",100.0*p/t)+"%) ";
+      i=i+1;
+    }
+    Reply(m);
+    Reply("  Complete sets: "+join(users{ARG[0]}[3][2]," "));
+    if(length(users{ARG[0]}[3][6]) > 0)
+      Reply("  Complete playsets: "+join(users{ARG[0]}[3][6]," "));
+    if(users{ARG[0]}[3][0]{"plan"} != NULL)
+      Reply("  "+users{ARG[0]}[3][0]{"plan"});
+    p=pop();
+    t=pop();
+    j=pop();
+    i=pop();
+    c=pop();
+    g=pop();
+    n=pop();
+    m=pop();
+  }
+}
+
+#
+# CommandRegister() - Implementation of the command /register.
+#
+def CommandRegister
+{
+  if(has_entry(ARG[0],set.data))
+  {
+    push(s);
+    push(n);
+    s=ARG[0];
+    n=user_has_cards(User(),forall('(1,#)',seq(set.data{s}[1],set.data{s}[2])));
+    if(n)
+      Reply("{blue}You still have "+n+" card(s) to collect.");
+    else
+    {
+      if(count(s,users{User()}[3][2]))
+        Reply("{red}You have already registered "+set.data{s}[0]+".");
+      else if(Mode()!="")
+        Reply("{red}Cannot register in "+Mode()+" mode.");
+      else
+      {
+        for(c)(seq(set.data{s}[1],set.data{s}[2]))
+        {
+          check_card(User(),c);
+          if(users{User()}[2]{c}[0]==users{User()}[2]{c}[1])
+          {
+            SetForsale(c,users{User()}[2]{c}[1] - 1);
+            UpdateCard(c);
+          }
+        }
+        n=set.data{s}[2] - set.data{s}[1] + 1;
+        SendAll("Message","{green}"+User()+" has collected all "+set.data{s}[0]+" cards ("+n+" total).");
+        n=n*SET_BONUS_MULTIPLIER;
+        SendAll("Message","{green}"+User()+" is awarded a bonus of $"+format("%.2f",n)+".");
+        TransferMoney(User(),n);
+        users{User()}[3][2]=users{User()}[3][2] + (s,);
+        
+        if(isfunction("RegisterHook"))
+          RegisterHook(ARG);
+      }
+    }
+    n=pop();
+    s=pop();
+  }
+  else
+  {
+    Reply("{red}You tried to register unknown card set {yellow}"+ARG[0]);
+    Reply("Legal card set abbreviations are:"+join(forall("' {yellow}#{white} = '+set.data{#}[0]",keys("set.data")),","));
+  } 
+}
+
+#
+# CommandRegisterplayset() - Implementation of the command /registerplayset.
+#
+def CommandRegisterplayset
+{
+  if(!PLAYSET_COUNT)
+    Reply("{red}This game doesn't support playset registration.");
+  else if(has_entry(ARG[0],set.data))
+  {
+    push(s);
+    push(n);
+    s=ARG[0];
+    n=user_has_cards(User(),forall('(' + PLAYSET_COUNT + ',#)',seq(set.data{s}[1],set.data{s}[2])));
+    if(n)
+      Reply("{blue}You still have "+n+" card(s) to collect.");
+    else
+    {
+      if(users{User()}[3][6] == NULL)
+        users{User()}[3][6] = (,);
+      if(count(s,users{User()}[3][6]))
+        Reply("{red}You have already registered a playset of "+set.data{s}[0]+".");
+      else if(!count(s,users{User()}[3][2]))
+        Reply("{red}You have to register a set of "+set.data{s}[0]+" before registering a playset.");
+      else if(Mode()!="")
+        Reply("{red}Cannot register in "+Mode()+" mode.");
+      else
+      {
+        for(c)(seq(set.data{s}[1],set.data{s}[2]))
+        {
+          check_card(User(),c);
+          if(users{User()}[2]{c}[0] - users{User()}[2]{c}[1] < PLAYSET_COUNT)
+          {
+            SetForsale(c,users{User()}[2]{c}[0] - PLAYSET_COUNT);
+            UpdateCard(c);
+          }
+        }
+        n= set.data{s}[2] - set.data{s}[1] + 1;
+        SendAll("Message","{green}"+User()+" has collected a playset of "+set.data{s}[0]+" cards ("+ PLAYSET_COUNT*n +" total).");
+        n=n*PLAYSET_BONUS_MULTIPLIER;
+        SendAll("Message","{green}"+User()+" is awarded a bonus of $"+format("%.2f",n)+".");
+        TransferMoney(User(),n);
+        users{User()}[3][6]=users{User()}[3][6] + (s,);
+      }
+    }
+    n=pop();
+    s=pop();
+  }
+  else
+  {
+    Reply("{red}You tried to register a playset of unknown card set {yellow}"+ARG[0]);
+    Reply("Legal card set abbreviations are:"+join(forall("' {yellow}#{white} = '+set.data{#}[0]",keys("set.data")),","));
+  } 
+}
+
+#
+# CommandAddproduct() - Implementation of the command /addproduct.
+#
+def CommandAddproduct
+{
+  push(n);
+  push(b);
+  push(p);
+  n=toint(ARG[0]);
+  b=(ARG[1],ARG[2]);
+  p=toreal(ARG[3]);
+  if(n==0)
+    Reply("{red}First argument must be > 0 (# of products).");
+  else if(p <= 0.0)
+    Reply("{red}4th argument must be > 0.0 (# price).");
+  else
+  {
+    push(i);
+    push(e);
+    if(!has_entry(ARG[1],set.data))
+      Reply("{red}Invalid product code "+ARG[1]+".");
+    else
+    {
+      i=set.data{ARG[1]}[0]+" "+ARG[2];
+      if(has_entry(i,products))
+        Reply("{red}Product already added.");
+      else
+      {
+        e=(n,p,b,n);
+        SendAll("Message","{green}New product "+i+" arrived!");
+        products{i}=e;
+        SendAll("SetProducts",products);
+      }
+    }
+    e=pop();
+    i=pop();
+  }
+  p=pop();
+  b=pop();
+  n=pop();
+}
+
+#
+# CommandDelproduct() - Implementation of the command /delproduct.
+#
+def CommandDelproduct
+{
+  push(p);
+  p=NULL;
+
+  for(e)(products)
+  {
+    if(e[1][2]==ARG)
+      p=e[0];
+  }
+  if(p==NULL)
+    Reply("{red}Unknown product "+join(ARG," ")+".");
+  else
+  {
+    del_entry(p,"products");
+    SendAll("Message","{blue}"+p+" is not available any more.");
+    SendAll("SetProducts",products);
+  }
+  p=pop();
+}
+
+#
+# CommandGrant() - Implementation of the command /grant.
+#
+def CommandGrant
+{
+  if(User() != "God" && ARG[0] != User())
+    Reply("{red}You can grant only your own password.");
+  else if(!is_user(ARG[0]))
+    Reply("{red}Unknown user "+ARG[0]+".");
+  else if(!is_user(ARG[1]))
+    Reply("{red}Unknown user "+ARG[1]+".");
+  else if(Con(ARG[1])==-1)
+    Reply("{red}"+ARG[1]+" is not connected.");
+  else
+  {
+    Send(Con(ARG[1]),("SetPassword",(ARG[0],users{ARG[0]}[0])));
+    SendAll("Message",User()+" grants password of "+ARG[0]+" to "+ARG[1]+".");
+  }
+}
+
+#
+# CommandRo() - Implementation of the command /ro.
+#
+def CommandRo
+{
+  if(!has_entry("default",users{User()}[4][0]))
+    Reply("{red}Cannot restore, you must register it first.");
+  else
+    Send(con,("RestoreDeck",("default",users{User()}[4][0]{"default-original"})));
+}
+
+#
+# CommandRo2() - Implementation of the command /ro2.
+#
+# NOTE: dirty trick, we send the deck name default to cause the client
+# side code to treat it like it treats an /ro deck.
+def CommandRo2
+{
+  if(!has_entry("alternative",users{User()}[4][0]))
+    Reply("{red}Cannot restore, you must register it first.");
+  else
+    Send(con,("RestoreDeck",("default",users{User()}[4][0]{"alternative-original"})));
+}
+
+#
+# CommandDownloaddeck() - Implementation of the command /downloaddeck.
+#
+def CommandDownloaddeck
+{
+  if(!is_user(ARG[0]))
+    Reply("{red}No such user.");
+  else if(!has_entry("download",users{ARG[0]}[4][0]))
+    Reply("{red}"+ARG[0]+" does not have a downloadable deck.");
+  else if(length(users{ARG[0]}[4][0]{"download"}) < 1)
+    Reply("{red}"+ARG[0]+" does not have a downloadable deck.");
+  else
+    Send(con,("RestoreDeck",("Downloaded from "+ARG[0],users{ARG[0]}[4][0]{"download-original"})));
+}
+
+
+#
+# CommandKick(user) - Implementation of the command /kick.
+#
+def CommandKick
+{
+  if(!is_user(ARG[0]))
+    Reply("{red}No such user as "+ARG[0]+".");
+  else if(Con(ARG[0]) < 0)
+    Reply("{red}Not connected.");
+  else if(ARG[0]=="God")
+    Reply("{red}Nobody kicks God!");
+  else
+  {
+    SendAll("Message","{orange}"+User()+" kicks "+ARG[0]+" from the chat room.");
+    push(con);
+    Send(Con(ARG[0]),("Message","{red}You have been kicked out!"));
+    con=Con(ARG[0]);
+    DisconnectPlayer();
+    net_server_close(con);
+    con=pop();
+  }
+}
+
+#
+# CommandKicktable() - Implementation of the command /kicktable.
+#
+def CommandKicktable
+{
+  push(n);
+  n=toint(ARG[0]);
+  if(ARG[0]=="all")
+  {
+     for(n)(keys(tables))
+       CommandKicktable((tostr(n),));;
+  }
+  else if(!has_entry(n,tables))
+    Reply("{red}No such table as "+ARG[0]+".");
+  else
+  {
+    SendAll("Message","{orange}"+User()+" removes table "+ARG[0]+" from the chat room.");
+    push(con);
+    con=n;
+    DisconnectServer();
+    Send(con,("Quit",NULL));
+    net_server_close(con);
+    con=pop();
+  }
+  n=pop();
+}
+
+#
+# CommandYell() - Implementation of the command /yell.
+#
+def CommandYell
+{
+  push(s);
+  s=join(ARG," ");
+  if(ARG != "")
+  {
+    for(m)(split(s,"\n"))
+      SendAll("Message","{blue}"+User()+" yells: "+m);
+  }
+  s=pop();
+}
+
+#
+# CommandWhisper() - Implementation of the command /whisper (private message).
+#
+def CommandWhisper
+{
+  if(length(ARG)<2)
+    Reply("{red}You need to supply a name and message.");
+  else if(ARG[0] == User())
+    Reply("{red}Why are you talking to yourself?");
+  else if(Con(ARG[0]) >= 0)
+  {
+    Reply("{gold}* you whisper to "+ARG[0]+": "+join(tail(ARG)," "));
+    Send(Con(ARG[0]),("Message","{gold}"+User()+" whispers: "+join(tail(ARG)," ")));
+  }
+  else
+    Reply("{red}No player '"+ARG[0]+"' currently online.");
+}
+
+def CommandW
+{
+  CommandWhisper(ARG);
+}
+
+#def CommandTest
+#{
+#  ban=(,);
+#  restrict=(,);
+#}
+
+#
+# CommandStartdraft(# of players, set[, set2...]) - Start a draft.
+#
+def CommandStartdraft
+{
+  push(e);
+  push(t);
+  push(ct);
+  e=0;
+  ct=current_time();
+  for(t)(draft.tables)
+  {
+    if(User()==t[1][5] && t[1][4]+3600 > ct)
+      e=1;
+  }
+
+  if(e)
+    Reply("{red}You already have a draft table reserved. You can use {yellow}/canceldraft{red} to free up the slot and try again.");
+  else if(length(ARG)<2)
+    Reply("{red}Invalid argument.");
+  else
+  {
+    e = -1;
+    ARG[0]=toint(ARG[0]);
+#   See if there's a free slot
+    for(t)(shuffle(keys(draft.tables)))
+    {
+      if(e<0 && draft.tables{t}[3]==0)
+        e=t;
+    }
+#   See if there's an abandoned table (more than 1 hour old) which can be reclaimed
+    for(t)(shuffle(keys(draft.tables)))
+    {
+      if(e<0 && draft.tables{t}[3]==1 && draft.tables{t}[4]+3600 <= ct)
+        e=t;
+    }
+    if(e<0)
+      Reply("{red}No open draft tables available.");
+    else if(ARG[0] < DRAFT_MIN_PLAYERS || ARG[0] > DRAFT_MAX_PLAYERS)
+      Reply("{red}Invalid number of players.");
+    else
+    {
+      push(p);
+#     Allow separation with spaces, commas, hyphens, or slashes
+      p=uc(join(tail(ARG)," "));
+      p=tr(p,",/-"," ");
+      p=split(p," ");
+      if(length(p)==1)
+        p=p*DRAFT_DEFAULT_PRODUCTS;
+      if(length(p)>DRAFT_MAX_PRODUCTS)
+        Reply("{red}That's too many products for a single draft.");
+      else
+      {
+        push(s);
+        push(err);
+        push(bet);
+        draftsetup=(ARG[0],p,p);
+      
+        if(isfunction("StartDraftHook"))
+          StartDraftHook();
+
+        err=0;
+        bet=0;
+        for(p)(length(draftsetup[2]))
+        {
+          if(!err)
+          {
+            s=(set_data(draftsetup[2][p]))[0];
+            if(s=="")
+            {
+              Reply("{red}Invalid set code: "+draftsetup[2][p]);
+              err=1;
+            }
+            else if(!has_entry(s+" booster",products))
+            {
+              Reply("{red}No products available for "+draftsetup[2][p]);
+              err=1;
+            }
+            else
+            {
+              bet=bet+products{s+" booster"}[1];
+              draftsetup[2][p]=s+" booster";
+            }
+          }
+        }
+        
+        if(!err)
+        {
+#         Everything checks out! Set up the draft table.
+          draft.tables{e}=(ARG[0],draftsetup[2],bet,1,current_time(),UserWithoutMode(),(,),0,(,));
+          for(p)(tables{e}[2])
+            players{p}[2]=-1;
+          tables{e}[2]=(,);
+          tables{e}[4]=bet;
+          tables{e}[5]=ARG[0];
+          tables{e}[10]=join(draftsetup[1],"-")+" Draft";
+          SendAllNP("DelRoomTable",e);
+          SendAllNP("AddRoomTable",(e,tables{e}));
+          net_server_send(e,("SetPlayers",ARG[0]));
+          SendAllNP("Message",User()+" reserved a "+join(draftsetup[1],"-")+" draft at table "+e+". The price of this draft will be $"+format("%.2f",bet)+".");
+        }
+        bet=pop();
+        err=pop();
+        s=pop();
+      }
+      p=pop();
+    }
+  }
+  ct=pop();
+  t=pop();
+  e=pop();
+}
+
+#
+# CommandCanceldraft([table number]) - Cancel a pending draft.
+#
+def CommandCanceldraft
+{
+  if(length(ARG)>0)
+  {
+    ARG=toint(ARG[0]);
+    if(has_entry(ARG,draft.tables))
+    {
+      if(!count(UserWithoutMode(),("God","Guard","Judge",draft.tables{ARG}[5])))
+        Reply("{red}That table isn't yours to cancel.");
+      else if(draft.tables{ARG}[3] != 1)
+        Reply("{red}You can't cancel that table now.");
+      else
+        CancelDraft(ARG);
+    }
+    else
+      Reply("{red}That isn't a draft table.");
+  }
+  else
+  {
+    push(t);
+    push(e);
+    e=-1;
+    for(t)(keys(draft.tables))
+      if(e<0 && draft.tables{t}[3]==1 && draft.tables{t}[5]==UserWithoutMode())
+        e=t;
+    
+    if(e<0)
+      Reply("{red}You don't have a table reserved.");
+    else
+      CancelDraft(e);
+    e=pop();
+    t=pop();
+  }
+}
+
+#
+# CommandBan() - Implementation of the command /ban.
+#
+def CommandBan
+{
+  if(length(ARG)==0)
+  {
+    Reply("{orange}Banned:");
+    if(length(ban)==0)
+      Reply("  no bans");
+    else
+      Reply("  "+join(ban,", "));
+  }
+  else
+  {
+    for(u)(ARG)
+    {
+      if(!is_user(u))
+        Reply("{red}No such player as "+u+".");
+      elseif(u=="God" || u=="Guard")
+        Reply("{red}Can't ban "+u+".");
+      elseif(count(u,ban))
+        Reply("{red}Already banned.");
+      else
+      {
+        ban=ban+(u,);
+        SendAll("Message","{orange}Player "+u+" is now banned.");
+        if(Con(u)>=0) 
+        {
+          Send(Con(u),("Message","{red}{sz30}You are banned!"));
+          Send(Con(u),("Message","{red}{sz30}Find another server if you must!"));
+          CommandKick(u,);
+        }
+      }
+    }
+  }
+}
+
+#
+# CommandUnban() - Implementation of the command /unban.
+#
+def CommandUnban
+{
+  if(count(ARG[0],ban)==0)
+    Reply("{red}"+ARG[0]+"is not banned.");
+  else
+  {
+    ban=ban-(ARG[0],);
+    SendAll("Message","{orange}Player "+ARG[0]+" is now unbanned.");
+  }
+}
+
+#
+# CommandRestrict() - Implementation of the command /restrict.
+#
+def CommandRestrict
+{
+  if(length(ARG)==0)
+  {
+    Reply("{orange}Restricted access:");
+    if(length(restrict)==0)
+      Reply("  no restricts");
+    else
+      Reply("  "+join(restrict,", "));
+  }
+  else
+  {
+    for(u)(ARG)
+    {
+      if(count(u,restrict))
+        Reply("{red}Already restricted.");
+      else
+      {
+        restrict=restrict+(u,);
+        SendAll("Message","{orange}Access from "+u+" is now restricted.");
+      }
+    }
+  }
+}
+
+#
+# CommandUnrestrict() - Implementation of the command /unrestrict.
+#
+def CommandUnrestrict
+{
+  if(count(ARG[0],restrict)==0)
+    Reply("{red}"+ARG[0]+" is not restricted.");
+  else
+  {
+    restrict=restrict-(ARG[0],);
+    SendAll("Message","{orange}Access from "+ARG[0]+" is now unrestricted.");
+  }
+}
+
+#
+# CommandBans() - Implementation of the command /bans.
+#
+def CommandBans
+{
+  CommandBan((,));
+  CommandRestrict((,));
+}
+
+#
+# CommandFaq() - Implementation of the command /faq.
+#
+def CommandFaq
+{
+  push(m);
+  m=join(ARG," ");
+  if(!binary_load("faq"))
+    faq=(,);
+  if(m=="")
+  {
+    Reply("{hr}");
+    Reply("{cyan}Frequently Asked Questions:");
+    Reply("{cyan}");
+    for(f)(faq)
+      Reply("{cyan} "+f);
+    Reply("{hr}");
+  }
+  else
+  {
+    m=m+" ("+User()+")";
+    SendAll("Message","{cyan}FAQ: "+m);
+    faq=faq+(m,);
+    binary_save("faq");
+  }
+  m=pop();
+}
+
+#
+# CommandFaqclear() - Implementation of the command /faqclear.
+#
+def CommandFaqclear
+{
+  push(f);
+  f=SavePath()+"faq_proposals.txt";
+  binary_load("faq");
+  faq=(""," * FAQ Proposals "+date()+" "+time()+" *","")+faq;
+  write_file(f,faq);
+  Reply("FAQ Proposals written to '"+f+"'.");
+  faq=(,);
+  binary_save("faq");
+  f=pop();
+}
+
+#
+# CommandDebug() - Implementation of the command /debug.
+#
+def CommandDebug
+{
+  push(e);
+  push(error.echo);
+  e=join(ARG," ");
+  Reply("{orange}Trying:{white} '"+e+"'");
+  error.echo=con;
+  Reply("{green}Ans:{white} "+tostr(eval(e)));
+  error.echo=pop();
+  e=pop();
+}
+
+#
+# CommandRtfm() - Implementation of the command /rtfm.
+#
+def CommandRtfm
+{
+  push(m);
+  m=join(ARG," ");
+  if(m=="")
+    Say(RTFM);
+  else
+    Say(RTFM+"  ("+m+")");
+  m=pop();
+}
+
+#
+# CommandInfo() - Implementation of the command /info.
+#
+def CommandInfo
+{
+  if(length(ARG) < 1)
+    Reply("{red}Invalid arguments.");
+  else if(!is_user(ARG[0]))
+    Reply("{red}Invalid user "+tostr(ARG[0])+".");
+  else
+  {
+    if(length(ARG)==1)
+    {
+      Reply("{orange}System info for "+ARG[0]+": {white}'"+SystemInfo(ARG[0])+"'");
+    }
+    else
+    {
+      push(i);
+      i=join(tail(ARG)," ");
+      if(i=="NULL")
+      {
+        users{ARG[0]}[3][5]=NULL;
+        Reply("{orange}System info removed for "+ARG[0]);
+      }
+      else
+      {
+        users{ARG[0]}[3][5]=i;
+        Reply("{orange}System info for "+ARG[0]+" set to: {white}'"+SystemInfo(ARG[0])+"'");
+      }
+      i=pop();
+    }
+  }
+}

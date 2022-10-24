@@ -1,0 +1,66 @@
+#!/bin/sh
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:./lib"
+export LD_LIBRARY_PATH
+
+SERVER="./ccg_server"
+
+if [ ! -f $SERVER ]; then
+    SYS=`uname -s|tr A-Z a-z`-`uname -m`
+    SYS=`echo $SYS|sed -e 's/i[3456]86/i386/'`
+    SERVER="module_$SYS/ccg_server"
+fi
+
+if [ -z "$1" ]; then
+  	echo "usage: Server [<options>] meta-<game>|factory-<game>|<game>"
+  	$SERVER | grep -A 999 options: 
+  	exit
+fi
+
+trg="--load server.triggers"
+while [ ! -z "$1" ]; do
+
+	a=`echo $1 | sed -e 's/\(.*\)-.*/\1/'`
+	b=`echo $1 | sed -e 's/.*-\(.*\)/\1/'`
+	c=`./perl/game_info.pl $1 xml`
+
+	if [ "$a" = "meta" ]; then
+		trg="--load meta-server.triggers"
+		xml="$b.xml"
+	elif [ "$a" = "factory" ]; then
+		trg="--load factory-server.triggers"
+		xml="$b.xml"
+	elif [ "$a" = "central" ]; then
+		trg="--load central-server.triggers"
+		xml="$b.xml"
+	elif [ "$a" = "game" ]; then
+		xml="$b.xml"
+	elif [ "$c" != "" ]; then
+		xml=$c
+	elif [ "$1" != "$game" ]; then
+		opt="$opt $1"
+	fi
+
+	shift
+done
+
+if [ ! -f xml/$xml ]; then
+  echo "You must install game package having xml/$xml"
+  exit 1
+fi
+
+if [ ! -f $SERVER ]; then
+  echo "You must install game package having server binaries."
+  exit 1
+fi
+
+COMMAND="$SERVER $opt $trg $xml"
+
+while true; do
+	echo "Running $COMMAND (Server script PID $$)"
+	if $COMMAND; then
+		echo "Server exited normally"
+	else
+		echo "Server returned error, sleeping for a moment"
+		sleep 15
+	fi
+done

@@ -1,0 +1,635 @@
+#
+# DECK RULES
+# ==========
+
+deck_rules=(,);
+server_description="Dream Cards";
+
+deck_rules{"2-deck Hero (D)"}=(,);
+deck_rules{"2-deck Hero (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleCheckExpression",("Maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"E\")")),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\" && Attr(\"race\",#)!=\"Wizard\"")),
+  ("RuleLimitByExpression",(999999,"Attr(\"site_type\",#)==\"{H}\"")),
+  ("RuleLimitByExpression",(5,"Attr(\"race\",#)==\"Wizard\"")),
+  ("RuleLimitGeneral",3),
+);
+deck_rules{"2-deck Hero (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"H\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"H\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"E\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#))!=NULL")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Hero Character\" && Attr(\"race\",#)!=\"Wizard\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",115),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Hero Character\" && Attr(\"type\",#)!=\"Hero Resource\" && Attr(\"type\",#)!=\"Hazard\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\" && !(Attr(\"type\",#)==\"Minion Resource\" && find(\"Item\",Attr(\"class\",#))) && name(#)!=\"Tidings of Death\" && name(#)!=\"Deadly Dart\" && name(#)!=\"Sudden Call\" && name(#)!=\"Gnawed Ways\"  && Attr(\"type\",#)!=\"Dual Resource\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Hero (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Hero (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Hero (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(1,"Attr(\"race\",#)==\"Wizard\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Hero Character\" || Attr(\"type\",#)==\"Dual Character\" || (Attr(\"type\",#)==\"Minion Character\" && Attr(\"race\",#)==\"Elf\")")),
+  ("RuleLimitByExpression",(3,"(Attr(\"class\",#)==\"Minor Item\" && Attr(\"unique\",#)!=\"yes\") 
+								|| name(#)==\"Rumours of Rings\" 
+								|| name(#)==\"New Closeness to his Kin\" 
+								|| name(#)==\"Welcomed by the Lord and the Lady\" 
+								|| name(#)==\"Draw Swords Together\" 
+								|| name(#)==\"Grim Voiced and Grim Faced\"
+								|| name(#)==\"Clan-bound\"
+								|| name(#)==\"Open Alliance\"
+								|| name(#)==\"Dernhelm\"
+								|| name(#)==\"Long They Journeyed\"
+								|| name(#)==\"Make League and Common Council\"
+								|| name(#)==\"Ranger's Gear\"
+								|| name(#)==\"Son of Eomund\"
+								|| name(#)==\"Towers Destroyed\"
+								|| name(#)==\"Welcomed by the Lord and the Lady\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Hero (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(1,"name(#)==\"Ancient Deep-hold\" || name(#)==\"The Wind-deeps\" || name(#)==\"The Drowning Deeps\" || name(#)==\"The Rusted-deeps\" || name(#)==\"Remains of Thangorodrim\" || Attr(\"type\",#)==\"Region\"")),
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Hero Site\" && Attr(\"type\",#)!=\"Dual Site\"")),
+  ("RulePass",NULL),
+);
+
+deck_rules{"2-deck Minion (D)"}=(,);
+deck_rules{"2-deck Minion (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleCheckExpression",("Maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleCheckExpression",("Specific cards","RuleSpecific(#)==0")),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"E\")")),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\" && Attr(\"race\",#)!=\"Ringwraith\"")),
+  ("RuleLimitByExpression",(999999,"Attr(\"site_type\",#)==\"{H}\"")),
+  ("RuleLimitByExpression",(9,"name(#)==\"Black Horse\"")),
+  ("RuleLimitByExpression",(3,"name(#)==\"Vein of Arda\"")),
+  ("RuleLimitByExpression",(5,"Attr(\"race\",#)==\"Ringwraith\" || name(#)==\"The Lidless Eye\" || name(#)==\"Sauron\" || name(#)==\"The Necromancer\"")),
+  ("RuleCardLimitGeneral",3),
+);
+deck_rules{"2-deck Minion (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"M\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"M\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"E\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(10,"(Attr(\"type\",#)==\"Minion Character\" || Attr(\"type\",#)==\"Dual Character\" || Attr(\"type\",#)==\"Dual Agent Character\") && Attr(\"race\",#)!=\"Ringwraith\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",115),
+  ("RuleLimitByExpression",(3,"name(#)==\"Vein of Arda\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && !(Attr(\"type\",#)==\"Hero Resource\" && find(\"Item\",Attr(\"class\",#))) && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Beasts of the Wood\" && name(#)!=\"Wild Hounds\" && name(#)!=\"Gnawed Ways\" && Attr(\"type\",#)!=\"Dual Resource\" ")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Minion (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Minion (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Minion (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(1,"Attr(\"race\",#)==\"Ringwraith\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" || Attr(\"type\",#)==\"Dual Character\" || Attr(\"type\",#)==\"Dual Agent Character\"")),
+  ("RuleLimitByExpression",(3,"(Attr(\"class\",#)==\"Minor Item\" && Attr(\"unique\",#)!=\"yes\")
+									|| name(#)==\"Open to the Summons\" 
+									|| name(#)==\"Orders from Lugbúrz\" 
+									|| name(#)==\"Whispers of Rings\"  
+									|| name(#)==\"A Few Trusty Lads\" 
+									|| name(#)==\"Iron-home\" 
+									|| name(#)==\"Foundations Remain\" 
+									|| name(#)==\"The Lord of the Rings\"
+									|| name(#)==\"The Dark Roads\"
+									|| name(#)==\"Maranya\"")),
+);
+deck_rules{"2-deck Minion (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Minion Site\" && Attr(\"type\",#)!=\"Dual Site\" && Attr(\"type\",#)!=\"Region\"")),
+  ("RulePass",NULL),
+);
+
+deck_rules{"2-deck Fallen-wizard (D)"}=(,);
+deck_rules{"2-deck Fallen-wizard (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleLimitEachByExpression",(999999,"Attr(\"type\",#)==\"Fallen-wizard Site\"")),
+  ("RuleLimitEachByExpression",(1,"find(\"Site\",Attr(\"type\",#))!=NULL")),
+  ("RuleCheckExpression",("maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleCheckExpression",("specific cards","RuleSpecific(#)==1")),
+  ("RuleCardLimitSingle",("The Balrog",0)),
+  ("RuleCardLimitSingle",("Cracks of Doom",0)),
+  ("RuleCardLimitSingle",("Favor of the Valar",0)),
+  ("RuleCardLimitSingle",("Gollum's Fate",0)),
+  ("RuleCardLimitSingle",("Hour of Need",0)),
+  ("RuleCardLimitSingle",("Kill All But NOT the Halflings",0)),
+  ("RuleCardLimitSingle",("The Lidless Eye",0)),
+  ("RuleCardLimitSingle",("The Sun Unveiled",0)),
+  ("RuleCardLimitSingle",("Glamour of Surpassing Excellance",0)),
+  ("RuleCardLimitSingle",("Messenger of Mordor",0)),
+  ("RuleCardLimitSingle",("News Must Get Through",0)),
+  ("RuleCardLimitSingle",("News of the Shire",0)),
+  ("RuleCardLimitSingle",("Old Road",0)),
+  ("RuleCardLimitSingle",("The Windlord Found Me",0)),
+  ("RuleCardLimitSingle",("Wizard Uncloaked",0)),
+  ("RuleCardLimitSingle",("Use Your Legs",0)),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"F\")")),
+  ("RuleLimitEachByExpression",(3,"Attr(\"race\",#)==\"Fallen-wizard\"")),
+  ("RuleCheckExpression",("uniqueness","RuleBothHeroAndMinionUnique(#)")),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Hero Resource\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Resource\" && name(#)!=\"Sudden Call\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Hero Character\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Character\"")),
+  ("RuleCardLimitGeneral",3),
+);
+deck_rules{"2-deck Fallen-wizard (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"F\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"F\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"F\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(10,"find(\"Character\",Attr(\"type\",#))!=NULL && Attr(\"race\",#)!=\"Fallen-wizard\"")),
+  ("RuleLimitByExpression",(3,"Attr(\"race\",#)==\"Fallen-wizard\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",115),
+  ("RuleLimitByExpression",(0,"(Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && Attr(\"type\",#)!=\"Hero Character\" && Attr(\"type\",#)!=\"Hero Resource\" && Attr(\"type\",#)!=\"Stage Resource\" && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Sudden Call\") || Attr(\"race\",#)==\"Ringwraith\" && !=\"Dual Resource\" && Attr(\"type\",#)!\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Fallen-wizard (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Fallen-wizard (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Fallen-wizard (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Wizard\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" || Attr(\"type\",#)==\"Hero Character\"")),
+  ("RuleLimitByExpression",(3,"(Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Rumours of Rings\" || name(#)==\"New Closeness to his Kin\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"Welcomed by the Lord and the Lady\"  || name(#)==\"Draw Swords Together\" || name(#)==\"Grim Voiced and Grim Faced\") && Attr(\"unique\",#)!=\"yes\" |\")), || (Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Open to the Summons\" || name(#)==\"Orders from Lugbúrz\" || name(#)==\"Whispers of Rings\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"A Few Trusty Lads\" || name(#)==\"Iron-home\" || name(#)==\"Foundations Remain\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"The Lord of the Rings\")")),
+  ("RuleCheckExpression",("starting stage points","RuleStagepoints(#)==3")),
+  ("RuleCheckExpression",("one non-unique starting stage card","RuleNonUniqueStageCards(#) > 0")),
+  ("RuleLimitByExpression",(3,"Attr(\"type\",#)==\"Stage Resource\"")),
+);
+deck_rules{"2-deck Fallen-wizard (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(1,"name(#)==\"Ancient Deep-hold\" || name(#)==\"The Wind-deeps\" || name(#)==\"The Drowning Deeps\" || name(#)==\"The Rusted-deeps\" || name(#)==\"Remains of Thangorodrim\" || Attr(\"type\",#)==\"Region\"")),
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Minion Site\" && Attr(\"type\",#)!=\"Hero Site\" && Attr(\"type\",#)!=\"Fallen-wizard Site\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Balrog (D)"}=(,);
+deck_rules{"2-deck Balrog (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleCheckExpression",("Maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Dwarf Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Dúnadan Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Eagle Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Elf Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Ent Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Hobbit Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Man Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Special Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"class\",#)==\"Wose Faction\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Dwarf\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Dúnadan\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Elf\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Fallen-wizard\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Hobbit\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Man\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Wizard\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)==\"Minion Character\" && Attr(\"specific\",#)!=\"Balrog\" && toint(Attr(\"mind\",#)) > 8 && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"B\")")),
+  ("RuleLimitByExpression",(999999,"Attr(\"site_type\",#)==\"{H}\"")),
+  ("RuleCardLimitSingle",("Above the Abyss",0)),
+  ("RuleCardLimitSingle",("Bade to Rule",0)),
+  ("RuleCanonicalCardLimitSingle",("The Balrog [M]",0)),
+  ("RuleCardLimitSingle",("Balrog of Moria",0)),
+  ("RuleCardLimitSingle",("The Black Council",0)),
+  ("RuleCardLimitSingle",("Black Horse",0)),
+  ("RuleCardLimitSingle",("Black Rider",0)),
+  ("RuleCardLimitSingle",("By the Ringwraith's Word",0)),
+  ("RuleCardLimitSingle",("Creature of an Older World",0)),
+  ("RuleCardLimitSingle",("Fell Rider",0)),
+  ("RuleCardLimitSingle",("The Fiery Blade",0)),
+  ("RuleCardLimitSingle",("Helm of Fear",0)),
+  ("RuleCardLimitSingle",("Heralded Lord",0)),
+  ("RuleCardLimitSingle",("Durin's Bane",0)),
+  ("RuleCardLimitSingle",("Kill All But NOT the Halflings",0)),
+  ("RuleCardLimitSingle",("The Lidless Eye",0)),
+  ("RuleCardLimitSingle",("Morgul-blade",0)),
+  ("RuleCardLimitSingle",("News of the Shire",0)),
+  ("RuleCardLimitSingle",("Open to the Summons",0)),
+  ("RuleCardLimitSingle",("Orders from Lugbúrz",0)),
+  ("RuleCardLimitSingle",("Padding Feet",0)),
+  ("RuleCardLimitSingle",("The Ring Leaves Its Mark",0)),
+  ("RuleCardLimitSingle",("Sauron",0)),
+  ("RuleCardLimitSingle",("They Ride Together",0)),
+  ("RuleCardLimitSingle",("Use Your Legs",0)),
+  ("RuleCardLimitSingle",("While the Yellow Face Sleeps",0)),
+  ("RuleCardLimitSingle",("Adûnaphel the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Akhôrahil the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Dwar the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Hoarmûrath the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Indûr the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Khamûl the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Ren the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Ûvatha the Ringwraith",0)),
+  ("RuleCardLimitSingle",("The Witch-king",0)),
+  ("RuleCardLimitSingle",("Adûnaphel Unleashed",0)),
+  ("RuleCardLimitSingle",("Akhôrahil Unleashed",0)),
+  ("RuleCardLimitSingle",("Dwar Unleashed",0)),
+  ("RuleCardLimitSingle",("Hoarmûrath Unleashed",0)),
+  ("RuleCardLimitSingle",("Indûr Unleashed",0)),
+  ("RuleCardLimitSingle",("Khamûl Unleashed",0)),
+  ("RuleCardLimitSingle",("Ren Unleashed",0)),
+  ("RuleCardLimitSingle",("Ûvatha Unleashed",0)),
+  ("RuleCardLimitSingle",("The Witch-king Unleashed",0)),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\" && canonical_name(#)!=\"The Balrog [B]\"")),
+  ("RuleCardLimitGeneral",3),
+);
+deck_rules{"2-deck Balrog (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"B\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"B\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"B\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\" && canonical_name(#)!=\"The Balrog [B]\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",115),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Balrog Character\" && Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && !(Attr(\"type\",#)==\"Hero Resource\" && find(\"Item\",Attr(\"class\",#))) && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Gnawed Ways\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Balrog (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Balrog (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Balrog (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\"")),
+  ("RuleLimitByExpression",(3,"((Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Open to the Summons\" || name(#)==\"Orders from Lugbúrz\" || name(#)==\"Whispers of Rings\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"A Few Trusty Lads\" || name(#)==\"Iron-home\" || name(#)==\"Foundations Remain\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"The Lord of the Rings\") || name(#)==\"Gangways over the Fire\" || name(#)==\"Orders from the Great Demon\") || name(#)==\"A Few Trusty Lads\"")),
+);
+deck_rules{"2-deck Balrog (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Minion Site\" && Attr(\"type\",#)!=\"Balrog Site\"")),
+  ("RuleCanonicalCardLimitSingle",("Moria [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Barad-dûr [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Carn Dûm [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Cirith Gorgor [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Cirith Ungol [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Dol Guldur [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Minas Morgul [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Moria [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Gem-deeps [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Iron-deeps [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Pûkel-deeps [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Sulfur-deeps [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-courts [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-galleries [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-gates [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-grottos [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-leas [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-vaults [M]",0)),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Elf-lord (D)"}=(,);
+deck_rules{"2-deck Elf-lord (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==\"Fallen-wizard Site\"")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)!=\"Elf-lord Site\" && Attr(\"site_type\",#)==\"{H}\"")),
+  ("RuleCheckExpression",("specific cards","RuleSpecific(#)==1")),
+  ("RuleLimitByExpression",(999999,"Attr(\"type\",#)==\"Elf-lord Site\" && Attr(\"specific\",#)!=\"\"")),
+  ("RuleLimitEachByExpression",(1,"Attr(\"type\",#)==\"Elf-lord Site\"")),
+  ("RuleLimitEachByExpression",(1,"find(\"Site\",Attr(\"type\",#))!=NULL")),
+  ("RuleCheckExpression",("maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleCardLimitSingle",("Evermist",1)),
+  ("RuleCardLimitSingle",("Bad Company",0)),
+  ("RuleCardLimitSingle",("Great Ruse",0)),
+  ("RuleCardLimitSingle",("Greater Half-Orcs",0)),
+  ("RuleCardLimitSingle",("Half-Orcs",0)),
+  ("RuleCardLimitSingle",("Mischief in a Mean Way",0)),
+  ("RuleCardLimitSingle",("Spells Born of Discord",0)),
+  ("RuleCardLimitSingle",("Wizard's Myrmidon",0)),
+  ("RuleCardLimitSingle",("Awaiting the Call",0)),
+  ("RuleCardLimitSingle",("Bade to Rule",0)),
+  ("RuleCardLimitSingle",("Freeze the Flesh",0)),
+  ("RuleCardLimitSingle",("Messenger of Mordor",0)),
+  ("RuleCardLimitSingle",("News Must Get Through",0)),
+  ("RuleCardLimitSingle",("No Better Use",0)),
+  ("RuleCardLimitSingle",("Ready to his Will",0)),
+  ("RuleCardLimitSingle",("The Black Council",0)),
+  ("RuleCardLimitSingle",("The Ring Leaves Its Mark",0)),
+  ("RuleCardLimitSingle",("World Gnawed by the Nameless",0)),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"E\")")),
+  ("RuleLimitEachByExpression",(5,"Attr(\"race\",#)==\"Elf-lord\"")),
+  ("RuleCheckExpression",("uniqueness","RuleBothHeroAndMinionUnique(#)")),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\"")),
+  ("RuleLimitEachByExpression",(3,"Attr(\"type\",#)==\"Hero Resource\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Resource\" && name(#)!=\"Sudden Call\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Hero Character\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Character\"")),
+  ("RuleCardLimitGeneral",3),
+);
+deck_rules{"2-deck Elf-lord (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"F\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"F\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"E\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Orc\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Troll\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==\"Minion Resource\" && find(\"event\",Attr(\"class\",#))==NULL && find(\"Ally\",Attr(\"class\",#))==NULL")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='\"Two-headed\" Troll'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Black Horse'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Bolvag'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Cave Troll'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Creature of an Older World'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Eloekklo, Demon of the North Wind'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Evil Things Lingering'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Great Bats'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Great Lord of Goblin-gate'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Great Troll'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Guardian of the Fire-gates'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Last Child of Ungoliant'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Nasty Slimy Thing'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Oliphant'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='Regiment of Black Crows'")),
+  ("RuleLimitEachByExpression",(0,"name(#)=='The Balrog'")),
+  ("RuleLimitByExpression",(10,"find(\"Character\",Attr(\"type\",#))!=NULL && Attr(\"race\",#)!=\"Elf-lord\"")),
+  ("RuleLimitByExpression",(5,"Attr(\"race\",#)==\"Elf-lord\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",115),
+  ("RuleLimitByExpression",(0,"(Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && Attr(\"type\",#)!=\"Hero Character\" && Attr(\"type\",#)!=\"Hero Resource\" && Attr(\"type\",#)!=\"Stage Resource\" && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Sudden Call\") || Attr(\"race\",#)==\"Ringwraith\" && !=\"Dual Resource\" && Attr(\"type\",#)!\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Elf-lord (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Elf-lord (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Elf-lord (D)"}{"sideboard vs. Balrog/Great Wyrm alignments"}=(
+);
+deck_rules{"2-deck Elf-lord (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Wizard\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Orc\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Troll\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" || Attr(\"type\",#)==\"Hero Character\"")),
+  ("RuleLimitByExpression",(3,"(Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Rumours of Rings\" || name(#)==\"New Closeness to his Kin\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"Welcomed by the Lord and the Lady\"  || name(#)==\"Draw Swords Together\" || name(#)==\"Grim Voiced and Grim Faced\") && Attr(\"unique\",#)!=\"yes\" |\")), || (Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Open to the Summons\" || name(#)==\"Orders from Lugbúrz\" || name(#)==\"Whispers of Rings\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"A Few Trusty Lads\" || name(#)==\"Iron-home\" || name(#)==\"Foundations Remain\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"The Lord of the Rings\")")),
+  ("RuleCheckExpression",("starting stage points","RuleStagepoints(#)==3")),
+  ("RuleCheckExpression",("one non-unique starting stage card","RuleNonUniqueStageCards(#) > 0")),
+  ("RuleLimitByExpression",(3,"Attr(\"type\",#)==\"Stage Resource\"")),
+);
+deck_rules{"2-deck Elf-lord (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(1,"name(#)==\"Ancient Deep-hold\" || name(#)==\"The Wind-deeps\" || name(#)==\"The Drowning Deeps\" || name(#)==\"The Rusted-deeps\" || name(#)==\"Remains of Thangorodrim\" || Attr(\"type\",#)==\"Region\"")),
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(999999,"Attr(\"type\",#)==\"Elf-lord Site\"")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) == NULL")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)==\"Minion Site\" && Attr(\"site_type\",#)!=\"{R}\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dwarf-lord (D)"}=(,);
+deck_rules{"2-deck Dwarf-lord (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==\"Fallen-wizard Site\" && name(#)!=\"Deep Mines\"")),
+  ("RuleLimitByExpression",(999999,"Attr(\"type\",#)==\"Dwarf-lord Site\"")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)!=\"Dwarf-lord Site\" && Attr(\"site_type\",#)==\"{H}\"")),
+  ("RuleLimitEachByExpression",(1,"find(\"Site\",Attr(\"type\",#))!=NULL")),
+  ("RuleCheckExpression",("maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleCardLimitSingle",("Bad Company",0)),
+  ("RuleCardLimitSingle",("Great Ruse",0)),
+  ("RuleCardLimitSingle",("Greater Half-Orcs",0)),
+  ("RuleCardLimitSingle",("Half-Orcs",0)),
+  ("RuleCardLimitSingle",("Spells Born of Discord",0)),
+  ("RuleCardLimitSingle",("Wizard's Myrmidon",0)),
+  ("RuleCardLimitSingle",("Awaiting the Call",0)),
+  ("RuleCardLimitSingle",("Bade to Rule",0)),
+  ("RuleCardLimitSingle",("Freeze the Flesh",0)),
+  ("RuleCardLimitSingle",("Messenger of Mordor",0)),
+  ("RuleCardLimitSingle",("News Must Get Through",0)),
+  ("RuleCardLimitSingle",("No Better Use",0)),
+  ("RuleCardLimitSingle",("Ready to his Will",0)),
+  ("RuleCanonicalCardLimitSingle",("Red Book of Westmarch [M]",0)),
+  ("RuleCardLimitSingle",("The Black Council",0)),
+  ("RuleCanonicalCardLimitSingle",("The Iron Crown [M]",0)),
+  ("RuleCardLimitSingle",("The Ring Leaves Its Mark",0)),
+  ("RuleCardLimitSingle",("World Gnawed by the Nameless",0)),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"E\")")),
+  ("RuleLimitEachByExpression",(5,"Attr(\"race\",#)==\"Dwarf-lord\"")),
+  ("RuleCheckExpression",("uniqueness","RuleBothHeroAndMinionUnique(#)")),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\"")),
+  ("RuleLimitEachByExpression",(3,"Attr(\"type\",#)==\"Hero Resource\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Resource\" && name(#)!=\"Sudden Call\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Hero Character\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Character\"")),
+  ("RuleCardLimitGeneral",3),
+);
+deck_rules{"2-deck Dwarf-lord (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"F\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"F\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"E\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Orc\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Troll\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitEachByExpression",(2,"Attr(\"type\",#)==\"Minion Resource\" && find(\"Item\",Attr(\"class\",#))!=NULL")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==\"Minion Resource\" && find(\"event\",Attr(\"class\",#))==NULL && find(\"Ally\",Attr(\"class\",#))==NULL")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==\"Minion Resource\" && find(\"Ally\",Attr(\"class\",#))!=NULL && name(#)!=\"Zurafy\"")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==(\"Spirit-magic\")==NULL")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==(\"Shadow-magic\")==NULL")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==(\"Sorcery\")==NULL")),
+  ("RuleLimitEachByExpression",(0,"Attr(\"type\",#)==(\"Dragon-magic\")==NULL")),
+  ("RuleLimitByExpression",(10,"find(\"Character\",Attr(\"type\",#))!=NULL && Attr(\"race\",#)!=\"Dwarf-lord\"")),
+  ("RuleLimitByExpression",(5,"Attr(\"race\",#)==\"Dwarf-lord\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",115),
+  ("RuleLimitByExpression",(0,"(Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && Attr(\"type\",#)!=\"Hero Character\" && Attr(\"type\",#)!=\"Hero Resource\" && Attr(\"type\",#)!=\"Stage Resource\" && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Sudden Call\") || Attr(\"race\",#)==\"Ringwraith\" && !=\"Dual Resource\" && Attr(\"type\",#)!\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dwarf-lord (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dwarf-lord (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dwarf-lord (D)"}{"sideboard vs. Balrog/Great Wyrm alignments"}=(
+);
+deck_rules{"2-deck Dwarf-lord (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Wizard\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Orc\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Troll\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" || Attr(\"type\",#)==\"Hero Character\"")),
+  ("RuleLimitByExpression",(3,"(Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Rumours of Rings\" || name(#)==\"New Closeness to his Kin\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"Welcomed by the Lord and the Lady\"  || name(#)==\"Draw Swords Together\" || name(#)==\"Grim Voiced and Grim Faced\") && Attr(\"unique\",#)!=\"yes\" |\")), || (Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Open to the Summons\" || name(#)==\"Orders from Lugbúrz\" || name(#)==\"Whispers of Rings\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"A Few Trusty Lads\" || name(#)==\"Iron-home\" || name(#)==\"Foundations Remain\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"The Lord of the Rings\")")),
+  ("RuleCheckExpression",("starting stage points","RuleStagepoints(#)==3")),
+  ("RuleCheckExpression",("one non-unique starting stage card","RuleNonUniqueStageCards(#) > 0")),
+  ("RuleLimitByExpression",(3,"Attr(\"type\",#)==\"Stage Resource\"")),
+);
+deck_rules{"2-deck Dwarf-lord (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(1,"name(#)==\"Ancient Deep-hold\" || name(#)==\"The Wind-deeps\" || name(#)==\"The Drowning Deeps\" || name(#)==\"The Rusted-deeps\" || name(#)==\"Remains of Thangorodrim\" || Attr(\"type\",#)==\"Region\"")),
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) == NULL")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)==\"Minion Site\" && Attr(\"site_type\",#)!=\"{R}\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dragon-lord (D)"}=(,);
+deck_rules{"2-deck Dragon-lord (D)"}{""}=(
+  ("RuleLimitByExpression",(0,"(set_of(#)==\"V1\" || set_of(#)==\"V2\")")),
+  ("RuleCheckExpression",("Maximum mind total for agents is 36","RuleAgentMindTotal(#) <= 36")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Fallen-wizard\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Dragon-lord\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Dwarf-lord\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Dunadan-lord\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Man-lord\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Wizard\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)==\"Minion Character\" && Attr(\"specific\",#)!=\"Balrog\" && toint(Attr(\"mind\",#)) > 8 && (Attr(\"keyword\",#),\"agent\")!=\"yes\"")),
+  ("RuleCheckExpression",("Total number of wizards/ringwraiths","RuleCheckWizards(#,\"total\",\"E\")")),
+  ("RuleLimitByExpression",(999999,"Attr(\"site_type\",#)==\"{H}\"")),
+  ("RuleCardLimitSingle",("Above the Abyss",0)),
+  ("RuleCardLimitSingle",("Awaiting the Call",0)),
+  ("RuleCardLimitSingle",("Bade to Rule",0)),
+  ("RuleCardLimitSingle",("Balrog of Moria",0)),
+  ("RuleCardLimitSingle",("The Black Council",0)),
+  ("RuleCardLimitSingle",("Black Horse",0)),
+  ("RuleCardLimitSingle",("Black Rain",0)),
+  ("RuleCardLimitSingle",("Black Rider",0)),
+  ("RuleCardLimitSingle",("By the Ringwraith's Word",0)),
+  ("RuleCardLimitSingle",("Creature of an Older World",0)),
+  ("RuleCardLimitSingle",("Eye Never Sleeping",0)),
+  ("RuleCardLimitSingle",("Faithless Steward",0)),
+  ("RuleCardLimitSingle",("Fell Rider",0)),
+  ("RuleCardLimitSingle",("The Fiery Blade",0)),
+  ("RuleCardLimitSingle",("Helm of Fear",0)),
+  ("RuleCardLimitSingle",("Heralded Lord",0)),
+  ("RuleCardLimitSingle",("Hold Rebuilt and Repaired",0)),
+  ("RuleCardLimitSingle",("In the Name of Mordor",0)),
+  ("RuleCardLimitSingle",("Kill All But NOT the Halflings",0)),
+  ("RuleCardLimitSingle",("The Lidless Eye",0)),
+  ("RuleCardLimitSingle",("Messenger of Mordor",0)),
+  ("RuleCardLimitSingle",("Morgul-blade",0)),
+  ("RuleCardLimitSingle",("News of the Shire",0)),
+  ("RuleCardLimitSingle",("Open to the Summons",0)),
+  ("RuleCardLimitSingle",("Orders from Lugbúrz",0)),
+  ("RuleCardLimitSingle",("Padding Feet",0)),
+  ("RuleCardLimitSingle",("Powers too dark and Terrible",0)),
+  ("RuleCardLimitSingle",("The Ring Leaves Its Mark",0)),
+  ("RuleCardLimitSingle",("The Dark Power",0)),
+  ("RuleCardLimitSingle",("Sauron",0)),
+  ("RuleCardLimitSingle",("They Ride Together",0)),
+  ("RuleCardLimitSingle",("They are Accounted for",0)),
+  ("RuleCardLimitSingle",("To satisfy the Questioner",0)),
+  ("RuleCardLimitSingle",("Use Your Legs",0)),
+  ("RuleCardLimitSingle",("While the Yellow Face Sleeps",0)),
+  ("RuleCardLimitSingle",("Adûnaphel the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Akhôrahil the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Dwar the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Hoarmûrath the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Indûr the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Khamûl the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Ren the Ringwraith",0)),
+  ("RuleCardLimitSingle",("Ûvatha the Ringwraith",0)),
+  ("RuleCardLimitSingle",("The Witch-king",0)),
+  ("RuleCardLimitSingle",("Adûnaphel Unleashed",0)),
+  ("RuleCardLimitSingle",("Akhôrahil Unleashed",0)),
+  ("RuleCardLimitSingle",("Dwar Unleashed",0)),
+  ("RuleCardLimitSingle",("Hoarmûrath Unleashed",0)),
+  ("RuleCardLimitSingle",("Indûr Unleashed",0)),
+  ("RuleCardLimitSingle",("Khamûl Unleashed",0)),
+  ("RuleCardLimitSingle",("Ren Unleashed",0)),
+  ("RuleCardLimitSingle",("Ûvatha Unleashed",0)),
+  ("RuleCardLimitSingle",("The Witch-king Unleashed",0)),
+  ("RuleLimitEachByExpression",(1,"Attr(\"unique\",#)==\"yes\" && canonical_name(#)!=\"The Balrog [B]\"")),
+  ("RuleCardLimitSingle",("A Few Recruits",2)),
+  ("RuleCardLimitSingle",("A More Evil Hour",2)),
+  ("RuleCardLimitSingle",("Crowned with Storm",2)),
+  ("RuleCardLimitSingle",("Evil Things Lingering",2)),
+  ("RuleCardLimitSingle",("Foe Dismayed",2)),
+  ("RuleCardLimitSingle",("Great Troll",2)),
+  ("RuleCardLimitSingle",("Memories of Old Torture",2)),
+  ("RuleCardLimitSingle",("Mine or No One's",2)),
+  ("RuleCardLimitSingle",("Nasty Slimy Thing",2)),
+  ("RuleCardLimitSingle",("Obey Him or Die",2)),
+  ("RuleCardLimitSingle",("People Diminished",2)),
+  ("RuleCardLimitSingle",("Tempest of Fire",2)),
+  ("RuleCardLimitGeneral",3),
+);
+deck_rules{"2-deck Dragon-lord (D)"}{"deck"}=(
+  ("RuleCheckExpression",("Creature minimum 12","RuleCountCreatures(#,\"B\") >= 12.0")),
+  ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"B\")")),
+  ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"E\")")),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\" && canonical_name(#)!=\"The Balrog [B]\"")),
+  ("RuleDeckMinimum",60),
+  ("RuleDeckMaximum",150),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Balrog Character\" && Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && !(Attr(\"type\",#)==\"Hero Resource\" && find(\"Item\",Attr(\"class\",#))) && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Gnawed Ways\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dragon-lord (D)"}{"sideboard"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",40),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Balrog Character\" && Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && !(Attr(\"type\",#)==\"Hero Resource\" && find(\"Item\",Attr(\"class\",#))) && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Gnawed Ways\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dragon-lord (D)"}{"sideboard vs. fw"}=(
+  ("RuleDeckMinimum",0),
+  ("RuleDeckMaximum",10),
+  ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Balrog Character\" && Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && !(Attr(\"type\",#)==\"Hero Resource\" && find(\"Item\",Attr(\"class\",#))) && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Gnawed Ways\"")),
+  ("RulePass",NULL),
+);
+deck_rules{"2-deck Dragon-lord (D)"}{"pool"}=(
+  ("RuleLimitByExpression",(0,"Attr(\"race\",#)==\"Ringwraith\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\"")),
+  ("RuleLimitByExpression",(2,"((Attr(\"class\",#)==\"Minor Item\" || name(#)==\"Open to the Summons\" || name(#)==\"Orders from Lugbúrz\" || name(#)==\"Whispers of Rings\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"A Few Trusty Lads\" || name(#)==\"Iron-home\" || name(#)==\"Foundations Remain\") && Attr(\"unique\",#)!=\"yes\" || name(#)==\"The Lord of the Rings\") || name(#)==\"Gangways over the Fire\" || name(#)==\"Orders from the Great Demon\") || name(#)==\"A Few Trusty Lads\"")),
+);
+deck_rules{"2-deck Dragon-lord (D)"}{"sites"}=(
+  ("RuleLimitByExpression",(0,"name(#)==\"Old Forest\" && find(\"Site\",Attr(\"type\",#))")),
+  ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Minion Site\" && Attr(\"type\",#)!=\"Balrog Site\"")),
+  ("RuleCanonicalCardLimitSingle",("Barad-dûr [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Carn Dûm [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Cirith Gorgor [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Cirith Ungol [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Dol Guldur [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("Minas Morgul [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Sulfur-deeps [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-courts [M]",0)),
+  ("RuleCanonicalCardLimitSingle",("The Under-galleries [M]",0)),
+  ("RulePass",NULL),
+);

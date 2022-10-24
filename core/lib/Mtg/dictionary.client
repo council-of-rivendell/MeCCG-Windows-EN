@@ -1,0 +1,1118 @@
+#
+# Attributes
+#
+
+en: color
+fi: väri
+
+en: cost
+fi: hinta
+
+en: power
+fi: lyöntivoima
+
+en: rarity
+fi: harvinaisuus
+
+en: subtype
+fi: alalaji
+
+en: toughness
+fi: kestävyys
+
+en: type
+fi: laji
+
+en: set
+fi: lisäosa
+
+#
+# Values for color
+#
+
+en: Black
+fi: Musta
+
+en: Blue
+fi: Sininen
+
+en: Green
+fi: Vihreä
+
+en: Multicolor
+fi: Monivärinen
+
+en: Red
+fi: Punainen
+
+en: White
+fi: Valkoinen
+
+#
+# Values for subtype
+#
+
+en: (Demon) Beast
+
+en: Abomination
+
+en: Aboroth
+
+en: Aladdin
+
+en: Albatross
+
+en: Alchemist
+
+en: Ali-Baba
+
+en: Ali-from-Cairo
+
+en: Alligator
+
+en: Ambush-Party
+
+en: Ancestor
+
+en: Angel
+
+en: Angel Horror
+
+en: Angel Legend
+
+en: Ant
+
+en: Antelope
+
+en: Ape
+
+en: Archaeologist
+
+en: Asp
+
+en: Assassin
+
+en: Atog
+
+en: Atog Legend
+
+en: Aurochs
+
+en: Avatar
+
+en: Avenger
+
+en: Avizoa
+
+en: Badger
+
+en: Ball-Lightning
+
+en: Bandit
+
+en: Banshee
+
+en: Barbarian
+
+en: Barbarian Beast
+
+en: Barbarian Elf
+
+en: Barbarian Horror
+
+en: Barbarian Legend
+
+en: Barbarian Zombie
+
+en: Barishi
+
+en: Basilisk
+
+en: Bat
+
+en: Bear
+
+en: Beast
+
+en: Beast Mutant
+
+en: Beast Spirit
+
+en: Bee
+
+en: Beeble
+
+en: Behemoth
+
+en: Being
+
+en: Berserker
+
+en: Bird
+
+en: Bird Beast
+
+en: Bird Cleric
+
+en: Bird Guardian
+
+en: Bird Soldier
+
+en: Bird Soldier Horror
+
+en: Bird Soldier Legend
+
+en: Bird Soldier Spirit
+
+en: Bird Soldier Wizard
+
+en: Bird Wizard
+
+en: Boar
+
+en: Bodyguard
+
+en: Brother
+
+en: Brownie
+
+en: Brushwagg
+
+en: Bull
+
+en: Bureaucrat
+
+en: Camel
+
+en: Caravan
+
+en: Carriage
+
+en: Carrier
+
+en: Cat
+
+en: Cat Beast
+
+en: Cat Cleric
+
+en: Cat Giant Legend
+
+en: Cat Knight
+
+en: Cat Soldier
+
+en: Cat Spirit
+
+en: Cat Warrior
+
+en: Cat Warrior Legend
+
+en: Cavalry
+
+en: Cave-People
+
+en: Centaur
+
+en: Centaur Druid
+
+en: Centaur Druid Legend
+
+en: Centaur Horror
+
+en: Centaur Spirit
+
+en: Cephalid
+
+en: Cephalid Legend
+
+en: Cephalid Wizard
+
+en: Cheetah
+
+en: Chicken
+
+en: Chimera
+
+en: Clamfolk
+
+en: Cleric
+
+en: Cleric Avatar
+
+en: Cleric Legend
+
+en: Cleric Lord
+
+en: Cleric Mercenary
+
+en: Cleric Mutant
+
+en: Cleric Soldier
+
+en: Cleric Wizard
+
+en: Clone
+
+en: Cobra
+
+en: Cockatrice
+
+en: Constable
+
+en: Cow
+
+en: Crab
+
+en: Crocodile
+
+en: Crusader
+
+en: Dandan
+
+en: Demon
+
+en: Dervish
+
+en: Desert
+
+en: Devil
+
+en: Devouring-Deep
+
+en: Dinosaur
+
+en: Djinn
+
+en: Doppelganger
+
+en: Dragon
+
+en: Dragon Legend
+
+en: Dragon Spirit
+
+en: Dragon Wizard
+
+en: Dragonfly
+
+en: Drake
+
+en: Drill-Sergeant
+
+en: Drone
+
+en: Druid
+
+en: Druid Bear
+
+en: Druid Legend
+
+en: Dryad
+
+en: Dwarf
+
+en: Dwarf Legend
+
+en: Dwarf Wizard
+
+en: Eater
+
+en: Eel
+
+en: Effigy
+
+en: Efreet
+
+en: Egg
+
+en: El-Hajjaj
+
+en: Elder Dragon Legend
+
+en: Elemental
+
+en: Elemental Legend
+
+en: Elephant
+
+en: Elephant Cleric
+
+en: Elephant Soldier
+
+en: Elephant Wurm
+
+en: Elf
+
+en: Elf Archer
+
+en: Elf Avatar
+
+en: Elf Druid
+
+en: Elf Knight
+
+en: Elf Legend
+
+en: Elf Lord
+
+en: Elf Merfolk
+
+en: Elf Mutant
+
+en: Elf Shaman
+
+en: Elf Soldier
+
+en: Elf Warrior
+
+en: Elf Wizard
+
+en: Elves
+
+en: Enchantress
+
+en: Entity
+
+en: Equipment
+
+en: Erne
+
+en: Exorcist
+
+en: Faerie
+
+en: Fallen
+
+en: Ferret
+
+en: Fiend
+
+en: Fish
+
+en: Flagbearer
+
+en: Flying-Men
+
+en: Force
+
+en: Forest
+
+en: Fox
+
+en: Frog
+
+en: Frostbeast
+
+en: Fungus
+
+en: Fungusaur
+
+en: Gaea's-Avenger
+
+en: Gaea's-Liege
+
+en: Gargoyle
+
+en: Gatekeeper
+
+en: General
+
+en: Ghost
+
+en: Ghoul
+
+en: Giant
+
+en: Gnome
+
+en: Goat
+
+en: Goblin
+
+en: Goblin Assassin
+
+en: Goblin Avatar
+
+en: Goblin Berserker
+
+en: Goblin Legend
+
+en: Goblin Lord
+
+en: Goblin Mercenary
+
+en: Goblin Mutant
+
+en: Goblin Shaman
+
+en: Goblin Soldier
+
+en: Goblin Token
+
+en: Goblin Warrior
+
+en: Goblin Wizard
+
+en: Goblins
+
+en: Golem
+
+en: Golem Legend
+
+en: Gorgon
+
+en: Gorgon Legend
+
+en: Gremlin
+
+en: Griffin
+
+en: Griffin Legend
+
+en: Guardian
+
+en: Gus
+
+en: Gypsy
+
+en: Hag
+
+en: Harlequin
+
+en: Hell's-Caretaker
+
+en: Heretic
+
+en: Hero
+
+en: Hipparion
+
+en: Hippo
+
+en: Homarid
+
+en: Horror
+
+en: Horseman
+
+en: Hound
+
+en: Human Berserker
+
+en: Human Cleric
+
+en: Human Rogue
+
+en: Human Scout
+
+en: Human Soldier
+
+en: Human Warrior
+
+en: Human Wizard
+
+en: Hunter
+
+en: Hydra
+
+en: Hyena
+
+en: Illusion
+
+en: Illusion Legend
+
+en: Illusion Mutant
+
+en: Illusion Sliver
+
+en: Illusion Wall
+
+en: Imp
+
+en: Incarnation
+
+en: Infernal-Denizen
+
+en: Inquisitor
+
+en: Insect
+
+en: Insect Druid
+
+en: Insect Druid Legend
+
+en: Insect Druid Mutant
+
+en: Insect Shade
+
+en: Insect Spirit
+
+en: Island
+
+en: Island Forest
+
+en: Island Mountain
+
+en: Island Swamp
+
+en: Island-Fish
+
+en: Jackal
+
+en: Jellyfish
+
+en: Kavu
+
+en: Keeper
+
+en: King
+
+en: Kithkin
+
+en: Knight
+
+en: Kobold
+
+en: Kraken
+
+en: Lady of Proper Etiquette
+
+en: Lair
+
+en: Leech
+
+en: Legend
+
+en: Legionnaire
+
+en: Lemure
+
+en: Leper
+
+en: Leviathan
+
+en: Lhurgoyf
+
+en: Lichenthrope
+
+en: Licid
+
+en: Lion
+
+en: Lizard
+
+en: Locus
+
+en: Lord
+
+en: Lurker
+
+en: Lycanthrope
+
+en: Mage
+
+en: Maiden
+
+en: Mammoth
+
+en: Manticore
+
+en: Mantis
+
+en: Marid
+
+en: Martyr
+
+en: Master
+
+en: Medusa
+
+en: Meerkat
+
+en: Mercenary
+
+en: Mercenary Rebel
+
+en: Merfolk
+
+en: Merfolk Goblin
+
+en: Merfolk Knight
+
+en: Merfolk Legend
+
+en: Merfolk Zombie
+
+en: Mindsucker
+
+en: Minion
+
+en: Minion Legend
+
+en: Minion Rat
+
+en: Minion Wolf
+
+en: Minotaur
+
+en: Minotaur Legend
+
+en: Miracle-Worker
+
+en: Mist
+
+en: Mistfolk
+
+en: Mob
+
+en: Mold-Demon
+
+en: Monger
+
+en: Mongoose
+
+en: Monster
+
+en: Mosquito
+
+en: Mountain
+
+en: Mountain Forest
+
+en: Mountain Swamp
+
+en: Mummy
+
+en: Murk-Dwellers
+
+en: Myr
+
+en: Nameless-Race
+
+en: Narwhal
+
+en: Necrosavant
+
+en: Nekrataal
+
+en: Niall-Silvain
+
+en: Nightmare
+
+en: Nightmare Barbarian
+
+en: Nightmare Beast
+
+en: Nightmare Crab
+
+en: Nightmare Dragon
+
+en: Nightmare Drake
+
+en: Nightmare Horror
+
+en: Nightmare Orgg
+
+en: Nightstalker
+
+en: Noble
+
+en: Nomad
+
+en: Nomad Cleric
+
+en: Nomad Horror
+
+en: Nomad Legend
+
+en: Nomad Mystic
+
+en: Nomad Spirit
+
+en: Octopus
+
+en: Ogre
+
+en: Ooze
+
+en: Orc
+
+en: Orgg
+
+en: Ouphe
+
+en: Oyster
+
+en: Paladin
+
+en: Peacekeeper
+
+en: Pegasus
+
+en: Pegasus Token
+
+en: People-of-the-Woods
+
+en: Phantasm
+
+en: Phelddagrif
+
+en: Phoenix
+
+en: Pikemen
+
+en: Pirate
+
+en: Pixie-Queen
+
+en: Plains
+
+en: Plains Forest
+
+en: Plains Island
+
+en: Plains Mountain
+
+en: Plains Swamp
+
+en: Plant
+
+en: Poltergeist
+
+en: Pony
+
+en: Preacher
+
+en: Priest
+
+en: Pyknite
+
+en: Raider
+
+en: Ranger
+
+en: Rat
+
+en: Rebel
+
+en: Rebel Bird
+
+en: Rebel Legend
+
+en: Rebel Mercenary
+
+en: Rhino
+
+en: Robber
+
+en: Roc
+
+en: Rock-Sled
+
+en: Sage
+
+en: Salamander
+
+en: Satyr
+
+en: Scariest Creature You'll Ever See
+
+en: Scavenger
+
+en: Scorpion
+
+en: Scout
+
+en: Serpent
+
+en: Shade
+
+en: Shapeshifter
+
+en: Shark
+
+en: Sheep Token
+
+en: Ship
+
+en: Shyft
+
+en: Sindbad
+
+en: Singing-Tree
+
+en: Sister
+
+en: Skeleton
+
+en: Slith
+
+en: Sliver
+
+en: Sliver Legend
+
+en: Sliver Mutant Legend
+
+en: Slug
+
+en: Smith
+
+en: Snake
+
+en: Soldier
+
+en: Soldier Lord
+
+en: Soldier Rebel
+
+en: Soldier Token
+
+en: Soldier Zombie
+
+en: Sorceress
+
+en: Spawn
+
+en: Speaker
+
+en: Specter
+
+en: Spellshaper
+
+en: Spellshaper Legend
+
+en: Sphinx
+
+en: Spider
+
+en: Spike
+
+en: Spirit
+
+en: Sponge
+
+en: Spuzzem
+
+en: Spy
+
+en: Squire
+
+en: Squirrel
+
+en: Squirrel Beast
+
+en: Squirrel Token
+
+en: Starfish
+
+en: Strider
+
+en: Swamp
+
+en: Swamp Forest
+
+en: Swarm
+
+en: Tactician
+
+en: Tarpan
+
+en: Taskmaster
+
+en: The Biggest, Baddest, Nastiest,
+
+en: Thrull
+
+en: Thundermare
+
+en: Tiger
+
+en: Titan
+
+en: Toad
+
+en: Tortoise
+
+en: Townsfolk
+
+en: Tracker
+
+en: Treefolk
+
+en: Treefolk Legend
+
+en: Troll
+
+en: Troll Shaman
+
+en: Troll Warrior
+
+en: Turtle
+
+en: Uncle-Istvan
+
+en: Undead
+
+en: Unicorn
+
+en: Urza's Mine
+
+en: Urza's Power-Plant
+
+en: Urza's Tower
+
+en: Vampire
+
+en: Vampire Dragon
+
+en: Vampire Legend
+
+en: Vedalken Wizard
+
+en: Viashino
+
+en: Villain
+
+en: Viper
+
+en: Volver
+
+en: Vulture
+
+en: Walking-Dead
+
+en: Wall
+
+en: War-Rider
+
+en: Warthog
+
+en: Whale
+
+en: Whippoorwill
+
+en: Wight
+
+en: Wiitigo
+
+en: Wildebeest
+
+en: Will-o'-the-Wisp
+
+en: Witch
+
+en: Wizard
+
+en: Wizard Avatar
+
+en: Wizard Legend
+
+en: Wizard Lord
+
+en: Wizard Mutant
+
+en: Wolf
+
+en: Wolverine
+
+en: Wolverine-Pack
+
+en: Wombat
+
+en: Worm
+
+en: Wraith
+
+en: Wretched
+
+en: Wurm
+
+en: Yeti
+
+en: Zombie
+
+en: Zombie Assassin
+
+en: Zombie Avatar
+
+en: Zombie Barbarian
+
+en: Zombie Beast
+
+en: Zombie Bird
+
+en: Zombie Cat
+
+en: Zombie Centaur
+
+en: Zombie Cleric
+
+en: Zombie Druid
+
+en: Zombie Dwarf Legend
+
+en: Zombie Elf
+
+en: Zombie Giant
+
+en: Zombie Goblin
+
+en: Zombie Imp
+
+en: Zombie Insect
+
+en: Zombie Lord
+
+en: Zombie Mutant
+
+en: Zombie Snake
+
+en: Zombie Spirit
+
+en: Zombie Token
+
+en: Zombie Wizard
+
+en: Zombie Wurm
+
+#
+# Values for type
+#
+
+en: Artifact Creature
+
+en: Artifact Land
+
+en: Basic Land
+
+en: Creature
+
+en: Enchant Artifact
+
+en: Enchant Artifact Creature
+
+en: Enchant Creature
+
+en: Enchant Enchantment
+
+en: Enchant Land
+
+en: Enchant Permanent
+
+en: Enchant Player
+
+en: Enchant World
+
+en: Enchantment
+
+en: Instant
+
+en: Legendary Artifact
+
+en: Legendary Land
+
+en: Sorcery
+
+en: Special
+

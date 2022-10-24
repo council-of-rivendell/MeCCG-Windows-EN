@@ -1,0 +1,154 @@
+.body {
+	display:block;
+	line-height: 12px;
+}
+
+.body *{
+	display:block;
+	height:1px;
+	overflow:hidden;
+	background:#191970;
+}
+
+.body1 {
+	border-right:1px solid #9c9cc1;
+	padding-right:1px;
+	margin-right:3px;
+	border-left:1px solid #9c9cc1;
+	padding-left:1px;
+	margin-left:3px;
+	background:#525293;
+}
+
+.body2 {
+	border-right:1px solid #e8e8f0;
+	border-left:1px solid #e8e8f0;
+	padding:0px 1px;
+	background:#44448b;
+	margin:0px 1px;
+}
+
+.body3 {
+	border-right:1px solid #44448b;
+	border-left:1px solid #44448b;
+	margin:0px 1px;
+}
+
+.body4 {
+	border-right:1px solid #9c9cc1;
+	border-left:1px solid #9c9cc1;
+}
+
+.body5 {
+	border-right:1px solid #525293;
+	border-left:1px solid #525293;
+}
+
+.body_content {
+	padding:0px 5px;
+	background:#191970;
+} 
+
+center{
+	margin: 0px;
+	padding: 0px;
+	line-height: 12px;
+}
+
+p{
+	margin-bottom: 0px;
+	margin-top: 5px;
+	padding: 0px;
+	line-height: 12px;
+}
+
+div.navitems {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	left: auto;
+	position: inherit;
+	width: 155px;
+	line-height: 12px;
+}
+
+h2.navitem_header {
+	margin-top: 2px;
+	margin-bottom: 6px;
+	left: auto;
+	position: inherit;
+	color: #FFFFFF;
+	font-family: Verdana;
+	font-size: 13px;
+	line-height: 12px;
+	font-weight: normal;
+}
+
+img {
+	margin-bottom: 0px;
+	display: block;
+	border-style: none;
+}
+
+ul.navlinks {
+	margin: 0px;
+	display: block;
+	float: none;
+	left: 0px;
+	position: inherit;
+	list-style: none;
+	line-height: 12px;
+}
+
+li.navlinks {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: -7px;
+	margin-bottom: -7px;
+	display: inline;
+	float: none;
+	left: auto;
+	position: inherit;
+	line-height: 12px;
+}
+
+a.images {
+	border-style: none;
+}
+
+a.images:hover {
+	color: #FFFFFF;
+}
+
+.navlinks a:link, .navlinks a:active, .navlinks a:visited {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: -7px;
+	margin-bottom: -7px;
+	display: block;
+	float: none;
+	left: inherit;
+	color: #FFFFFF;
+	text-decoration: none;
+	font-family: Verdana;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 12px;
+}
+
+.navlinks a:hover {
+	color: #9495c8;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: -7px;
+	margin-bottom: -7px;
+	display: block;
+	float: none;
+	left: inherit;
+	line-height: 12px;
+}
+
+br{
+	margin: 0px;
+	padding: 0px;
+	line-height: 12px;
+}

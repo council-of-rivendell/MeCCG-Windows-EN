@@ -1,0 +1,85 @@
+#
+# VARIABLES:
+#
+# distribution{set}{product} - rarity distribution of the product
+# port - server port of the factory
+# rarities - generate these distributions from the card data
+# fixed[number] - 5 fixed sets
+#
+# FUNCTIONS:
+#
+# InitDistributions() - Initialize product distribution data.
+#
+
+if(!port)
+  port=29131;
+
+fixed=array(12);
+
+fixed[0]=FixedSet("TW",("The Wind Throne", "Rivendell", "Rivendell", "Grey Havens", "L�rien", "Edhellond", "Gates of Morning", "Doors of Night"));
+
+fixed[1]=FixedSet("TW",("Pallando", "Saruman", "Annalena", "Aragorn II", "Boromir II", "Elladan", "K�li", "Men of An�rien", "Rangers of the North", "Bandit Lair", "Bree", "Isengard", "The Lonely Mountain", "Minas Tirith", "Mount Gram", "Weathertop")) + fixed[0];
+
+fixed[2]=FixedSet("TW",("Alatar", "Radagast", "Adrazar", "Celeborn", "Elrohir", "Robin Smallburrow", "Th�oden", "Riders of Rohan", "Tower Guard of Minas Tirith", "Bag End", "Bandit Lair", "Edoras", "Minas Tirith", "Moria", "Mount Gram", "Rhosgobel")) + fixed[0];
+
+fixed[3]=FixedSet("TW",("Gandalf", "Radagast", "Bard Bowman", "Faramir", "Glorfindel II", "K�li", "Peath", "Dunlendings", "Rangers of Ithilien", "Dunnish Clan-hold", "Goblin-gate", "Henneth Ann�n", "Moria", "Rhosgobel", "Ruined Signal Tower", "Weathertop")) + fixed[0];
+
+fixed[4]=FixedSet("TW",("Alatar", "Saruman", "Annalena", "Bard Bowman", "Beorn", "Beregond", "Gimli", "Beornings", "Iron Hill Dwarves", "Beorn's House", "Goblin-gate", "Iron Hill Dwarf-hold", "Isengard", "Moria", "Ruined Signal Tower", "Weathertop")) + fixed[0];
+
+fixed[5]=FixedSet("TW",("Gandalf", "Pallando", "Boromir II", "Erkenbrand", "Gildor Inglorion", "Robin Smallburrow", "Thranduil", "Ents of Fangorn", "Wood-elves", "Bag End", "Bandit Lair", "Barrow-downs", "The Lonely Mountain", "Thranduil's Halls", "Weathertop", "Wellinghall")) + fixed[0];
+
+fixed[6]=FixedSet("LE",("Orc Tracker","Orc Veteran","The Least of Gold Rings","Minas Morgul","Dol Guldur","Carn D�m","Geann a-Lisch","Barad-d�r","Ettenmoors","Sudden Call"));
+
+fixed[7]=FixedSet("LE",("Dwar the Ringwraith","The Witch-king","Orc Captain","Odoacer","Grishn�kh","Woodmen","Goblins of Goblin-gate","Magic Ring of Guile","Woodmen-town","Goblin-gate","Thranduil's Halls","Dale","Caves of �lund","Barrow-downs"))+fixed[6];
+
+fixed[8]=FixedSet("LE",("Hoarm�rath the Ringwraith","The Witch-king","Gorbag","Nevido Sm�d","Muzgash","Easterlings","Orcs of Gundabad","Magic Ring of Enigma","Easterling Camp","Mount Gundabad","Minas Tirith","Vale of Erech","The Lonely Mountain","The Wind Throne"))+fixed[6];
+
+fixed[9]=FixedSet("LE",("Kham�l the Ringwraith","Akh�rahil the Ringwraith","Orc Chieftain","Asternak","Jerrek","Variags of Khand","Grey Mountain Goblins","Magic Ring of Savagery","Variag Camp","Gondmaeglom","Minas Tirith","Vale of Erech","The Lonely Mountain","Haudh-in-Gwan�r"))+fixed[6];
+
+fixed[10]=FixedSet("LE",("Ren the Ringwraith","Ad�naphel the Ringwraith","Shagrat","Layos","Luitprand","Men of Dorwinion","Orcs of Mirkwood","Magic Ring of Fury","Shrel-Kain","Sarn Goriwing","Minas Tirith","Vale of Erech","Moria","Buhr Widu"))+fixed[6];
+
+fixed[11]=FixedSet("LE",("�vatha the Ringwraith","Ind�r the Ringwraith","Troll-chief","Pon Opar","Ostisen","Southrons","Orcs of Moria","Magic Ring of Lies","Southron Oasis","Moria","Thranduil's Halls","Dale","Caves of �lund","Zarak D�m"))+fixed[6];
+
+#
+# InitDistributions() - Initialize product distribution data.
+#
+def InitDistributions
+{
+  distribution=(,);
+  distribution{"TW"}=(,);
+  distribution{"TW"}{"booster"}=((6,"CB"),(3,"U"),(1,"R"),(5,"CA"));
+  distribution{"TW"}{"starter"}=((40,"CA"),(3,"R"),(9,"U"));
+  distribution{"TD"}=(,);
+  distribution{"TD"}{"booster"}=((11,"C"),(1,"R"),(3,"U"));
+  distribution{"DM"}=(,);
+  distribution{"DM"}{"booster"}=((10,"C"),(1,"R"),(4,"U"));
+  distribution{"LE"}=(,);
+  distribution{"LE"}{"booster"}=((10,"CB"),(1,"R"),(4,"U"));
+  distribution{"LE"}{"starter"}=((37,"CS"),(3,"R"),(12,"U"));
+  distribution{"AS"}=(,);
+  distribution{"AS"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+  distribution{"WH"}=(,);
+  distribution{"WH"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+  distribution{"BA"}=(,);
+  distribution{"BA"}{"booster"}=((6,"C"),);
+#  distribution{"FB"}=(,);
+#  distribution{"FB"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+#  distribution{"DF"}=(,);
+#  distribution{"DF"}{"booster"}=((6,"C"),(2,"R"),(4,"U"));
+}
+
+#
+# ProduceTW_Starter() - Produce The Wizards starter.
+#
+def ProduceTW_Starter
+{
+  return(fixed[random(1,2,3,4,5)]+RandomCardSet("TW",distribution{"TW"}{"starter"}));
+}
+
+#
+# ProduceLE_Starter() - Produce The Lidless Eye starter.
+#
+def ProduceLE_Starter
+{
+  return(fixed[random(7,8,9,10,11)]+RandomCardSet("LE",distribution{"LE"}{"starter"}));
+}

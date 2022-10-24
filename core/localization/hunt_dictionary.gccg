@@ -1,0 +1,54 @@
+#
+
+FILE="./dictionary.template";
+
+#
+# A script for collecting translation dictionary from the client.
+# This reads in game data and writes a FILE having entries for
+# all attributes and their values, all help texts.
+#
+# usage: ./gccg --load <game>.xml misc/hunt_dictionary.gccg
+#
+
+def Template
+{
+  return(flatten(forall('("en: "+#,"")',select('#!=""',unique(sort(ARG))))));
+}
+
+def CollectAll
+{
+  push(d);
+  d=(,);
+  println("  - attribute names");
+  d=d+("#","# Attribute names","#","")+Template(("set",)+attributes());
+  for(a)(attributes())
+  {
+    println("  - "+a);
+    d=d+("#","# Values for "+a,"#","")+Template(Attr(a,cards()));
+  }
+  println("  - help");
+  for(m)(keys(HELP))
+  {
+    for(c)(keys(HELP{m}))
+    {
+      d=d+("#","# Command /"+c,"#","",)+Template(HELP{m}{c}[1],);
+      for(l)(split(HELP{m}{c}[3],"\n"))
+        d=d+Template(l,);
+    }
+  }
+  return(d);
+  d=pop();
+}
+
+if(length(cards())==0)
+{
+  println("usage: ./gccg --load <game>.xml misc/hunt_dictionary.gccg");
+  quit();
+}
+println("Running client scripts...");
+execute("client.functions");
+println("Constructing translation dictionary template...");
+d=CollectAll();
+println("Saving "+FILE);
+write_file(FILE,d);
+quit();
