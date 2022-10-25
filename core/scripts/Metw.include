@@ -73,8 +73,6 @@ product.image{"The Lidless Eye starter"}="mele_starter.jpg";
 product.image{"Against the Shadow booster"}="meas_booster.jpg";
 product.image{"The White Hand booster"}="wh_booster.jpg";
 product.image{"The Balrog booster"}="balrog_booster.jpg";
-product.image{"Firstborn booster"}="fb_booster.jpg";
-product.image{"Durin's Folk booster"}="df_booster.jpg";
 
 game.bindings=(
   ("KeyControlKey1","{orange}Untap phase...",),
@@ -454,7 +452,7 @@ color2region{4}{(128,128,128)}="Nurn";
 color2region{4}{(172,95,166)}="Old Forest*";
 color2region{4}{(0,255,128)}="Old Pûkel Gap";
 color2region{4}{(25,250,0)}="Old Pûkel-land";
-color2region{4}{(133,33,233)}="Pezarsan";	
+color2region{4}{(133,33,233)}="Pezarsan"; 
 color2region{4}{(128,0,0)}="Redhorn Gate";
 color2region{4}{(48,248,248)}="Relmether";
 color2region{4}{(50,200,50)}="Rhudaur";
@@ -509,7 +507,7 @@ color2region{5}{(0,255,1)}="Mouths of the Anduin";
 color2region{5}{(55,47,45)}="Né Tava";
 color2region{5}{(115,115,115)}="Nûrad";
 color2region{5}{(0,167,79)}="Nurn";
-color2region{5}{(109,207,246)}="Pezarsan";	
+color2region{5}{(109,207,246)}="Pezarsan";  
 color2region{5}{(0,119,162)}="Sára Bask";
 color2region{5}{(142,142,142)}="Seznebab";
 color2region{5}{(142,198,63)}="Siakan";
@@ -844,10 +842,10 @@ def SitesOfRegion
     underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("The Drowning-deeps");
     underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Remains of Thangorodrim");
     underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Ruins of Belegost");
-	underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Ruins of Nogrod");
-	underdeeps_region{"Iron Hills"}=underdeeps_region{"Iron Hills"}+images("The Rusted-deeps");
-	underdeeps_region{"Mirror of Fire"}=underdeeps_region{"Mirror of Fire"}+images("The Amber-deeps");
-	underdeeps_region{"Narthalf"}=underdeeps_region{"Narthalf"}+images("The Pits of Angband");
+  underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Ruins of Nogrod");
+  underdeeps_region{"Iron Hills"}=underdeeps_region{"Iron Hills"}+images("The Rusted-deeps");
+  underdeeps_region{"Mirror of Fire"}=underdeeps_region{"Mirror of Fire"}+images("The Amber-deeps");
+  underdeeps_region{"Narthalf"}=underdeeps_region{"Narthalf"}+images("The Pits of Angband");
 
 
     a=pop();
@@ -1008,7 +1006,7 @@ def MouseControlMiddleClickMap
     Input(c+"("+Attr("region_type",first(images(c)))+") ");
   }
   else
-	Msg("** No region mapped to color " + c + " **");
+  Msg("** No region mapped to color " + c + " **");
 
   c=pop();
   y=pop();
@@ -1183,48 +1181,48 @@ def CurrentDeckAddSitesRegion
   {
     push(s);
     push(a);
-	
-	s=cards()-cards("V1");
+  
+  s=cards()-cards("V1");
 
     s=select("find('Site',Attr('type',#))!=NULL",s);
-	print ARG;
+  print ARG;
 
     if(ARG=='HeroEriador')
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Númeriador' || card_attr('region',#)=='Angmar' || card_attr('region',#)=='Arthedain' || card_attr('region',#)=='Rhudaur' || card_attr('region',#)=='Old Forest*' || card_attr('region',#)=='Dunland' || card_attr('region',#)=='Redhorn Gate' || card_attr('region',#)=='Hollin' || card_attr('region',#)=='Enedhwaith' || card_attr('region',#)=='Lindon' || card_attr('region',#)=='High Pass' || card_attr('region',#)=='Cardolan' || card_attr('region',#)=='The Shire' || card_attr('region',#)=='Misty Mountains - Northern Spur' || card_attr('region',#)=='Misty Mountains - Southern Spur')",s);
-	else if(ARG=='MinionEriador')
+  else if(ARG=='MinionEriador')
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Númeriador' || card_attr('region',#)=='Angmar' || card_attr('region',#)=='Arthedain' || card_attr('region',#)=='Rhudaur' || card_attr('region',#)=='Old Forest*' || card_attr('region',#)=='Dunland' || card_attr('region',#)=='Redhorn Gate' || card_attr('region',#)=='Hollin' || card_attr('region',#)=='Enedhwaith' || card_attr('region',#)=='Lindon' || card_attr('region',#)=='High Pass' || card_attr('region',#)=='Cardolan' || card_attr('region',#)=='The Shire' || card_attr('region',#)=='Misty Mountains - Northern Spur' || card_attr('region',#)=='Misty Mountains - Southern Spur')",s);
-	else if(ARG=='HeroNWaste')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhûgdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sêj' || card_attr('region',#)=='Helkëar' || card_attr('region',#)=='Dyr')",s);
-	else if(ARG=='MinionNWaste')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhûgdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sêj' || card_attr('region',#)=='Helkëar' || card_attr('region',#)=='Dyr')",s);
-	else if(ARG=='HeroSunLands')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Lûrmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Póa' || card_attr('region',#)=='Né Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
-	else if(ARG=='MinionSunLands')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Lûrmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Póa' || card_attr('region',#)=='Né Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
+  else if(ARG=='HeroNWaste')
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhûgdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sêj' || card_attr('region',#)=='Helkëar' || card_attr('region',#)=='Dyr')",s);
+  else if(ARG=='MinionNWaste')
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhûgdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sêj' || card_attr('region',#)=='Helkëar' || card_attr('region',#)=='Dyr')",s);
+  else if(ARG=='HeroSunLands')
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Lûrmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Póa' || card_attr('region',#)=='Né Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
+  else if(ARG=='MinionSunLands')
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Lûrmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Póa' || card_attr('region',#)=='Né Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
 else if(ARG=='HeroWilder')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhûn' || card_attr('region',#)=='Taur Rómen' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhûn' || card_attr('region',#)=='Taur Rómen' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
 else if(ARG=='MinionWilder')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhûn' || card_attr('region',#)=='Taur Rómen' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhûn' || card_attr('region',#)=='Taur Rómen' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
 else if(ARG=='HeroGGondor')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pûkel-land' || card_attr('region',#)=='Old Pûkel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anórien' || card_attr('region',#)=='Ithilien')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pûkel-land' || card_attr('region',#)=='Old Pûkel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anórien' || card_attr('region',#)=='Ithilien')",s);
 else if(ARG=='MinionGGondor')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pûkel-land' || card_attr('region',#)=='Old Pûkel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anórien' || card_attr('region',#)=='Ithilien')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pûkel-land' || card_attr('region',#)=='Old Pûkel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anórien' || card_attr('region',#)=='Ithilien')",s);
 else if(ARG=='HeroMordor')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Dagorlad' || card_attr('region',#)=='Horse Plains' || card_attr('region',#)=='Ered Lithui' || card_attr('region',#)=='Nuriag' || card_attr('region',#)=='Nurn' || card_attr('region',#)=='Gorgoroth' || card_attr('region',#)=='Udun' || card_attr('region',#)=='Imlad Morgul' || card_attr('region',#)=='Gap of Khand' || card_attr('region',#)=='Khand' || card_attr('region',#)=='Chelkar')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Dagorlad' || card_attr('region',#)=='Horse Plains' || card_attr('region',#)=='Ered Lithui' || card_attr('region',#)=='Nuriag' || card_attr('region',#)=='Nurn' || card_attr('region',#)=='Gorgoroth' || card_attr('region',#)=='Udun' || card_attr('region',#)=='Imlad Morgul' || card_attr('region',#)=='Gap of Khand' || card_attr('region',#)=='Khand' || card_attr('region',#)=='Chelkar')",s);
 else if(ARG=='MinionMordor')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Dagorlad' || card_attr('region',#)=='Horse Plains' || card_attr('region',#)=='Ered Lithui' || card_attr('region',#)=='Nuriag' || card_attr('region',#)=='Nurn' || card_attr('region',#)=='Gorgoroth' || card_attr('region',#)=='Udun' || card_attr('region',#)=='Imlad Morgul' || card_attr('region',#)=='Gap of Khand' || card_attr('region',#)=='Khand' || card_attr('region',#)=='Chelkar')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Dagorlad' || card_attr('region',#)=='Horse Plains' || card_attr('region',#)=='Ered Lithui' || card_attr('region',#)=='Nuriag' || card_attr('region',#)=='Nurn' || card_attr('region',#)=='Gorgoroth' || card_attr('region',#)=='Udun' || card_attr('region',#)=='Imlad Morgul' || card_attr('region',#)=='Gap of Khand' || card_attr('region',#)=='Khand' || card_attr('region',#)=='Chelkar')",s);
 else if(ARG=='HeroCPlains')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forrhûn' || card_attr('region',#)=='Harrhûn' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nûrad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forrhûn' || card_attr('region',#)=='Harrhûn' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nûrad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
 else if(ARG=='MinionCPlains')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forrhûn' || card_attr('region',#)=='Harrhûn' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nûrad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forrhûn' || card_attr('region',#)=='Harrhûn' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nûrad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
 else if(ARG=='HeroOrmal')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sára Bask')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sára Bask')",s);
 else if(ARG=='MinionOrmal')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sára Bask')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sára Bask')",s);
 else if(ARG=='HeroSSeas')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='The Sundering Sea' || card_attr('region',#)=='West Bay of Forochel' || card_attr('region',#)=='Elven Shores' || card_attr('region',#)=='Eriadoran Coast' || card_attr('region',#)=='Andrast Coast' || card_attr('region',#)=='Bay of Belfalas' || card_attr('region',#)=='Coast of Harad' || card_attr('region',#)=='Bay of Felaya' || card_attr('region',#)=='Mardruak Cape' || card_attr('region',#)=='Kurryan Bay')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='The Sundering Sea' || card_attr('region',#)=='West Bay of Forochel' || card_attr('region',#)=='Elven Shores' || card_attr('region',#)=='Eriadoran Coast' || card_attr('region',#)=='Andrast Coast' || card_attr('region',#)=='Bay of Belfalas' || card_attr('region',#)=='Coast of Harad' || card_attr('region',#)=='Bay of Felaya' || card_attr('region',#)=='Mardruak Cape' || card_attr('region',#)=='Kurryan Bay')",s);
 else if(ARG=='MinionSSeas')
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='The Sundering Sea' || card_attr('region',#)=='West Bay of Forochel' || card_attr('region',#)=='Elven Shores' || card_attr('region',#)=='Eriadoran Coast' || card_attr('region',#)=='Andrast Coast' || card_attr('region',#)=='Bay of Belfalas' || card_attr('region',#)=='Coast of Harad' || card_attr('region',#)=='Bay of Felaya' || card_attr('region',#)=='Mardruak Cape' || card_attr('region',#)=='Kurryan Bay')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='The Sundering Sea' || card_attr('region',#)=='West Bay of Forochel' || card_attr('region',#)=='Elven Shores' || card_attr('region',#)=='Eriadoran Coast' || card_attr('region',#)=='Andrast Coast' || card_attr('region',#)=='Bay of Belfalas' || card_attr('region',#)=='Coast of Harad' || card_attr('region',#)=='Bay of Felaya' || card_attr('region',#)=='Mardruak Cape' || card_attr('region',#)=='Kurryan Bay')",s);
 
     SortSites();
     RefreshCurrentDeck();
@@ -1296,7 +1294,7 @@ def CurrentDeckAddSites
       s=s-select("card_attr('type',#)=='Hero Site' && card_attr('site_type',#)=='{H}'",s);
       s=s-select("card_attr('type',#)=='Balrog Site'",s);
       s=s-select("card_attr('type',#)=='Fallen-wizard Site'",s);
-	  s=s-select("card_attr('type',#)=='Dwarf-lord Site'",s);
+    s=s-select("card_attr('type',#)=='Dwarf-lord Site'",s);
       s=s-select("card_attr('type',#)=='Elf-lord Site' && card_attr('site_type',#)=='{H}'",s);
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+s;
 
@@ -1307,18 +1305,18 @@ def CurrentDeckAddSites
       c=first(unique(sort(forall("Attr('specific',#)",c))));
       s=select("card_attr('type',#)=='Elf-lord Site' && Attr('specific',#)==c",a);
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+s;
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"} - flatten(images("Old Forest [H]"));
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"} - flatten(images("Old Forest [H]"));
       
       k=pop();
       c=pop();
     }
-	else if(ARG=="Dwarf-lord Site")
+  else if(ARG=="Dwarf-lord Site")
     {
       s=s-select("card_attr('type',#)=='Minion Site' && card_attr('site_type',#)!='{R}'",s);
       s=s-select("card_attr('type',#)=='Hero Site' && card_attr('site_type',#)=='{H}'",s);
       s=s-select("card_attr('type',#)=='Balrog Site'",s);
       s=s-select("card_attr('type',#)=='Fallen-wizard Site'",s);
-	  s=s-select("card_attr('type',#)=='Elf-lord Site'",s);
+    s=s-select("card_attr('type',#)=='Elf-lord Site'",s);
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+s;
 
       push(c);
@@ -1327,7 +1325,7 @@ def CurrentDeckAddSites
       c=unique(sort(select("Attr('specific',#)!=''",decks{deck.name}{"deck"})));
       c=first(unique(sort(forall("Attr('specific',#)",c))));
 
-	  decks{deck.name}{"sites"}=decks{deck.name}{"sites"} - flatten(images("Old Forest [H]"));
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"} - flatten(images("Old Forest [H]"));
       
       k=pop();
       c=pop();
@@ -1336,10 +1334,10 @@ def CurrentDeckAddSites
     {
       s=s-select("card_attr('type',#)=='Hero Site'",s);
       s=s-select("card_attr('type',#)=='Balrog Site'",s);
-	  s=s-select("card_attr('type',#)=='Fallen-wizard Site'",s);
-	  s=s-select("card_attr('type',#)=='Elf-lord Site'",s);
-	  s=s-select("card_attr('type',#)=='Dwarf-lord Site'",s);
-	  s=s-select("card_attr('type',#)=='Fallen Site'",s);
+    s=s-select("card_attr('type',#)=='Fallen-wizard Site'",s);
+    s=s-select("card_attr('type',#)=='Elf-lord Site'",s);
+    s=s-select("card_attr('type',#)=='Dwarf-lord Site'",s);
+    s=s-select("card_attr('type',#)=='Fallen Site'",s);
 
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+s;
 
@@ -1353,14 +1351,14 @@ def CurrentDeckAddSites
       k=pop();
       c=pop();
     }
-	else if(ARG=="Balrog DC Site")
+  else if(ARG=="Balrog DC Site")
     {
       s=s-select("card_attr('type',#)=='Hero Site'",s);
       s=s-select("card_attr('type',#)=='Elf-lord Site'",s);
-	  s=s-select("card_attr('name',#)=='Old Forest [M]'",s);
-	  s=s-select("card_attr('type',#)=='Fallen-wizard Site'",s);
-	  s=s-select("card_attr('type',#)=='Dwarf-lord Site'",s);
-	  s=s-select("card_attr('type',#)=='Fallen Site'",s);
+    s=s-select("card_attr('name',#)=='Old Forest [M]'",s);
+    s=s-select("card_attr('type',#)=='Fallen-wizard Site'",s);
+    s=s-select("card_attr('type',#)=='Dwarf-lord Site'",s);
+    s=s-select("card_attr('type',#)=='Fallen Site'",s);
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+s;
 
       push(c);
@@ -1373,8 +1371,8 @@ def CurrentDeckAddSites
       k=pop();
       c=pop();
     }
-	
-	
+  
+  
     SortSites();
     RefreshCurrentDeck();
 
@@ -1580,10 +1578,10 @@ def KeyControlKeyRight
   if(object.metw_map{metw_map_current}!=NULL)
   {
     if(get_attr(object.metw_map{metw_map_current},"visible"))
-	{
+  {
       push(o);
       o=metw_map_current;
-  	
+    
       if(metw_map_current<metw_map_total)
         metw_map_current=metw_map_current+1;
       else
@@ -1592,10 +1590,10 @@ def KeyControlKeyRight
       KeyControlKeyM();
 
       if(object.metw_map{o}!=NULL)
-	    set_attr(object.metw_map{o},"visible",0);
+      set_attr(object.metw_map{o},"visible",0);
   
       o=pop();
-	}
+  }
   }
 }
 
@@ -1607,10 +1605,10 @@ def KeyControlKeyLeft
   if(object.metw_map{metw_map_current}!=NULL)
   {
     if(get_attr(object.metw_map{metw_map_current},"visible"))
-	{
+  {
       push(o);
       o=metw_map_current;
-  	
+    
       if(metw_map_current>1)
         metw_map_current=metw_map_current-1;
       else
@@ -1619,10 +1617,10 @@ def KeyControlKeyLeft
       KeyControlKeyM();
 
       if(object.metw_map{o}!=NULL)
-	    set_attr(object.metw_map{o},"visible",0);
+      set_attr(object.metw_map{o},"visible",0);
   
       o=pop();
-	}
+  }
   }
 }
 
@@ -1640,15 +1638,15 @@ def PlayKeyEnter
       else
         Send("Say","My company enters "+card.name+".");
     }
-   	else if(right(Attr("type",card.number),9)=="Character")
-   	{
-   		Send("Say", card.name + " faces a strike. (Prowess "+Attr("prowess",card.number)+", body "+Attr("body",card.number)+".)");
-   	}
+    else if(right(Attr("type",card.number),9)=="Character")
+    {
+      Send("Say", card.name + " faces a strike. (Prowess "+Attr("prowess",card.number)+", body "+Attr("body",card.number)+".)");
+    }
     else if(find(Attr("class",card.number), "Creature")!=NULL)
     {
-    	Send("Say","Face "+card.name+" ("+ Attr("subclass",card.number) +".) "+
-    			Attr("strikes",card.number)+" strike(s) at "+Attr("prowess",card.number)+" prowess.");
-   	}
+      Send("Say","Face "+card.name+" ("+ Attr("subclass",card.number) +".) "+
+          Attr("strikes",card.number)+" strike(s) at "+Attr("prowess",card.number)+" prowess.");
+    }
     else
       KeyReturn();
   }
@@ -1812,10 +1810,10 @@ def SideboardSearchBoxMenuHook
   if(card.number)
   {
     m=m+(
-	 ("Put to the top of the deck","Home",""),
+   ("Put to the top of the deck","Home",""),
      ("Reveal type and shuffle to the deck","left click",""),
      ("Reveal type and put to the discard","",'transfer.options{"reveal"}="type"; TryTransferTo("deck.top",deck.objects[me]{"discard pile"})'),
- 	 ("{hr}","",""),
+   ("{hr}","",""),
     );
   }
   m=m+(("Close","Escape",""),);
@@ -1836,7 +1834,7 @@ def PoolSearchBoxMenuHook
     m=m+(
       ("Play {blue}"+card.name,"left click",""),
       ("Play {blue}"+card.name+"{black} face down","middle click",""),
-	  ("Put to the top of the deck","Home",""),
+    ("Put to the top of the deck","Home",""),
       ("Remove from the game","Ctrl+Delete",""),
       ("Show card text","Ctrl+H",""),
     );
@@ -1960,22 +1958,22 @@ def InitializeLocationTables
        (("LocationList",((table.width/8,0),(table.width/2,0),((table.width*3)/4,0),(table.width/5,table.height/4),(table.width/2,table.height/4),((table.width*3)/4,table.height/4)),),),
        (,)
     )),
-    (("mp",),(
-       (("StacksByGroup",3,table.height/2-card.ystep+((players>2)*(card.ystep/2)),15,0,0,0),),
-       (("OffscreenEnabled","yes"),)
-    )),
-    (("events","long"),(
-       (("StacksByGroup",100,-card.ystep/2+15,card.xstep/3,0,0,0),),
-       (("AutoRaiseGroupTail","yes"),)
-    )),
-    (("events","other"),(
-       (("StacksByGroup",table.width-card.xstep,card.ystep/2,0,20,0,0),),
-       (("AutoRaiseGroupTail","yes"),)
-    )),
-    (("events","hazard"),(
-       (("StacksByGroup",table.width-card.xstep*2,card.ystep/2,0,20,0,0),),
-       (("AutoRaiseGroupTail","yes"),)
-    )),
+#    (("mp",),(
+#       (("StacksByGroup",3,table.height/2-card.ystep+((players>2)*(card.ystep/2)),15,0,0,0),),
+#       (("OffscreenEnabled","yes"),)
+#    )),
+#    (("events","long"),(
+#       (("StacksByGroup",100,-card.ystep/2+15,card.xstep/3,0,0,0),),
+#       (("AutoRaiseGroupTail","yes"),)
+#    )),
+#    (("events","other"),(
+#       (("StacksByGroup",table.width-card.xstep,card.ystep/2,0,20,0,0),),
+#       (("AutoRaiseGroupTail","yes"),)
+#    )),
+#    (("events","hazard"),(
+#       (("StacksByGroup",table.width-card.xstep*2,card.ystep/2,0,20,0,0),),
+#       (("AutoRaiseGroupTail","yes"),)
+#    )),
 #    (("item/hazard",),(
 #       (("TargetCard",-w(20),-h(20),-w(20),-h(20)),),
 #       (("OffscreenEnabled","yes"),("RaiseTarget","yes"))
