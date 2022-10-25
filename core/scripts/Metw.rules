@@ -252,7 +252,7 @@ deck_rules{"2-deck Balrog"}{"deck"}=(
   ("RuleCheckExpression",("Hazards vs. Resources","RuleHazardResourceBalance(#,\"B\")")),
   ("RuleCheckExpression",("Number of wizards/ringwraiths in the deck","RuleCheckWizards(#,\"deck\",\"B\")")),
   ("RuleLimitByExpression",(0,"find(\"Site\",Attr(\"type\",#)) != NULL")),
-  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" && (Attr(\"keyword\",#),\"agent\")!=\"yes\" && canonical_name(#)!=\"The Balrog [B]\"")),
+  ("RuleLimitByExpression",(10,"Attr(\"type\",#)==\"Minion Character\" && Attr(\"agent\",#)!=\"yes\" && canonical_name(#)!=\"The Balrog [B]\"")),
   ("RuleDeckMinimum",60),
   ("RuleDeckMaximum",100),
   ("RuleLimitByExpression",(0,"Attr(\"type\",#)!=\"Balrog Character\" && Attr(\"type\",#)!=\"Minion Character\" && Attr(\"type\",#)!=\"Minion Resource\" && !(Attr(\"type\",#)==\"Hero Resource\" && find(\"Item\",Attr(\"class\",#))) && Attr(\"type\",#)!=\"Hazard\" && name(#)!=\"Gnawed Ways\"")),
