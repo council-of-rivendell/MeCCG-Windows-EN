@@ -56,7 +56,7 @@ DEFAULT_EXPORT_FORMAT="Gccg";
 BOOK_DEFAULT_SORT=("[age]","[type]","[name]");
 # Servers (173.208.151.54)
 #if(server.name=="NO.DEFAULT.SERVER.FOR.THIS.GAME")
-  server.name="gccg.meccg.es";
+  server.name="gccg.meccg.com";
 # Export set names
 options.export_set=1;
 
@@ -206,7 +206,7 @@ color2region{1}{(100,200,200)}="Andrast Coast";
 color2region{1}{(200,50,200)}="Anduin Vales";
 color2region{1}{(100,200,100)}="Anfalas";
 color2region{1}{(25,100,200)}="Angmar";
-color2region{1}{(128,255,0)}="Anórien";
+color2region{1}{(128,255,0)}="Anï¿½rien";
 color2region{1}{(25,150,0)}="Arthedain";
 color2region{1}{(0,0,255)}="Bay of Belfalas";
 color2region{1}{(100,100,100)}="Belfalas";
@@ -240,18 +240,18 @@ color2region{1}{(25,150,250)}="Lindon";
 color2region{1}{(252,190,135)}="Misty Mountains";
 color2region{1}{(0,128,255)}="Mouths of the Anduin";
 color2region{1}{(25,150,150)}="Northern Rhovanion";
-color2region{1}{(25,150,100)}="Númeriador";
+color2region{1}{(25,150,100)}="Nï¿½meriador";
 color2region{1}{(128,128,128)}="Nurn";
 color2region{1}{(172,95,166)}="Old Forest*";
-color2region{1}{(0,255,128)}="Old Pûkel Gap";
-color2region{1}{(25,250,0)}="Old Pûkel-land";
+color2region{1}{(0,255,128)}="Old Pï¿½kel Gap";
+color2region{1}{(25,250,0)}="Old Pï¿½kel-land";
 color2region{1}{(128,0,0)}="Redhorn Gate";
 color2region{1}{(50,200,50)}="Rhudaur";
 color2region{1}{(128,64,0)}="Rohan";
 color2region{1}{(200,200,100)}="Southern Mirkwood";
 color2region{1}{(220,220,0)}="Southern Rhovanion";
 color2region{1}{(25,200,100)}="The Shire";
-color2region{1}{(255,0,0)}="Udûn";
+color2region{1}{(255,0,0)}="Udï¿½n";
 color2region{1}{(25,100,100)}="Western Mirkwood";
 color2region{1}{(50,50,50)}="Withered Heath";
 color2region{1}{(128,128,64)}="Wold & Foothills";
@@ -278,7 +278,7 @@ color2region{2}{(128,255,255)}="Everdalf";
 color2region{2}{(255,128,64)}="Fangorn";
 color2region{2}{(25,100,250)}="Forochel";
 color2region{2}{(106,52,217)}="Forovirkain";
-color2region{2}{(152,152,52)}="Forrhûn";
+color2region{2}{(152,152,52)}="Forrhï¿½n";
 color2region{2}{(255,128,0)}="Gondalf";
 color2region{2}{(68,229,39)}="Grey Mountains";
 color2region{2}{(25,250,250)}="Grey Mountain Narrows";
@@ -287,9 +287,9 @@ color2region{2}{(200,200,50)}="Heart of Mirkwood";
 color2region{2}{(200,200,200)}="High Pass";
 color2region{2}{(250,100,0)}="Hollin";
 color2region{2}{(150,150,150)}="Horse Plains";
-color2region{2}{(188,188,188)}="Hûb Uichel";
+color2region{2}{(188,188,188)}="Hï¿½b Uichel";
 color2region{2}{(200,50,50)}="Iron Hills";
-color2region{2}{(52,152,52)}="Lhûgdalf";
+color2region{2}{(52,152,52)}="Lhï¿½gdalf";
 color2region{2}{(0,128,0)}="Lindalf";
 color2region{2}{(25,150,250)}="Lindon";
 color2region{2}{(255,255,99)}="Minheldolath";
@@ -297,17 +297,17 @@ color2region{2}{(252,190,135)}="Misty Mountains - Northern Spur";
 color2region{2}{(77,127,127)}="Misty Mountains - Southern Spur";
 color2region{2}{(128,128,0)}="Narthalf";
 color2region{2}{(25,150,150)}="Northern Rhovanion";
-color2region{2}{(25,150,100)}="Númeriador";
+color2region{2}{(25,150,100)}="Nï¿½meriador";
 color2region{2}{(172,95,166)}="Old Forest*";
 color2region{2}{(128,0,50)}="Rast Losnaeth";
 color2region{2}{(128,0,0)}="Redhorn Gate";
 color2region{2}{(50,200,50)}="Rhudaur";
-color2region{2}{(177,177,127)}="Sea of Rhûn";
+color2region{2}{(177,177,127)}="Sea of Rhï¿½n";
 color2region{2}{(200,200,100)}="Southern Mirkwood";
 color2region{2}{(220,220,0)}="Southern Rhovanion";
 color2region{2}{(188,188,88)}="Talath Oiohelka";
 color2region{2}{(189,215,77)}="Talath Uichel";
-color2region{2}{(152,152,152)}="Taur Rómen";
+color2region{2}{(152,152,152)}="Taur Rï¿½men";
 color2region{2}{(25,200,100)}="The Shire";
 color2region{2}{(128,0,255)}="Thorenaer";
 color2region{2}{(255,0,0)}="West Bay of Forochel";
@@ -319,7 +319,7 @@ color2region{2}{(25,200,200)}="Woodland Realm";
 color2region{3}=(,);
 color2region{3}{(200,50,200)}="Anduin Vales";
 color2region{3}{(25,100,200)}="Angmar";
-color2region{3}{(128,255,0)}="Anórien";
+color2region{3}{(128,255,0)}="Anï¿½rien";
 color2region{3}{(25,150,0)}="Arthedain";
 color2region{3}{(55,55,55)}="Azjan";
 color2region{3}{(55,155,255)}="Barl Syrnac";
@@ -339,22 +339,22 @@ color2region{3}{(128,255,255)}="Everdalf";
 color2region{3}{(255,128,64)}="Fangorn";
 color2region{3}{(25,100,250)}="Forochel";
 color2region{3}{(106,52,217)}="Forovirkain";
-color2region{3}{(152,152,52)}="Forrhûn";
+color2region{3}{(152,152,52)}="Forrhï¿½n";
 color2region{3}{(200,100,100)}="Gap of Isen";
 color2region{3}{(0,0,0)}="Gorgoroth";
 color2region{3}{(68,229,39)}="Grey Mountains";
 color2region{3}{(25,250,250)}="Grey Mountain Narrows";
 color2region{3}{(25,100,150)}="Gundabad";
-color2region{3}{(152,152,252)}="Harrhûn";
+color2region{3}{(152,152,252)}="Harrhï¿½n";
 color2region{3}{(200,200,50)}="Heart of Mirkwood";
-color2region{3}{(52,152,152)}="Helkëar";
+color2region{3}{(52,152,152)}="Helkï¿½ar";
 color2region{3}{(200,200,200)}="High Pass";
 color2region{3}{(250,100,0)}="Hollin";
 color2region{3}{(150,150,150)}="Horse Plains";
-color2region{3}{(188,188,188)}="Hûb Uichel";
+color2region{3}{(188,188,188)}="Hï¿½b Uichel";
 color2region{3}{(200,50,50)}="Iron Hills";
 color2region{3}{(255,0,255)}="Ithilien";
-color2region{3}{(52,152,52)}="Lhûgdalf";
+color2region{3}{(52,152,52)}="Lhï¿½gdalf";
 color2region{3}{(0,128,0)}="Lindalf";
 color2region{3}{(152,52,52)}="Lotan";
 color2region{3}{(255,255,99)}="Minheldolath";
@@ -363,26 +363,26 @@ color2region{3}{(77,127,127)}="Misty Mountains - Southern Spur";
 color2region{3}{(152,52,252)}="Mur Fostisyr";
 color2region{3}{(128,128,0)}="Narthalf";
 color2region{3}{(25,150,150)}="Northern Rhovanion";
-color2region{3}{(25,150,100)}="Númeriador";
+color2region{3}{(25,150,100)}="Nï¿½meriador";
 color2region{3}{(252,152,252)}="Nuriag";
 color2region{3}{(128,128,128)}="Nurn";
 color2region{3}{(172,95,166)}="Old Forest*";
-color2region{3}{(25,250,0)}="Old Pûkel-land";
+color2region{3}{(25,250,0)}="Old Pï¿½kel-land";
 color2region{3}{(128,0,50)}="Rast Losnaeth";
 color2region{3}{(128,0,0)}="Redhorn Gate";
 color2region{3}{(48,248,248)}="Relmether";
 color2region{3}{(50,200,50)}="Rhudaur";
 color2region{3}{(128,64,0)}="Rohan";
-color2region{3}{(177,177,127)}="Sea of Rhûn";
+color2region{3}{(177,177,127)}="Sea of Rhï¿½n";
 color2region{3}{(200,200,100)}="Southern Mirkwood";
 color2region{3}{(220,220,0)}="Southern Rhovanion";
 color2region{3}{(188,188,88)}="Talath Oiohelka";
 color2region{3}{(189,215,77)}="Talath Uichel";
-color2region{3}{(152,152,152)}="Taur Rómen";
+color2region{3}{(152,152,152)}="Taur Rï¿½men";
 color2region{3}{(25,200,100)}="The Shire";
 color2region{3}{(128,0,255)}="Thorenaer";
-color2region{3}{(255,0,0)}="Udûn";
-color2region{3}{(55,255,155)}="Ukal Sêj";
+color2region{3}{(255,0,0)}="Udï¿½n";
+color2region{3}{(55,255,155)}="Ukal Sï¿½j";
 color2region{3}{(25,100,100)}="Western Mirkwood";
 color2region{3}{(50,50,50)}="Withered Heath";
 color2region{3}{(128,128,64)}="Wold & Foothills";
@@ -396,7 +396,7 @@ color2region{4}{(100,200,200)}="Andrast Coast";
 color2region{4}{(200,50,200)}="Anduin Vales";
 color2region{4}{(100,200,100)}="Anfalas";
 color2region{4}{(25,100,200)}="Angmar";
-color2region{4}{(128,255,0)}="Anórien";
+color2region{4}{(128,255,0)}="Anï¿½rien";
 color2region{4}{(25,150,0)}="Arthedain";
 color2region{4}{(248,148,148)}="Arysis";
 color2region{4}{(0,0,255)}="Bay of Belfalas";
@@ -418,14 +418,14 @@ color2region{4}{(128,152,52)}="Ered Lithui";
 color2region{4}{(50,50,200)}="Eriadoran Coast";
 color2region{4}{(255,128,64)}="Fangorn";
 color2region{4}{(25,100,250)}="Forochel";
-color2region{4}{(152,152,52)}="Forrhûn";
+color2region{4}{(152,152,52)}="Forrhï¿½n";
 color2region{4}{(200,100,100)}="Gap of Isen";
 color2region{4}{(233,133,133)}="Gap of Khand";
 color2region{4}{(0,0,0)}="Gorgoroth";
 color2region{4}{(25,250,250)}="Grey Mountain Narrows";
 color2region{4}{(25,100,150)}="Gundabad";
 color2region{4}{(175,175,175)}="Harondor";
-color2region{4}{(152,152,252)}="Harrhûn";
+color2region{4}{(152,152,252)}="Harrhï¿½n";
 color2region{4}{(88,88,88)}="Haruzan";
 color2region{4}{(200,200,50)}="Heart of Mirkwood";
 color2region{4}{(48,248,48)}="Heb Aaraan";
@@ -440,30 +440,30 @@ color2region{4}{(192,192,192)}="Khand";
 color2region{4}{(100,100,200)}="Lamedon";
 color2region{4}{(128,255,255)}="Lebennin";
 color2region{4}{(152,52,52)}="Lotan";
-color2region{4}{(233,233,133)}="Lurmsakûn";
+color2region{4}{(233,233,133)}="Lurmsakï¿½n";
 color2region{4}{(248,248,48)}="Mirror of Fire";
 color2region{4}{(252,190,135)}="Misty Mountains - Northern Spur";
 color2region{4}{(77,127,127)}="Misty Mountains - Southern Spur";
 color2region{4}{(0,128,255)}="Mouths of the Anduin";
 color2region{4}{(25,150,150)}="Northern Rhovanion";
-color2region{4}{(48,48,48)}="Nûrad";
+color2region{4}{(48,48,48)}="Nï¿½rad";
 color2region{4}{(252,152,252)}="Nuriag";
 color2region{4}{(128,128,128)}="Nurn";
 color2region{4}{(172,95,166)}="Old Forest*";
-color2region{4}{(0,255,128)}="Old Pûkel Gap";
-color2region{4}{(25,250,0)}="Old Pûkel-land";
+color2region{4}{(0,255,128)}="Old Pï¿½kel Gap";
+color2region{4}{(25,250,0)}="Old Pï¿½kel-land";
 color2region{4}{(133,33,233)}="Pezarsan"; 
 color2region{4}{(128,0,0)}="Redhorn Gate";
 color2region{4}{(48,248,248)}="Relmether";
 color2region{4}{(50,200,50)}="Rhudaur";
 color2region{4}{(128,64,0)}="Rohan";
-color2region{4}{(177,177,127)}="Sea of Rhûn";
+color2region{4}{(177,177,127)}="Sea of Rhï¿½n";
 color2region{4}{(248,248,148)}="Siakan";
 color2region{4}{(200,200,100)}="Southern Mirkwood";
 color2region{4}{(220,220,0)}="Southern Rhovanion";
-color2region{4}{(152,152,152)}="Taur Rómen";
+color2region{4}{(152,152,152)}="Taur Rï¿½men";
 color2region{4}{(25,200,100)}="The Shire";
-color2region{4}{(255,0,0)}="Udûn";
+color2region{4}{(255,0,0)}="Udï¿½n";
 color2region{4}{(25,100,100)}="Western Mirkwood";
 color2region{4}{(50,50,50)}="Withered Heath";
 color2region{4}{(128,128,64)}="Wold & Foothills";
@@ -483,10 +483,10 @@ color2region{5}{(60,170,100)}="Clyan";
 color2region{5}{(1,255,255)}="Coast of Harad";
 color2region{5}{(13,1,77)}="Curinshiban";
 color2region{5}{(244,152,157)}="Dune Sea";
-color2region{5}{(254,242,0)}="Dûshera";
+color2region{5}{(254,242,0)}="Dï¿½shera";
 color2region{5}{(231,230,228)}="Ephel Duath";
 color2region{5}{(237,0,140)}="Ered Harmal";
-color2region{5}{(84,71,65)}="Erim Póa";
+color2region{5}{(84,71,65)}="Erim Pï¿½a";
 color2region{5}{(96,57,18)}="Felaya";
 color2region{5}{(33,22,133)}="Gan";
 color2region{5}{(0,0,254)}="Harondor";
@@ -499,28 +499,28 @@ color2region{5}{(0,116,107)}="Kes Arik";
 color2region{5}{(0,173,239)}="Khand";
 color2region{5}{(254,198,137)}="Kirmlesra";
 color2region{5}{(10,110,111)}="Kurryan Bay";
-color2region{5}{(163,210,156)}="Lurmsakûn";
+color2region{5}{(163,210,156)}="Lurmsakï¿½n";
 color2region{5}{(242,108,79)}="Mardruak";
 color2region{5}{(150,13,50)}="Mardruak Cape";
 color2region{5}{(237,27,36)}="Mirror of Fire";
 color2region{5}{(0,255,1)}="Mouths of the Anduin";
-color2region{5}{(55,47,45)}="Né Tava";
-color2region{5}{(115,115,115)}="Nûrad";
+color2region{5}{(55,47,45)}="Nï¿½ Tava";
+color2region{5}{(115,115,115)}="Nï¿½rad";
 color2region{5}{(0,167,79)}="Nurn";
 color2region{5}{(109,207,246)}="Pezarsan";  
-color2region{5}{(0,119,162)}="Sára Bask";
+color2region{5}{(0,119,162)}="Sï¿½ra Bask";
 color2region{5}{(142,142,142)}="Seznebab";
 color2region{5}{(142,198,63)}="Siakan";
 color2region{5}{(198,156,108)}="Suza Sumar";
 color2region{5}{(0,114,54)}="Tulwang";
-color2region{5}{(240,110,170)}="Ûsakan";
+color2region{5}{(240,110,170)}="ï¿½sakan";
 color2region{5}{(122,0,37)}="Yellow Mountains - Eastern Spur";
 color2region{5}{(0,166,82)}="Yellow Mountains";
 color2region{5}{(124,197,118)}="Zajantak";
 
 color2region{6}=(,);
 color2region{6}{(255,247,154)}="Arysis";
-color2region{6}{(255,255,3)}="Bay of Drêl";
+color2region{6}{(255,255,3)}="Bay of Drï¿½l";
 color2region{6}{(200,178,155)}="Bay of Felaya";
 color2region{6}{(1,91,126)}="Bay of Tulwang";
 color2region{6}{(153,134,117)}="Bellazen";
@@ -531,9 +531,9 @@ color2region{6}{(60,170,100)}="Clyan";
 color2region{6}{(1,255,255)}="Coast of Harad";
 color2region{6}{(13,1,77)}="Curinshiban";
 color2region{6}{(244,152,157)}="Dune Sea";
-color2region{6}{(254,242,0)}="Dûshera";
+color2region{6}{(254,242,0)}="Dï¿½shera";
 color2region{6}{(237,0,140)}="Ered Harmal";
-color2region{6}{(84,71,65)}="Erim Póa";
+color2region{6}{(84,71,65)}="Erim Pï¿½a";
 color2region{6}{(96,57,18)}="Felaya";
 color2region{6}{(33,22,133)}="Gan";
 color2region{6}{(245,150,120)}="Heb Aaraan";
@@ -543,19 +543,19 @@ color2region{6}{(99,4,96)}="Isra";
 color2region{6}{(0,116,107)}="Kes Arik";
 color2region{6}{(254,198,137)}="Kirmlesra";
 color2region{6}{(10,110,111)}="Kurryan Bay";
-color2region{5}{(163,210,156)}="Lurmsakûn";
+color2region{5}{(163,210,156)}="Lurmsakï¿½n";
 color2region{6}{(242,108,79)}="Mardruak";
 color2region{6}{(150,13,50)}="Mardruak Cape";
 color2region{6}{(237,27,36)}="Mirror of Fire";
-color2region{6}{(55,47,45)}="Né Tava";
-color2region{6}{(115,115,115)}="Nûrad";
-color2region{6}{(0,119,162)}="Sára Bask";
+color2region{6}{(55,47,45)}="Nï¿½ Tava";
+color2region{6}{(115,115,115)}="Nï¿½rad";
+color2region{6}{(0,119,162)}="Sï¿½ra Bask";
 color2region{6}{(142,142,142)}="Seznebab";
 color2region{6}{(142,198,63)}="Siakan";
 color2region{6}{(198,156,108)}="Suza Sumar";
 color2region{6}{(188,233,233)}="The Sundering Seas";
 color2region{6}{(0,114,54)}="Tulwang";
-color2region{6}{(240,110,170)}="Ûsakan";
+color2region{6}{(240,110,170)}="ï¿½sakan";
 color2region{6}{(122,0,37)}="Yellow Mountains - Eastern Spur";
 color2region{6}{(237,185,1)}="Yellow Mountains - Western Spur";
 color2region{6}{(0,166,82)}="Yellow Mountains";
@@ -564,30 +564,30 @@ color2region{6}{(237,25,91)}="Elorna";
 color2region{6}{(137,25,91)}="Hyarn";
 color2region{6}{(37,25,91)}="Cleft of Goats";
 color2region{6}{(37,85,91)}="Hyarnustar Coast";
-color2region{6}{(137,85,91)}="Mirëdor";
-color2region{6}{(237,85,91)}="Drêl";
+color2region{6}{(137,85,91)}="Mirï¿½dor";
+color2region{6}{(237,85,91)}="Drï¿½l";
 color2region{6}{(237,185,91)}="Pel";
 color2region{6}{(237,85,191)}="Tumag";
 color2region{6}{(237,85,1)}="Mag";
-color2region{6}{(237,185,111)}="Ûsakan Bay";
+color2region{6}{(237,185,111)}="ï¿½sakan Bay";
 color2region{6}{(237,185,11)}="Hathor";
-color2region{6}{(237,15,11)}="Tantûrak";
+color2region{6}{(237,15,11)}="Tantï¿½rak";
 color2region{6}{(237,15,101)}="Shores of Maquatostoth";
-color2region{6}{(237,151,101)}="Tâliran";
+color2region{6}{(237,151,101)}="Tï¿½liran";
 color2region{6}{(37,151,101)}="Koros Bay";
-color2region{6}{(37,51,101)}="Mûlambur";
+color2region{6}{(37,51,101)}="Mï¿½lambur";
 color2region{6}{(7,51,101)}="Geshaan";
 color2region{6}{(7,251,101)}="Tuktan";
 color2region{6}{(7,251,1)}="Methran Cape";
-color2region{6}{(71,251,1)}="Drenâd";
+color2region{6}{(71,251,1)}="Drenï¿½d";
 color2region{6}{(71,251,17)}="Straight of Tumag";
-color2region{6}{(71,51,27)}="Mûmakan";
-color2region{6}{(71,151,27)}="Koronandë";
-color2region{6}{(71,151,127)}="Sakal an-Khâr";
+color2region{6}{(71,51,27)}="Mï¿½makan";
+color2region{6}{(71,151,27)}="Koronandï¿½";
+color2region{6}{(71,151,127)}="Sakal an-Khï¿½r";
 color2region{6}{(71,151,227)}="East Bay of Ormal";
-color2region{6}{(71,251,227)}="Mûmakan Coasts";
+color2region{6}{(71,251,227)}="Mï¿½makan Coasts";
 color2region{6}{(3,34,69)}="Pel Bight";
-color2region{6}{(3,4,69)}="Zurghôr";
+color2region{6}{(3,4,69)}="Zurghï¿½r";
 color2region{6}{(3,114,69)}="Lyneria";
 color2region{6}{(3,114,169)}="Chey Sart";
 color2region{6}{(3,214,169)}="Harshandatt";
@@ -747,7 +747,7 @@ def RecalculateScores
           if(o[0]==p)
           {
             t="M";
-            if(name(c)=="Andúril, the Flame of the West" || name(c)=="Barrow-blade")
+            if(name(c)=="Andï¿½ril, the Flame of the West" || name(c)=="Barrow-blade")
               t="I";
             else if(name(c)=="Elven Rope")
               t="M";
@@ -834,15 +834,15 @@ def SitesOfRegion
       }
     }
 
-    if(underdeeps_region{"Númeriador"}==NULL)
-      underdeeps_region{"Númeriador"}=(,);
+    if(underdeeps_region{"Nï¿½meriador"}==NULL)
+      underdeeps_region{"Nï¿½meriador"}=(,);
     if(underdeeps_region{"Iron Hills"}==NULL)
       underdeeps_region{"Iron Hills"}=(,);
 
-    underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("The Drowning-deeps");
-    underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Remains of Thangorodrim");
-    underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Ruins of Belegost");
-  underdeeps_region{"Númeriador"}=underdeeps_region{"Númeriador"}+images("Ruins of Nogrod");
+    underdeeps_region{"Nï¿½meriador"}=underdeeps_region{"Nï¿½meriador"}+images("The Drowning-deeps");
+    underdeeps_region{"Nï¿½meriador"}=underdeeps_region{"Nï¿½meriador"}+images("Remains of Thangorodrim");
+    underdeeps_region{"Nï¿½meriador"}=underdeeps_region{"Nï¿½meriador"}+images("Ruins of Belegost");
+  underdeeps_region{"Nï¿½meriador"}=underdeeps_region{"Nï¿½meriador"}+images("Ruins of Nogrod");
   underdeeps_region{"Iron Hills"}=underdeeps_region{"Iron Hills"}+images("The Rusted-deeps");
   underdeeps_region{"Mirror of Fire"}=underdeeps_region{"Mirror of Fire"}+images("The Amber-deeps");
   underdeeps_region{"Narthalf"}=underdeeps_region{"Narthalf"}+images("The Pits of Angband");
@@ -1188,37 +1188,37 @@ def CurrentDeckAddSitesRegion
   print ARG;
 
     if(ARG=='HeroEriador')
-      decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Númeriador' || card_attr('region',#)=='Angmar' || card_attr('region',#)=='Arthedain' || card_attr('region',#)=='Rhudaur' || card_attr('region',#)=='Old Forest*' || card_attr('region',#)=='Dunland' || card_attr('region',#)=='Redhorn Gate' || card_attr('region',#)=='Hollin' || card_attr('region',#)=='Enedhwaith' || card_attr('region',#)=='Lindon' || card_attr('region',#)=='High Pass' || card_attr('region',#)=='Cardolan' || card_attr('region',#)=='The Shire' || card_attr('region',#)=='Misty Mountains - Northern Spur' || card_attr('region',#)=='Misty Mountains - Southern Spur')",s);
+      decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Nï¿½meriador' || card_attr('region',#)=='Angmar' || card_attr('region',#)=='Arthedain' || card_attr('region',#)=='Rhudaur' || card_attr('region',#)=='Old Forest*' || card_attr('region',#)=='Dunland' || card_attr('region',#)=='Redhorn Gate' || card_attr('region',#)=='Hollin' || card_attr('region',#)=='Enedhwaith' || card_attr('region',#)=='Lindon' || card_attr('region',#)=='High Pass' || card_attr('region',#)=='Cardolan' || card_attr('region',#)=='The Shire' || card_attr('region',#)=='Misty Mountains - Northern Spur' || card_attr('region',#)=='Misty Mountains - Southern Spur')",s);
   else if(ARG=='MinionEriador')
-      decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Númeriador' || card_attr('region',#)=='Angmar' || card_attr('region',#)=='Arthedain' || card_attr('region',#)=='Rhudaur' || card_attr('region',#)=='Old Forest*' || card_attr('region',#)=='Dunland' || card_attr('region',#)=='Redhorn Gate' || card_attr('region',#)=='Hollin' || card_attr('region',#)=='Enedhwaith' || card_attr('region',#)=='Lindon' || card_attr('region',#)=='High Pass' || card_attr('region',#)=='Cardolan' || card_attr('region',#)=='The Shire' || card_attr('region',#)=='Misty Mountains - Northern Spur' || card_attr('region',#)=='Misty Mountains - Southern Spur')",s);
+      decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Nï¿½meriador' || card_attr('region',#)=='Angmar' || card_attr('region',#)=='Arthedain' || card_attr('region',#)=='Rhudaur' || card_attr('region',#)=='Old Forest*' || card_attr('region',#)=='Dunland' || card_attr('region',#)=='Redhorn Gate' || card_attr('region',#)=='Hollin' || card_attr('region',#)=='Enedhwaith' || card_attr('region',#)=='Lindon' || card_attr('region',#)=='High Pass' || card_attr('region',#)=='Cardolan' || card_attr('region',#)=='The Shire' || card_attr('region',#)=='Misty Mountains - Northern Spur' || card_attr('region',#)=='Misty Mountains - Southern Spur')",s);
   else if(ARG=='HeroNWaste')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhûgdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sêj' || card_attr('region',#)=='Helkëar' || card_attr('region',#)=='Dyr')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhï¿½gdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sï¿½j' || card_attr('region',#)=='Helkï¿½ar' || card_attr('region',#)=='Dyr')",s);
   else if(ARG=='MinionNWaste')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhûgdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sêj' || card_attr('region',#)=='Helkëar' || card_attr('region',#)=='Dyr')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forochel' || card_attr('region',#)=='East Bay of Forochel' || card_attr('region',#)=='Rast Losnaeth' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Lhï¿½gdalf' || card_attr('region',#)=='Talath Uichel' || card_attr('region',#)=='Everdalf' || card_attr('region',#)=='Minheldolath' || card_attr('region',#)=='Thorenaer' || card_attr('region',#)=='Withered Heath' || card_attr('region',#)=='Talath Oiohelka' || card_attr('region',#)=='Dor Bendor' || card_attr('region',#)=='Sea of Silence' || card_attr('region',#)=='Gondalf' || card_attr('region',#)=='Ekkaia' || card_attr('region',#)=='Lindalf' || card_attr('region',#)=='Dragon Gap' || card_attr('region',#)=='Forovirkain' || card_attr('region',#)=='Mur Fostisyr' || card_attr('region',#)=='Azjan' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Barl Syrnac' || card_attr('region',#)=='Narthalf' || card_attr('region',#)=='Dragon-gap' || card_attr('region',#)=='Ukal Sï¿½j' || card_attr('region',#)=='Helkï¿½ar' || card_attr('region',#)=='Dyr')",s);
   else if(ARG=='HeroSunLands')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Lûrmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Póa' || card_attr('region',#)=='Né Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Lï¿½rmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Pï¿½a' || card_attr('region',#)=='Nï¿½ Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
   else if(ARG=='MinionSunLands')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Lûrmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Póa' || card_attr('region',#)=='Né Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Lï¿½rmsakun' || card_attr('region',#)=='Arysis' || card_attr('region',#)=='Siakan' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Erim Pï¿½a' || card_attr('region',#)=='Nï¿½ Tava' || card_attr('region',#)=='Felaya' || card_attr('region',#)=='Mardruak' || card_attr('region',#)=='Bellazen' || card_attr('region',#)=='Dune Sea' || card_attr('region',#)=='Mirror of Fire' || card_attr('region',#)=='Suza Sumar' || card_attr('region',#)=='Kes Arik' || card_attr('region',#)=='Isfahan' || card_attr('region',#)=='Bozisha-Miraz' || card_attr('region',#)=='Tulwang' || card_attr('region',#)=='Bay of Tulwang' || card_attr('region',#)=='Seznebab' || card_attr('region',#)=='Zajantak' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Hyarmenfalas' || card_attr('region',#)=='Haruzan' || card_attr('region',#)=='Pezarsan' || card_attr('region',#)=='Chelkar' || card_attr('region',#)=='Chennacatt' || card_attr('region',#)=='Isra')",s);
 else if(ARG=='HeroWilder')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhûn' || card_attr('region',#)=='Taur Rómen' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhï¿½n' || card_attr('region',#)=='Taur Rï¿½men' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
 else if(ARG=='MinionWilder')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhûn' || card_attr('region',#)=='Taur Rómen' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gundabad' || card_attr('region',#)=='Anduin Vales' || card_attr('region',#)=='Grey Mountains' || card_attr('region',#)=='Grey Mountain Narrows' || card_attr('region',#)=='Iron Hills' || card_attr('region',#)=='Northern Rhovanion' || card_attr('region',#)=='Southern Rhovanion' || card_attr('region',#)=='Dorwinion' || card_attr('region',#)=='Eorstan' || card_attr('region',#)=='Sea of Rhï¿½n' || card_attr('region',#)=='Taur Rï¿½men' || card_attr('region',#)=='Wold & Foothills' || card_attr('region',#)=='Fangorn' || card_attr('region',#)=='Brown Lands' || card_attr('region',#)=='Woodland Realm' || card_attr('region',#)=='Western Mirkwood' || card_attr('region',#)=='Heart of Mirkwood' || card_attr('region',#)=='Southern Mirkwood' || card_attr('region',#)=='Taur Romen')",s);
 else if(ARG=='HeroGGondor')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pûkel-land' || card_attr('region',#)=='Old Pûkel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anórien' || card_attr('region',#)=='Ithilien')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pï¿½kel-land' || card_attr('region',#)=='Old Pï¿½kel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anï¿½rien' || card_attr('region',#)=='Ithilien')",s);
 else if(ARG=='MinionGGondor')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pûkel-land' || card_attr('region',#)=='Old Pûkel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anórien' || card_attr('region',#)=='Ithilien')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Gap of Isen' || card_attr('region',#)=='Old Pï¿½kel-land' || card_attr('region',#)=='Old Pï¿½kel Gap' || card_attr('region',#)=='Andrast' || card_attr('region',#)=='Rohan' || card_attr('region',#)=='Harondor' || card_attr('region',#)=='Anfalas' || card_attr('region',#)=='Belfalas' || card_attr('region',#)=='Lamedon' || card_attr('region',#)=='Lebennin' || card_attr('region',#)=='Mouths of the Anduin' || card_attr('region',#)=='Anï¿½rien' || card_attr('region',#)=='Ithilien')",s);
 else if(ARG=='HeroMordor')
     decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Dagorlad' || card_attr('region',#)=='Horse Plains' || card_attr('region',#)=='Ered Lithui' || card_attr('region',#)=='Nuriag' || card_attr('region',#)=='Nurn' || card_attr('region',#)=='Gorgoroth' || card_attr('region',#)=='Udun' || card_attr('region',#)=='Imlad Morgul' || card_attr('region',#)=='Gap of Khand' || card_attr('region',#)=='Khand' || card_attr('region',#)=='Chelkar')",s);
 else if(ARG=='MinionMordor')
     decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Dagorlad' || card_attr('region',#)=='Horse Plains' || card_attr('region',#)=='Ered Lithui' || card_attr('region',#)=='Nuriag' || card_attr('region',#)=='Nurn' || card_attr('region',#)=='Gorgoroth' || card_attr('region',#)=='Udun' || card_attr('region',#)=='Imlad Morgul' || card_attr('region',#)=='Gap of Khand' || card_attr('region',#)=='Khand' || card_attr('region',#)=='Chelkar')",s);
 else if(ARG=='HeroCPlains')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forrhûn' || card_attr('region',#)=='Harrhûn' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nûrad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Forrhï¿½n' || card_attr('region',#)=='Harrhï¿½n' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nï¿½rad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
 else if(ARG=='MinionCPlains')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forrhûn' || card_attr('region',#)=='Harrhûn' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nûrad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Forrhï¿½n' || card_attr('region',#)=='Harrhï¿½n' || card_attr('region',#)=='Lotan' || card_attr('region',#)=='Kykurian Kyn' || card_attr('region',#)=='Relmether' || card_attr('region',#)=='Nï¿½rad' || card_attr('region',#)=='Heb Aaraan' || card_attr('region',#)=='Orgothraath' || card_attr('region',#)=='Chey Sart' || card_attr('region',#)=='Ered Harmal')",s);
 else if(ARG=='HeroOrmal')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sára Bask')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sï¿½ra Bask')",s);
 else if(ARG=='MinionOrmal')
-    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sára Bask')",s);
+    decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Minion Site' && (card_attr('region',#)=='Bay of Ormal' || card_attr('region',#)=='Ammu Baj' || card_attr('region',#)=='Clyan' || card_attr('region',#)=='Chy' || card_attr('region',#)=='Harshandatt' || card_attr('region',#)=='Kirmlesra' || card_attr('region',#)=='Bulchyades' || card_attr('region',#)=='Olyas Kriis' || card_attr('region',#)=='Sï¿½ra Bask')",s);
 else if(ARG=='HeroSSeas')
     decks{deck.name}{"sites"}=decks{deck.name}{"sites"}+select("card_attr('type',#)=='Hero Site' && (card_attr('region',#)=='The Sundering Sea' || card_attr('region',#)=='West Bay of Forochel' || card_attr('region',#)=='Elven Shores' || card_attr('region',#)=='Eriadoran Coast' || card_attr('region',#)=='Andrast Coast' || card_attr('region',#)=='Bay of Belfalas' || card_attr('region',#)=='Coast of Harad' || card_attr('region',#)=='Bay of Felaya' || card_attr('region',#)=='Mardruak Cape' || card_attr('region',#)=='Kurryan Bay')",s);
 else if(ARG=='MinionSSeas')
@@ -1267,8 +1267,8 @@ def CurrentDeckAddSites
       
       decks{deck.name}{"sites"}=decks{deck.name}{"sites"} -
         flatten(images("Moria [M]",
-                       "Barad-dûr [M]",
-                       "Carn Dûm [M]",
+                       "Barad-dï¿½r [M]",
+                       "Carn Dï¿½m [M]",
                        "Cirith Gorgor [M]",
                        "Cirith Ungol [M]",
                        "Dol Guldur [M]",
@@ -1276,7 +1276,7 @@ def CurrentDeckAddSites
                        "Moria [M]",
                        "The Gem-deeps [M]",
                        "The Iron-deeps [M]",
-                       "The Pûkel-deeps [M]",
+                       "The Pï¿½kel-deeps [M]",
                        "The Sulfur-deeps [M]",
                        "The Under-courts [M]",
                        "The Under-galleries [M]",

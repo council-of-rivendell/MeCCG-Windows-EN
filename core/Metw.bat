@@ -2,7 +2,7 @@
 set HOME=.\..
 set USER=Windows
 set CLIENT=.\ccg_client.exe
-set SERVER=gccg.meccg.es
+set SERVER=gccg.meccg.com
 set SIZE=1280x700
 if exist .\home set HOME=.\home
 if exist module_windows32\ccg_client.exe set CLIENT=module_windows32\ccg_client.exe
